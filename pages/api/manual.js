@@ -13,7 +13,30 @@ export default (req,res) => {
     if(req.method === 'PUT') {
         editStepManual(req,res)
     };
+    if(req.method === 'DELETE') {
+        deleteStepManual(req,res)
+    };
 }
+
+const deleteStepManual = ({ query },res) => {
+    const deleteDocument = async () => {
+        try {
+            const session = await MongoClient.connect(BASE_URL_MONGO);
+            const db = session.db();
+            const collection = db.collection("ManualSteps");
+            await collection.deleteOne({ id : query.id });
+
+            res.status(200).json({
+                message: 'Eliminado correctamente.'
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: `Error al eliminar el manual: ${err}`
+            })
+        }
+    };
+    deleteDocument();
+};
 
 const editStepManual = ({ body },res) => {
     const editStepManual = async () => {

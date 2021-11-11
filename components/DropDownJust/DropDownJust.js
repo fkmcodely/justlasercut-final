@@ -10,7 +10,9 @@ const DropDownJust = ({ title , list = [], folder = '' }) => {
         if(!existButton) return;
         
         return (
-            <Button primary style={{backgroundColor: `${option.buttons.primary.color}`}} content={option.buttons.primary.title} href="" />
+            <Button primary 
+                style={{backgroundColor: `${option.buttons.primary.color}`}} 
+                content={option.buttons.primary.title} href="" />
         ) 
     };
     const renderButtonSecondary = (option) => {

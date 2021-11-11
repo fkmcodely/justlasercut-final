@@ -65,7 +65,7 @@ const Manual = ({ option }) => {
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width="16">
-                    <ManualTable manualItems={manualItems} language={language}/>
+                    <ManualTable setUpdater={setUpdater} manualItems={manualItems} language={language}/>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -74,9 +74,22 @@ const Manual = ({ option }) => {
     );
 };
 
-const ManualTable = ({ language , manualItems }) => {
+const ManualTable = ({ language , manualItems, setUpdater }) => {
     const [openItem,setOpenItem] = useState(false);
 
+    const deleteStepManual = async (idManual) => {
+        try {
+            const request = await axios.delete(`${BASE_URL}api/manual`,{
+                params: {
+                    id: idManual
+                }
+            });
+            setUpdater(Math.random());
+        } catch (err) {
+            console.error(`Error al eliminar paso del manual: ${err}`);
+        }
+    };
+    
     return (
         <Table celled columns="16">
             <Table.Header>
@@ -92,7 +105,7 @@ const ManualTable = ({ language , manualItems }) => {
             <Table.Body>
                 {
                     manualItems.map((stepManual,index) => {
-                        const { title , image, video, order, description, buttons, language } = stepManual;
+                        const { id, title , image, video, order, description, buttons, language } = stepManual;
 
                         return (
                             <Table.Row>
@@ -109,7 +122,7 @@ const ManualTable = ({ language , manualItems }) => {
                                         language={language} 
                                     />
                                     <Icon 
-                                        onClick={() => {}}
+                                        onClick={() => {deleteStepManual(id)}}
                                         size="large" 
                                         color="grey" 
                                         className="custom-dropdown__icon" 
@@ -171,6 +184,8 @@ const ModalAddManual = ({ open , setOpen, rendered , language = 'ES', setUpdater
         };
         fetchManual();
     };
+
+    
     
     return (
         <Modal {...modalProps} className="manual-modal-add">
