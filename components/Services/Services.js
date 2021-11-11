@@ -28,7 +28,7 @@ const Services = () => {
                         {
                             services.map((service,key) => (
                                 <Grid.Column key={key} width="4" className="service__item">
-                                    <Image src={`${BASE_URL}${service}.png`} />
+                                    <Image src={`${BASE_URL}/${service}.png`} />
                                 </Grid.Column>
                             ))
                         }

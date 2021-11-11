@@ -41,7 +41,7 @@ const Review = ({ description , author }) => {
             <Grid columns="16">
                 <Grid.Row>
                     <Grid.Column width="4">
-                        <Image src={`${BASE_URL}avatar.png`} />
+                        <Image src={`${BASE_URL}/avatar.png`} />
                     </Grid.Column>
                     <Grid.Column width="12">
                         <p>{description}</p>
