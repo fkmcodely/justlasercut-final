@@ -27,7 +27,7 @@ const Services = () => {
                     <Grid.Row>
                         {
                             services.map((service,key) => (
-                                <Grid.Column key={key} width="4" className="service__item">
+                                <Grid.Column key={key} computer="4" tablet="8" mobile="16" className="service__item">
                                     <Image src={`${BASE_URL}/${service}.png`} />
                                 </Grid.Column>
                             ))
