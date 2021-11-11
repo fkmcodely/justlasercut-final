@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { Button, Container, Grid, Menu, Icon } from 'semantic-ui-react';
+import { Button, Container, Grid, Menu, Icon, Sidebar, Segment, Header } from 'semantic-ui-react';
 import { useSession, signIn, signOut } from "next-auth/react";
 import ModalSession from '../ModalSession';
 
@@ -33,8 +33,10 @@ const HeaderJustLaserCut = () => {
                                 )}
                             </nav>
                         </Grid.Column>
-                        <Grid.Column mobile={2} className="header__just__menu-mobile">
-                            <Icon name="th" onClick={() => setMobileMenu(true)} size="big" color="black" />
+                        <Grid.Column mobile={2} className="header-just__menu-mobile">
+                            <Icon name="th" onClick={() => {
+                                setMobileMenu(true)
+                            }} size="big" color="black" />
                         </Grid.Column>
                     </Grid.Row>
                     <MenuJust />        
