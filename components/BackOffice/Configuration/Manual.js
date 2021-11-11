@@ -1,5 +1,5 @@
 import React , { useEffect, useState } from 'react';
-import { Grid , Header , Button, Table, Modal, Divider, Form, Image } from 'semantic-ui-react';
+import { Grid , Header , Button, Table, Modal, Divider, Form, Image, Icon } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 
 import axios from "axios";
@@ -13,12 +13,12 @@ const Manual = ({ option }) => {
         <>
         <Grid columns="16">
             <Grid.Row>
-                <Grid.Column width="12">
-                    <Header>
+                <Grid.Column width="12" verticalAlign="middle">
+                    <Header style={{ marginBottom: '0px !important'}}>
                         CONFIGURACIÓN DEL MANUAL DE USUARIO
                     </Header>
                 </Grid.Column>
-                <Grid.Column width="4" style={{display: 'flex'}} floated="right">
+                <Grid.Column width="4" style={{display: 'flex',justifyContent: 'right'}} floated="right">
                     <div className="languages">
                         <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag"/>
@@ -98,8 +98,15 @@ const ManualTable = ({ language }) => {
                                         step={stepManual} 
                                         open={openItem} 
                                         setOpen={setOpenItem} 
-                                        rendered={<p>Editar</p>} 
+                                        rendered={<Icon size="large" color="grey" className="custom-dropdown__icon" name='pencil alternate' />} 
                                         language={language} 
+                                    />
+                                    <Icon 
+                                        onClick={() => {}}
+                                        size="large" 
+                                        color="grey" 
+                                        className="custom-dropdown__icon" 
+                                        name='trash' 
                                     />
                                 </Table.Cell>
                             </Table.Row>

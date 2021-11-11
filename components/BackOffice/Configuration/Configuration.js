@@ -38,10 +38,6 @@ const Configuration = () => {
                     { option === 2 && (<Services option={option} />)}
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row>
-                <Grid.Column width="15">
-                </Grid.Column>
-            </Grid.Row>
         </Grid>
     );
 };

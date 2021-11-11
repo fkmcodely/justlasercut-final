@@ -1,5 +1,5 @@
 import React , { useEffect, useState } from 'react';
-import { Grid , Header , Button, Table, Modal, Divider, Form, Image } from 'semantic-ui-react';
+import { Grid , Header , Button, Table, Modal, Divider, Form, Image, Icon } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import axios from "axios";
 import { BASE_URL } from '../../../constants/config';
@@ -7,43 +7,12 @@ import { BASE_URL } from '../../../constants/config';
 const Services = () => {
     const [modalAdd,setModalAdd] = useState(false);
     const [language,setLanguage] = useState(0);
-    
-    return (
-        <Grid columns="16">
-            <Grid.Row>
-                <Grid.Column width="12">
-                    <Header>
-                        CONFIGURACIÓN DE SERVICIOS
-                    </Header>
-                </Grid.Column>
-                <Grid.Column width="4" style={{display: 'flex'}} floated="right">
-                    <div className="languages">
-                        <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
-                            <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag"/>
-                        </div>
-                        <Divider vertical />
-                        <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
-                            <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag"/>
-                        </div>
-                    </div>
-                    <ModalAddService rendered={<Button primary>+</Button>} open={modalAdd} setOpen={setModalAdd} />
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-                <Grid.Column width="16">
-                    <ServiceTable language={language} />
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    );
-};
-
-const ServiceTable = ({ language }) => {
     const [serviceItems,setServiceItems] = useState([]);
-    const [openItem,setOpenItem] = useState(false);
+    const [update,setUpdate] = useState();
 
     useEffect(() => fetchItems(),[language]);
-    
+    useEffect(() => fetchItems(),[update]);
+
     const fetchItems = () => {
         const fetchServices = async () => {
             try {   
@@ -60,7 +29,41 @@ const ServiceTable = ({ language }) => {
         };
         fetchServices();
     };
+    
+    return (
+        <Grid columns="16">
+            <Grid.Row>
+                <Grid.Column width="12">
+                    <Header>
+                        CONFIGURACIÓN DE SERVICIOS
+                    </Header>
+                </Grid.Column>
+                <Grid.Column width="4" style={{display: 'flex',justifyContent: 'right'}} floated="right">
+                    <div className="languages">
+                        <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
+                            <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag"/>
+                        </div>
+                        <Divider vertical />
+                        <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
+                            <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag"/>
+                        </div>
+                    </div>
+                    <ModalAddService  setUpdate={setUpdate} language={language} rendered={<Button primary>+</Button>} open={modalAdd} setOpen={setModalAdd} />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+                <Grid.Column width="16">
+                    <ServiceTable services={serviceItems} language={language} />
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
+};
 
+const ServiceTable = ({ language , services = []}) => {
+    const [openItem,setOpenItem] = useState(false);
+    
+    console.log(services)
     return (
         <Table celled columns="16">
             <Table.Header>
@@ -75,7 +78,7 @@ const ServiceTable = ({ language }) => {
             
             <Table.Body>
                 {
-                    serviceItems?.map((stepService,index) => {
+                    services?.map((stepService,index) => {
                         const { id, title , image, video, order, description, buttons, language } = stepService;
                         return (
                             <Table.Row key={index}>
@@ -84,7 +87,14 @@ const ServiceTable = ({ language }) => {
                                 <Table.Cell>{description}</Table.Cell>
                                 <Table.Cell>{image}</Table.Cell>
                                 <Table.Cell>
-                                  <ModalEditService idService={id}  step={stepService} open={openItem} setOpen={setOpenItem} rendered={<p>Editar</p>} language='ES'/>
+                                  <ModalEditService idService={id}  step={stepService} open={openItem} setOpen={setOpenItem} rendered={<Icon size="large" color="grey" className="custom-dropdown__icon" name='pencil alternate' />} language='ES'/>
+                                    <Icon 
+                                        onClick={() => {}}
+                                        size="large" 
+                                        color="grey" 
+                                        className="custom-dropdown__icon" 
+                                        name='trash' 
+                                    />
                                 </Table.Cell>
                             </Table.Row>
                         )
@@ -97,7 +107,7 @@ const ServiceTable = ({ language }) => {
 };
 
 
-const ModalAddService = ({ open , setOpen, rendered , language = 'ES'}) => {
+const ModalAddService = ({ open , setOpen, rendered , language = 'ES', setUpdate}) => {
     const [primary,setPrimary] = useState(false);
     const [secondary,setSecondary] = useState(false);
     const [textArea,setTextArea] = useState('');
@@ -119,16 +129,19 @@ const ModalAddService = ({ open , setOpen, rendered , language = 'ES'}) => {
             try {
                 const request = await axios.post('/api/services', {
                     ...fields,
-                    language: language
+                    language: language === 0 ? 'ES' : 'EN'
                 });
                 const data = new FormData();
-                data.append('file',multimedia);
-                const uploadMedia = await axios.post('/api/multimedia',data,{
-                    params: {
-                        id: request.data.id,
-                        folder: 'services'
-                    }
-                });
+                if (multimedia) {
+                    data.append('file',multimedia);
+                    const uploadMedia = await axios.post('/api/multimedia',data,{
+                        params: {
+                            id: request.data.id,
+                            folder: 'services'
+                        }
+                    });
+                }
+                setUpdate(Math.random());
                 setLoading(false);
                 setOpen(false);
             } catch (err) {

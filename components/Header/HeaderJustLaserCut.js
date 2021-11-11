@@ -36,7 +36,7 @@ const HeaderJustLaserCut = (props) => {
                                 <p>{site?.phone}</p>
                             </div>
                         </Grid.Column>
-                        <Grid.Column mobile={14} tablet={6} computer={9} className="header-just__logo" onClick={() => router.push('/')}>
+                        <Grid.Column mobile={9} tablet={6} computer={9} className="header-just__logo" onClick={() => router.push('/')}>
                             <img src='./JustLaseLogo.png' />
                         </Grid.Column>
                         <Grid.Column computer={4} tablet={10} className="header-just__user-experience-container">
@@ -51,7 +51,7 @@ const HeaderJustLaserCut = (props) => {
                                 )}
                             </nav>
                         </Grid.Column>
-                        <Grid.Column mobile={2} className="header-just__menu-mobile">
+                        <Grid.Column mobile={7} className="header-just__menu-mobile">
                             <Icon name="th" onClick={() => {
                                 setMobileMenu(true)
                             }} size="big" color="black" />
