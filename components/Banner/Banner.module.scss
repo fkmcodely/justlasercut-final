@@ -1,0 +1,47 @@
+.banner {
+    background-image: url('/prueba.jpg');
+    height: 450px;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 50px 0px 20px 0px;
+
+    &__container {
+        background-color: white ;
+        height: 100%;
+    }
+    &__grid {
+        height: 100%;
+    }
+    &__manual {
+        height: 100%;
+        background-color: #FFFFFF ;
+        display: flex !important;
+        align-items: center !important;
+        padding-left: 3rem !important;
+        font-size: 14px;
+        ul {
+            margin-top: 2.5rem;
+            list-style: none;
+            padding-left: 0;
+            li {
+                a {
+                    font-weight: bolder;
+                }
+            }
+        }
+    }
+    &__start-shop {
+        background-color: #CC555F;
+        display: flex !important;
+        align-items: center !important;
+        div {
+            display: flex !important;
+            flex-direction: column !important;
+            p {
+                font-weight: 600;
+                color: white;
+                text-align: center;
+            }
+        }
+    }
+}

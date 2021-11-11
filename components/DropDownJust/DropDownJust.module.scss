@@ -1,0 +1,86 @@
+.dropdownjust {
+    min-height: 60vh;
+    padding-top: 40px !important;
+
+    &__questions {
+        display: flex !important;
+        justify-content: center !important;
+        padding: 30px 10px !important;
+        @media only screen and (max-width: 600px)  {
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+.custom-dropdown {
+    display: flex;
+    justify-content: space-between;
+    &__title {
+        margin: 0px !important;
+        color: black !important;
+    }
+    &__icon {
+        width: 100px;
+        color: black;
+    }
+}
+
+.custom-dropdown-content {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    background-color: #f1f2f3;
+
+    &__container {
+        display: flex;
+        flex: 1 1;
+        .image {
+            width: 35%;
+            img {
+                width: 100% !important;
+            }
+            @media only screen and (max-width: 600px)  {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+        .description {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1.5rem;
+            width: 65%;
+            p{
+                height: 90%;
+            }
+            div {
+                display: flex;
+                justify-content: flex-end;
+                @media only screen and (max-width: 600px)  {
+                    font-size: 12px;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                button {
+                    margin-left: 10px;
+                    @media only screen and (max-width: 600px)  {
+                        padding-left: 0px;
+                        width: 100%;
+                        font-size: 12px;
+                        padding: 10px 0px;
+                        margin: 0px;
+                        width: 48%;
+                    }
+                }
+            }
+            @media only screen and (max-width: 600px)  {
+                padding-left: 0px;
+                width: 100%;
+            }
+        }
+        @media only screen and (max-width: 600px)  {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

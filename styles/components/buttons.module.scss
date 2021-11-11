@@ -1,0 +1,11 @@
+.button-main {
+    border: 1px solid #5569CC !important;
+    background-color: #fff !important;
+    border-radius: 4px !important;
+    color: #5569CC !important;
+    &:hover {
+        background-color: #5569CC !important;
+        color: white !important;
+        transition: background-color 1s;
+    }
+}

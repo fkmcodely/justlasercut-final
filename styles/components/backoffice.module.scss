@@ -1,0 +1,50 @@
+
+.header-backoffice {
+    height: 6vh;
+    padding: 0 1.5rem;
+    background-color: #CC555F;
+    
+    &__row {
+        display: flex !important;
+        align-items: center !important;
+        height: 100%;
+    }
+    &__logo {
+        width: 10rem;
+    }
+}
+
+.backoffice {
+    height: 95vh !important;
+    background-color: #F1F2F3 !important;
+    overflow: hidden;
+    &__grid {
+        height: 100% !important;
+    }
+
+    &__row {
+        padding-top: 0px !important;
+        height: 100% !important;
+    }
+
+    &__menu {
+        background-color: #d4d4d5;
+        height: 100% !important;
+        padding-top: 4.5rem !important;
+    }
+}
+
+.menu-backoffice {
+    &__item {
+        border-bottom: 1px solid black;
+        cursor: pointer;
+        div {
+            padding-left: 20px;
+            font-size: 16px;
+        }
+    }
+    &__item:hover {
+        background-color: #CC555F;
+        color: white;
+    }
+}

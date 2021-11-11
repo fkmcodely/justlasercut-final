@@ -1,0 +1,25 @@
+@import './scss/index.scss';
+@import './components/buttons.module.scss';
+//Components
+@import '../components/ExampleComponent/ExampleComponent.module.scss';
+@import '../components/Header/HeaderJustLaserCut.module.scss';
+@import '../components/Banner/Banner.module.scss';
+@import '../components/Steps/Steps.module.scss';
+@import '../components/Services/Services.module.scss';
+@import '../components/Reviews/Reviews.module.scss';
+@import '../components/ContactForm/ContactForm.module.scss';
+@import '../components/FooterJust/FooterJust.module.scss';
+@import '../components/DropDownJust/DropDownJust.module.scss';
+@import '../components/PageBanner/PageBanner.module.scss';
+@import '../components/MaterialGit/MaterialGit.module.scss';
+@import '../components/Material/material.module.scss';
+@import '../components/Filters/Filters.module.scss';
+@import './components/backoffice.module.scss';
+
+//Backoffice
+@import '../components/BackOffice/Contact/Contact.module.scss';
+@import '../components/BackOffice/Users/Users.module.scss';
+@import '../components/BackOffice/Configuration/configuration.module.scss';
+
+//Modals
+@import '../components/ModalSession/ModalSession.module.scss';

@@ -1,0 +1,32 @@
+
+.header-just {
+    height: 120px;
+    padding-top: 1rem;
+    margin-bottom: 2.5rem;
+    &__user-experience {
+        display: flex;
+    }
+    &__static {
+        padding-bottom: 0px !important;
+    }
+    &__user-experience-container {
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center;
+        p {
+            margin: 0px !important;
+            margin-left: 16px !important;
+        }
+    }
+}
+
+.menu-just {
+    padding-top: 0px !important;
+
+    &__container {
+        justify-content: space-evenly !important;
+    }
+    .ui.secondary.pointing.menu .active.item {
+        border-color: #CC555F;
+    }
+}

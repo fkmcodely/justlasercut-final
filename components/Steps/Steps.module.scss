@@ -1,0 +1,17 @@
+.steps-just {
+    background-color: #D8D8D8;
+    padding-top: 80px;
+    padding-bottom: 70px;
+}
+
+.step-just {
+
+    &__container-items {
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+    p {
+        margin-top: 1.75rem;
+        font-weight: 600;
+    }
+}
