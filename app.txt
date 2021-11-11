@@ -16,4 +16,4 @@ id: 198061489043891
 secret: 
 
 token github:
-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
+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

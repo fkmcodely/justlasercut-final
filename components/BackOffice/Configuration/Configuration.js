@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid , Header , Table , Label , Menu, Divider} from "semantic-ui-react";
+import { Grid , Header , Menu, Divider} from "semantic-ui-react";
 import { BASE_URL } from '../../../constants/config';
 import Manual from './Manual';
 import Services from "./Services";
