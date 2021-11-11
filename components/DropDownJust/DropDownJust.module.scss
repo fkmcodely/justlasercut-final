@@ -6,7 +6,7 @@
         display: flex !important;
         justify-content: center !important;
         padding: 30px 10px !important;
-        @media only screen and (max-width: 600px)  {
+        @include downBreakpoint($breakpoint-up-md) {
             font-size: 12px;
             display: flex;
             justify-content: space-between;
@@ -40,7 +40,7 @@
             img {
                 width: 100% !important;
             }
-            @media only screen and (max-width: 600px)  {
+            @include downBreakpoint($breakpoint-up-md) {
                 width: 100%;
                 margin-bottom: 15px;
             }
@@ -56,14 +56,14 @@
             div {
                 display: flex;
                 justify-content: flex-end;
-                @media only screen and (max-width: 600px)  {
+                @include downBreakpoint($breakpoint-up-md) {
                     font-size: 12px;
                     display: flex;
                     justify-content: space-between;
                 }
                 button {
                     margin-left: 10px;
-                    @media only screen and (max-width: 600px)  {
+                    @include downBreakpoint($breakpoint-up-md) {
                         padding-left: 0px;
                         width: 100%;
                         font-size: 12px;
@@ -73,12 +73,12 @@
                     }
                 }
             }
-            @media only screen and (max-width: 600px)  {
+            @include downBreakpoint($breakpoint-up-md) {
                 padding-left: 0px;
                 width: 100%;
             }
         }
-        @media only screen and (max-width: 600px)  {
+        @include downBreakpoint($breakpoint-up-md) {
             display: flex;
             flex-direction: column;
         }

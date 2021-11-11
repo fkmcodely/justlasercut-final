@@ -31,7 +31,7 @@ const Steps = () => {
 const Step = ({description}) => {
 
     return(
-        <Grid.Column width={3} className="step-just">
+        <Grid.Column computer={3} tablet={8} mobile={16} className="step-just">
             <Image src="./Rectangle.png" />
             <p>{description}</p>
         </Grid.Column>
