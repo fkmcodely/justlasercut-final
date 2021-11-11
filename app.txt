@@ -14,3 +14,6 @@ Oauth Facebook:
 url: https://developers.facebook.com/apps/198061489043891/settings/basic/
 id: 198061489043891
 secret: 
+
+token github:
+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
