@@ -6,7 +6,6 @@ import Steps from "../components/Steps/Steps";
 import Services from "../components/Services";
 import Reviews from "../components/Reviews/Reviews";
 import ContactForm from "../components/ContactForm/ContactForm";
-import { MongoClient } from "mongodb";
 
 const languages = {
   en: require('../locale/en/commons.json'),
@@ -43,17 +42,4 @@ export default function Home({ message }) {
   );
 }
 
-export async function getStaticProps() {
-  const client = await MongoClient.connect(process.env.MONGODB_URI);
-  const db = client.db();
-  const collection = db.collection("configuration")
-  const infoCollection = await collection.find().toArray();
-
-  client.close();
-  return {
-    props: {
-      'message': infoCollection
-    }
-  }
-}
 
