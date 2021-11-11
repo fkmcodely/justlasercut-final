@@ -15,7 +15,7 @@ export default function Manual() {
   const [manual,setManual] = useState([]);
 
   useEffect(() => {
-    getManualSteps().then((result) => {
+    getManualSteps('ES').then((result) => {
       setManual(result);
     });
   },[]);

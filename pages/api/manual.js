@@ -57,14 +57,15 @@ const editStepManual = ({ body },res) => {
     editStepManual();
 };
 
-const getStepsManual = ({body},res) => {
+const getStepsManual = ({body , query },res) => {
     const fetchManualSteps = async () => {
         try {
             const session = await MongoClient.connect(url);
             const db = session.db();
             const collection = db.collection("ManualSteps");
-            const fetchManul = await collection.find({ language: body.language}).toArray();
+            const fetchManul = await collection.find({ language: query.language}).toArray();
             const listOrdered = fetchManul.sort((a,b) => a.order - b.order);
+
             session.close();
             res.status(200).json({
                 steps: listOrdered

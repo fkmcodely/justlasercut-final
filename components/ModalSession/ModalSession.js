@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { Button, Header, Image, Modal, Form, Input, Divider } from 'semantic-ui-react'
+import { Button, Header, Icon, Image, Modal, Form, Input, Divider } from 'semantic-ui-react'
 import { session , signIn, signOut } from "next-auth/react"
 import { useForm } from 'react-hook-form';
 import { BASE_URL } from '../../constants/config';

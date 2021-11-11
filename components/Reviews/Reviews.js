@@ -24,7 +24,7 @@ const Reviews = () => {
                     <Grid.Row className="reviews__list">
                         {
                             reviews?.map((review,keyItem) => (
-                            <Review {...review} key={keyItem} />
+                                <Review {...review} key={keyItem} />
                             ))
                         }
                     </Grid.Row>
@@ -37,13 +37,13 @@ const Reviews = () => {
 const Review = ({ description , author }) => {
 
     return(
-        <Grid.Column mobile="16" width="5" className="review">
+        <Grid.Column mobile="16" tablet="8" computer="5" className="review">
             <Grid columns="16">
                 <Grid.Row>
-                    <Grid.Column width="4">
+                    <Grid.Column width="4" verticalAlign="middle">
                         <Image src={`${BASE_URL}/avatar.png`} />
                     </Grid.Column>
-                    <Grid.Column width="12">
+                    <Grid.Column width="12" verticalAlign="middle">
                         <p>{description}</p>
                         <p>{author}</p>
                     </Grid.Column>

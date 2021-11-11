@@ -61,17 +61,18 @@ const editStepService = ({ body },res) => {
     editService();
 };
 
-const getStepsServices = ({body},res) => {
+const getStepsServices = ({ query },res) => {
     const fetchManualSteps = async () => {
         try {
-            const { language } = body;
             const session = await MongoClient.connect(url);
             const db = session.db();
             const collection = db.collection("ServicesSteps");
-            const fetchManul = await collection.find().toArray();
+            const fetchManul = await collection.find({ language: query.language }).toArray();
+            const listOrdered = fetchManul.sort((a,b) => a.order - b.order);
             
+            session.close();
             res.status(200).json({
-                services: fetchManul
+                services: listOrdered
             });
         } catch(err) {
             res.status(500).json({

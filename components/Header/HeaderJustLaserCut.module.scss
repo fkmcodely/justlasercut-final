@@ -7,21 +7,23 @@
         height: 70px;
     }
     &__logo {
-        @include downBreakpoint($breakpoint-up-md) {
-            display: flex;
-            justify-content: flex-start;
-            img {
-                width: 70%;
-            }
-        }
+       text-align: center;
+       cursor: pointer;
+       @include downBreakpoint($breakpoint-up-md) {
+           text-align: left !important;
+       }
     };
     &__user-experience {
         display: flex;
     };
+    
     &__menu-mobile {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-end !important;
+        display: none !important;
+        @include downBreakpoint($breakpoint-up-md) {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+        }
     }
     &__static {
         padding-bottom: 0px !important;
@@ -47,9 +49,10 @@
 
 .menu-just {
     padding-top: 0px !important;
-
+    padding-bottom: 0px !important;
     &__container {
         justify-content: space-evenly !important;
+        align-items: center !important;
         @include downBreakpoint($breakpoint-up-md) {
             display: none !important;
         }
@@ -58,3 +61,13 @@
         border-color: #CC555F;
     }
 }
+
+.bussiness-contact {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+
+    @include downBreakpoint($breakpoint-up-lg) {
+        display: none !important;
+    };
+};

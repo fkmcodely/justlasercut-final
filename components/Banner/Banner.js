@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Grid, Image } from "semantic-ui-react";
-
+import { BASE_URL } from '../../constants/config';
 const Banner = () => {
     return (
         <Container fluid className="banner">
             <Container className="banner__container">
                 <Grid columns="16" className="banner__grid">
-                    <Grid.Column computer="8" tablet={8} mobile={16} className="banner__manual">
+                    <Grid.Column  computer="8" tablet={8} mobile={16} className="banner__manual">
                         <p>
                             JustLasercut es una platafora que hace realidad tus ideas. 
                             Tanto si controlas programas de diseño como si simplemente tienes una idea que quieres realizar, 

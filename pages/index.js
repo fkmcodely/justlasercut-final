@@ -6,13 +6,14 @@ import Steps from "../components/Steps/Steps";
 import Services from "../components/Services";
 import Reviews from "../components/Reviews/Reviews";
 import ContactForm from "../components/ContactForm/ContactForm";
-
+import axios from "axios";
+import { BASE_URL } from "../constants/config";
 const languages = {
   en: require('../locale/en/commons.json'),
   es: require('../locale/es/commons.json'),
 }
 
-export default function Home({ message }) {
+export default function Home() {
   const router = useRouter();
   const [user,setUser] = useState();
   const { locale } = router;
@@ -41,5 +42,4 @@ export default function Home({ message }) {
     </>
   );
 }
-
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid , Header, Image } from 'semantic-ui-react';
+import { Container, Divider, Grid , Header, Image } from 'semantic-ui-react';
 
 const Steps = () => {
 
@@ -15,8 +15,9 @@ const Steps = () => {
         <Container fluid className="steps-just">
             <Container>
                 <Grid columns="16">
-                    <Grid.Row>
+                    <Grid.Row className="steps-just__header">
                         <Header as="h2">Cómo funciona</Header>
+                        <Divider />
                     </Grid.Row>
                     <Grid.Row className="step-just__container-items">
                         { steps.map((step,key) => <Step key={key} description={step} />)}
@@ -31,7 +32,7 @@ const Steps = () => {
 const Step = ({description}) => {
 
     return(
-        <Grid.Column computer={3} tablet={8} mobile={16} className="step-just">
+        <Grid.Column computer={3} tablet={5} mobile={8}  className="step-just">
             <Image src="./Rectangle.png" />
             <p>{description}</p>
         </Grid.Column>

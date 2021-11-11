@@ -31,23 +31,27 @@ const Services = () => {
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width="16">
-                    <ServiceTable />
+                    <ServiceTable language={language} />
                 </Grid.Column>
             </Grid.Row>
         </Grid>
     );
 };
 
-const ServiceTable = () => {
+const ServiceTable = ({ language }) => {
     const [serviceItems,setServiceItems] = useState([]);
     const [openItem,setOpenItem] = useState(false);
 
-    useEffect(() => fetchItems(),[]);
+    useEffect(() => fetchItems(),[language]);
     
     const fetchItems = () => {
         const fetchServices = async () => {
             try {   
-                const fetchItems = await axios(`/api/services`);
+                const fetchItems = await axios(`/api/services`,{
+                    params: { 
+                        language: language === 0 ? 'ES' : 'EN'
+                    }
+                });
                 const { data : { services }} = fetchItems;
                 setServiceItems(services);
             } catch (err){

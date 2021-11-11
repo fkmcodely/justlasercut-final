@@ -51,14 +51,14 @@ const ManualTable = ({ language }) => {
     const [manualItems,setManualItems] = useState([]);
     const [openItem,setOpenItem] = useState(false);
 
-    useEffect(() => fetchItems(),[manualItems]);
+    useEffect(() => fetchItems(),[language]);
     
     const fetchItems = () => {
         const fetchManualItems = async () => {
             try {   
                 const fetchItems = await axios(`/api/manual`,{
-                    body: {
-                        language: language
+                    params: {
+                        language: language === 0 ? 'ES' : 'EN'
                     }
                 });
                 const { data : { steps } } = fetchItems;
@@ -95,7 +95,6 @@ const ManualTable = ({ language }) => {
                                 <Table.Cell>{image !== '' ? image : video}</Table.Cell>
                                 <Table.Cell>
                                     <ModalEditManual 
-                                        action={setUpdater}
                                         step={stepManual} 
                                         open={openItem} 
                                         setOpen={setOpenItem} 
@@ -210,7 +209,7 @@ const ModalAddManual = ({ open , setOpen, rendered , language = 'ES'}) => {
     )
 }
 
-const ModalEditManual = ({ action, open , setOpen, rendered , language = 'ES', step}) => {
+const ModalEditManual = ({  open , setOpen, rendered , language = 'ES', step}) => {
     const [primary,setPrimary] = useState(typeof step.buttons?.primary?.title !== 'undefined' ? true : false);
     const [secondary,setSecondary] = useState(typeof step.buttons?.secondary?.title !== 'undefined' ? true : false);
     const [textArea,setTextArea] = useState('');
