@@ -9,6 +9,32 @@ const Manual = ({ option }) => {
     const [updater,setUpdater] = useState();
     const [modalAdd,setModalAdd] = useState(false);
     const [language,setLanguage] = useState(0);
+    const [manualItems,setManualItems] = useState([]);
+
+    const fetchItems = () => {
+        const fetchManualItems = async () => {
+            try {   
+                const fetchItems = await axios(`/api/manual`,{
+                    params: {
+                        language: language === 0 ? 'ES' : 'EN'
+                    }
+                });
+                const { data : { steps } } = fetchItems;
+                setManualItems(steps);
+            } catch (err){
+                console.error(`Error al obtener lista del manual: ${err}`)
+            }
+        };
+        fetchManualItems();
+    };
+
+    useEffect(() => {
+        fetchItems();
+    },[language]);
+    useEffect(() => {
+        fetchItems();
+    },[updater]);
+    
     return (
         <>
         <Grid columns="16">
@@ -32,13 +58,14 @@ const Manual = ({ option }) => {
                         language={language} 
                         rendered={<Button primary>+</Button>} 
                         open={modalAdd} 
+                        setUpdater={setUpdater}
                         setOpen={setModalAdd} 
                     />
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width="16">
-                    <ManualTable language={language}/>
+                    <ManualTable manualItems={manualItems} language={language}/>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -47,28 +74,8 @@ const Manual = ({ option }) => {
     );
 };
 
-const ManualTable = ({ language }) => {
-    const [manualItems,setManualItems] = useState([]);
+const ManualTable = ({ language , manualItems }) => {
     const [openItem,setOpenItem] = useState(false);
-
-    useEffect(() => fetchItems(),[language]);
-    
-    const fetchItems = () => {
-        const fetchManualItems = async () => {
-            try {   
-                const fetchItems = await axios(`/api/manual`,{
-                    params: {
-                        language: language === 0 ? 'ES' : 'EN'
-                    }
-                });
-                const { data : { steps } } = fetchItems;
-                setManualItems(steps);
-            } catch (err){
-                console.error(`Error al obtener lista del manual: ${err}`)
-            }
-        };
-        fetchManualItems();
-    };
 
     return (
         <Table celled columns="16">
@@ -119,7 +126,7 @@ const ManualTable = ({ language }) => {
     )
 };
 
-const ModalAddManual = ({ open , setOpen, rendered , language = 'ES'}) => {
+const ModalAddManual = ({ open , setOpen, rendered , language = 'ES', setUpdater}) => {
     const [primary,setPrimary] = useState(false);
     const [secondary,setSecondary] = useState(false);
     const [textArea,setTextArea] = useState('');
@@ -141,16 +148,19 @@ const ModalAddManual = ({ open , setOpen, rendered , language = 'ES'}) => {
             try {
                 const request = await axios.post('/api/manual', {
                     ...fields,
-                    language: language
+                    language: language === 0 ? 'ES' : 'EN'
                 });
-                const data = new FormData();
-                data.append('file',multimedia);
-                const uploadMedia = await axios.post('/api/multimedia', data,{
-                    params: {
-                        id: request.data.id,
-                        folder: 'manual'
-                    }
-                });
+                if (multimedia) {
+                    const data = new FormData();
+                    data.append('file',multimedia);
+                    const uploadMedia = await axios.post('/api/multimedia', data,{
+                        params: {
+                            id: request.data.id,
+                            folder: 'manual'
+                        }
+                    });
+                }
+                setUpdater(Math.random());
                 setLoading(false);
                 setOpen(false);
             } catch (err) {
