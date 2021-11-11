@@ -26,7 +26,7 @@ const saveImage = ({ body , files, query } , res) => {
     } catch (err) {
         console.error(`Error al guardar imagen: ${err}`);
         res.status(500).json({
-            message: `Error al guardar recursos`
+            message: err
         });
     }
 }
