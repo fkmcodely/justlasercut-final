@@ -3,11 +3,31 @@
     height: 120px;
     padding-top: 1rem;
     margin-bottom: 2.5rem;
+    @media only screen and (max-width: 600px)  {
+        height: 70px;
+    }
+    &__logo {
+        @media only screen and (max-width: 600px)  {
+            display: flex;
+            justify-content: flex-start;
+            img {
+                width: 70%;
+            }
+        }
+    };
     &__user-experience {
         display: flex;
+        @media only screen and (max-width: 600px)  {
+            display: none !important;
+        }
     }
     &__static {
         padding-bottom: 0px !important;
+        @media only screen and (max-width: 600px)  {
+            .bussiness-contact {
+                display: none !important;
+            }
+        }
     }
     &__user-experience-container {
         display: flex !important;
@@ -25,6 +45,9 @@
 
     &__container {
         justify-content: space-evenly !important;
+        @media only screen and (max-width: 600px)  {
+            display: none !important;
+        }
     }
     .ui.secondary.pointing.menu .active.item {
         border-color: #CC555F;

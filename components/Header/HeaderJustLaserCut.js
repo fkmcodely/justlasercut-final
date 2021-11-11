@@ -11,13 +11,13 @@ const HeaderJustLaserCut = () => {
             <Container>
                 <Grid columns={16}>
                     <Grid.Row className="header-just__static">
-                        <Grid.Column width={5}>
+                        <Grid.Column width="6" className="bussiness-contact">
                             <div>
                                 <p>info@archicercle.com</p>
                                 <p>(+34) 649 999 853</p>
                             </div>
                         </Grid.Column>
-                        <Grid.Column width={6}>
+                        <Grid.Column mobile={10} computer={6} className="header-just__logo">
                             <img src='./JustLaseLogo.png' />
                         </Grid.Column>
                         <Grid.Column width={5} className="header-just__user-experience-container">
