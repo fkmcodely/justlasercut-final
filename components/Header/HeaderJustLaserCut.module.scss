@@ -17,9 +17,11 @@
     };
     &__user-experience {
         display: flex;
-        @include downBreakpoint($breakpoint-up-md) {
-            display: none !important;
-        }
+    };
+    &__menu-mobile {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
     }
     &__static {
         padding-bottom: 0px !important;
@@ -33,6 +35,9 @@
         display: flex !important;
         justify-content: flex-end !important;
         align-items: center;
+        @include downBreakpoint($breakpoint-up-md) {
+            display: none !important;
+        }
         p {
             margin: 0px !important;
             margin-left: 16px !important;

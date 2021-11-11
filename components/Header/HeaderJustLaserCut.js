@@ -1,11 +1,12 @@
-import React from 'react';
-import { Container, Grid, Menu } from 'semantic-ui-react';
+import React , { useState } from 'react';
+import { Button, Container, Grid, Menu, Icon } from 'semantic-ui-react';
 import { useSession, signIn, signOut } from "next-auth/react";
 import ModalSession from '../ModalSession';
 
 const HeaderJustLaserCut = () => {
     const { data: session } = useSession();
-    console.log(session)
+    const [mobileMenu,setMobileMenu] = useState(false);
+
     return (
         <Container fluid className="header-just" id="header-just">
             <Container>
@@ -17,10 +18,10 @@ const HeaderJustLaserCut = () => {
                                 <p>(+34) 649 999 853</p>
                             </div>
                         </Grid.Column>
-                        <Grid.Column mobile={10} computer={6} className="header-just__logo">
+                        <Grid.Column mobile={14} computer={6} className="header-just__logo">
                             <img src='./JustLaseLogo.png' />
                         </Grid.Column>
-                        <Grid.Column width={5} className="header-just__user-experience-container">
+                        <Grid.Column width={2} className="header-just__user-experience-container">
                             <nav className="header-just__user-experience">
                                 <p>Contacto</p>
                                 { session ? (
@@ -31,6 +32,9 @@ const HeaderJustLaserCut = () => {
                                     <ModalSession />
                                 )}
                             </nav>
+                        </Grid.Column>
+                        <Grid.Column mobile={2} className="header__just__menu-mobile">
+                            <Icon name="th" onClick={() => setMobileMenu(true)} size="big" color="black" />
                         </Grid.Column>
                     </Grid.Row>
                     <MenuJust />        

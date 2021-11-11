@@ -6,7 +6,7 @@
     padding: 50px 0px 20px 0px;
     @include downBreakpoint($breakpoint-up-md) {
         padding: 0px !important;
-        height: 250px;
+        height: 70vh;
     }
     &__container {
         background-color: white ;
@@ -24,6 +24,7 @@
         font-size: 14px;
         @include downBreakpoint($breakpoint-up-md) {
             padding: 40px 0px !important;
+            height: 50%;
         }
         ul {
             margin-top: 2.5rem;
@@ -40,7 +41,9 @@
         background-color: #CC555F;
         display: flex !important;
         align-items: center !important;
-        
+        @include downBreakpoint($breakpoint-up-md) {
+            height: 50%;
+        }
         div {
             display: flex !important;
             flex-direction: column !important;
