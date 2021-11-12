@@ -69,12 +69,12 @@ const editStepManual = ({ body },res) => {
             await collection.updateOne(filter,objectModified);
             res.status(200).json({
                 message: 'Se a actualizado correctamente.'
-            })
+            });
         } catch (err) {
             console.error(`Error al actualizar paso del manual: ${err}`);
             res.status(500).json({
                 message: `Error al actualizar el manual.`
-            })
+            });
         } 
     };
     editStepManual();

@@ -1,7 +1,5 @@
-import moment from "moment";
 import { MongoClient } from "mongodb";
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
 import { BASE_URL_MONGO } from "../../constants/config";
 const url = BASE_URL_MONGO;
 
@@ -9,26 +7,26 @@ export default function handler(req,res) {
     const { method } = req;
    
     if(method === 'GET') {
-        getSiteSteps(req,res);
+        getSiteResources(req,res);
     }
     if(method === 'POST') {
-        createStep(req,res);  
+        createResource(req,res);  
     }
     if(method === 'PUT') {
-        editStep(req,res);  
+        putDocResource(req,res);  
     }
     if(method === 'DELETE') {
-        deleteStep(req,res);  
+        deleteResource(req,res);  
     }
 }
 
-const deleteStep = (req,res) => {
-    const stepDelete =  async () => {
+const deleteResource = (req,res) => {
+    const resourceDelete =  async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection("steps");
-            const filter = { idStep : req.query.idStep };
+            const collection = db.collection("resources");
+            const filter = { idResource : req.query.idResource };
             await collection.deleteOne(filter);
             
             res.status(200).json({
@@ -41,19 +39,19 @@ const deleteStep = (req,res) => {
             });
         }
     }
-    stepDelete();
+    resourceDelete();
 };
 
-const getSiteSteps = async (req,res) => {
+const getSiteResources = async (req,res) => {
     try {
         const session = await MongoClient.connect(BASE_URL_MONGO);
         const db = session.db();
-        const collection = db.collection("steps");
+        const collection = db.collection("resources");
         const getCollection = await collection.find().toArray();
 
         res.status(200).json({
             message: 'GetSuccesfully!',
-            steps: getCollection
+            resources: getCollection
         })
     } catch (err) {
         console.error(`Error al obtener los pasos. ${err}`);
@@ -61,19 +59,19 @@ const getSiteSteps = async (req,res) => {
     }
 };
 
-const editStep = (req,res) => {
-    const putStep = async () => {
+const putDocResource = (req,res) => {
+    const putResource = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection('steps');
-            const filter = { idStep : req.query.idStep };
-            const stepUpdated = {
+            const collection = db.collection('resources');
+            const filter = { idResource : req.query.idResource };
+            const resourceUpdated = {
                 $set: {
                     ...req.body
                 }
             }
-            await collection.updateOne(filter,stepUpdated);
+            await collection.updateOne(filter,resourceUpdated);
 
             res.status(200).json({
                 message: 'ModifiedSuccesfully!'
@@ -85,18 +83,18 @@ const editStep = (req,res) => {
             });
         }
     };
-    putStep();
+    putResource();
 }
 
-const createStep = ({body},res) => {
-    const fetchSteps = async () => {
+const createResource = ({body},res) => {
+    const fetchResource = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection("steps");
+            const collection = db.collection("resources");
             await collection.insertOne({
                 ...body,
-                idStep: uuidv4()   
+                idResource: uuidv4()   
             });
             res.status(200).json({
                 message: 'CreatedSuccesfully!'
@@ -108,5 +106,5 @@ const createStep = ({body},res) => {
             });
         }
     };
-    fetchSteps();
+    fetchResource();
 };
