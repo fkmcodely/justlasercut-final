@@ -1,0 +1,256 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "Loyc.Utilities/1.0.0": {
+        "dependencies": {
+          "Loyc.Collections": "1.0.0",
+          "Loyc.Essentials": "1.0.0",
+          "Loyc.Interfaces": "1.0.0",
+          "Loyc.Math": "1.0.0",
+          "Loyc.Syntax": "1.0.0",
+          "NETStandard.Library": "2.0.3",
+          "System.Reflection.Emit": "4.3.0"
+        },
+        "runtime": {
+          "Loyc.Utilities.dll": {}
+        }
+      },
+      "Microsoft.NETCore.Platforms/1.1.0": {},
+      "Microsoft.NETCore.Targets/1.1.0": {},
+      "NETStandard.Library/2.0.3": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "System.IO/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0",
+          "System.Runtime": "4.3.0",
+          "System.Text.Encoding": "4.3.0",
+          "System.Threading.Tasks": "4.3.0"
+        }
+      },
+      "System.Reflection/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0",
+          "System.IO": "4.3.0",
+          "System.Reflection.Primitives": "4.3.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Reflection.Emit/4.3.0": {
+        "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Emit.ILGeneration": "4.3.0",
+          "System.Reflection.Primitives": "4.3.0",
+          "System.Runtime": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Reflection.Emit.dll": {
+            "assemblyVersion": "4.0.2.0",
+            "fileVersion": "4.6.24705.1"
+          }
+        }
+      },
+      "System.Reflection.Emit.ILGeneration/4.3.0": {
+        "dependencies": {
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Primitives": "4.3.0",
+          "System.Runtime": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll": {
+            "assemblyVersion": "4.0.2.0",
+            "fileVersion": "4.6.24705.1"
+          }
+        }
+      },
+      "System.Reflection.Primitives/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Runtime/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0"
+        }
+      },
+      "System.Text.Encoding/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Threading.Tasks/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "Loyc.Collections/1.0.0": {
+        "dependencies": {
+          "Loyc.Essentials": "1.0.0",
+          "Loyc.Interfaces": "1.0.0"
+        },
+        "runtime": {
+          "Loyc.Collections.dll": {}
+        }
+      },
+      "Loyc.Essentials/1.0.0": {
+        "dependencies": {
+          "Loyc.Interfaces": "1.0.0"
+        },
+        "runtime": {
+          "Loyc.Essentials.dll": {}
+        }
+      },
+      "Loyc.Interfaces/1.0.0": {
+        "runtime": {
+          "Loyc.Interfaces.dll": {}
+        }
+      },
+      "Loyc.Math/1.0.0": {
+        "dependencies": {
+          "Loyc.Essentials": "1.0.0",
+          "Loyc.Interfaces": "1.0.0"
+        },
+        "runtime": {
+          "Loyc.Math.dll": {}
+        }
+      },
+      "Loyc.Syntax/1.0.0": {
+        "dependencies": {
+          "Loyc.Collections": "1.0.0",
+          "Loyc.Essentials": "1.0.0",
+          "Loyc.Interfaces": "1.0.0"
+        },
+        "runtime": {
+          "Loyc.Syntax.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Loyc.Utilities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.NETCore.Platforms/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kt+kJlMHM4zettKv7L9+NoxKwUljpwKnRlH0jenGM6lnf7FqgdCM+rBO+LeFnyg+3EhukZG7ZAmFP1kuiDqNEg==",
+      "path": "microsoft.netcore.platforms/1.1.0",
+      "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
+    },
+    "Microsoft.NETCore.Targets/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IJJnsgYHskMvl4mT3LYiRa/81/9Lf66Brq5sR4A02qAOSc3160+WMUlJAX0mHvG5w+WSROj0R8hkvIY0RoxOoA==",
+      "path": "microsoft.netcore.targets/1.1.0",
+      "hashPath": "microsoft.netcore.targets.1.1.0.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "path": "netstandard.library/2.0.3",
+      "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "System.IO/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Lzj1NlWwtDVqwMlvFZV8PL7dlvasHYeZYim1+axylzOXUubQLe6oTnmKwkqqNo7Udqaa2de4nXaOjcJLdn7vmg==",
+      "path": "system.io/4.3.0",
+      "hashPath": "system.io.4.3.0.nupkg.sha512"
+    },
+    "System.Reflection/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JfcSthBuCZu2ZJN3tnx0yzItxUFhNaMkK4DTBrCShQJuy49Pf/neyB1E2Tu+00x6RehZ0hgKMklNvhYXO7P3gQ==",
+      "path": "system.reflection/4.3.0",
+      "hashPath": "system.reflection.4.3.0.nupkg.sha512"
+    },
+    "System.Reflection.Emit/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fWMjQFUkDOdemIotFw7xaIzEPxHdyYtLDYGRPpjXf+EPGs//CnVTUn8KP76GTuMTquz/AsmPkuVeARxyqW2/nA==",
+      "path": "system.reflection.emit/4.3.0",
+      "hashPath": "system.reflection.emit.4.3.0.nupkg.sha512"
+    },
+    "System.Reflection.Emit.ILGeneration/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QtUX2JQ48mOy9Z2CFoH1uBzvRvmmUQp66ZHtNhXkKV1cjP5fp0fNjKFNMWv1VjkhpvYK5ZYRR4Z5/iYwVECwBw==",
+      "path": "system.reflection.emit.ilgeneration/4.3.0",
+      "hashPath": "system.reflection.emit.ilgeneration.4.3.0.nupkg.sha512"
+    },
+    "System.Reflection.Primitives/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AtsmyyZ6EDAZzCW6wwt9rzEpIWhZIOIIlX/PirGtvLQEmvwVxkoFTyPH8m1VJAz/MstWndqCurm3IDxmbnlWew==",
+      "path": "system.reflection.primitives/4.3.0",
+      "hashPath": "system.reflection.primitives.4.3.0.nupkg.sha512"
+    },
+    "System.Runtime/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ni8YdPxWNjvk+QxTLnQQnI/OIcQpLOfqVGXPAaJask414xQzuSyLptx5pC8o4oO1SiSqzf6P94bQzCSP6L76Lg==",
+      "path": "system.runtime/4.3.0",
+      "hashPath": "system.runtime.4.3.0.nupkg.sha512"
+    },
+    "System.Text.Encoding/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mMhIWYYCRDtmYv5aObhKRfq83QK9umWFvVwFeA+TbqxR72baDSQKR7Ms+oEkHzu1+i68SY2zhpVmvbd5Wqp0HA==",
+      "path": "system.text.encoding/4.3.0",
+      "hashPath": "system.text.encoding.4.3.0.nupkg.sha512"
+    },
+    "System.Threading.Tasks/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7BXlRixbx2qxFQB1UaolJfZEH9I0h2FOLV0Kn9BW8m4DPUIlG6ICZ9fiyxeMRpYOzxJhRmjK+A3JrZ7jo3Pl3w==",
+      "path": "system.threading.tasks/4.3.0",
+      "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
+    },
+    "Loyc.Collections/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Loyc.Essentials/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Loyc.Interfaces/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Loyc.Math/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Loyc.Syntax/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

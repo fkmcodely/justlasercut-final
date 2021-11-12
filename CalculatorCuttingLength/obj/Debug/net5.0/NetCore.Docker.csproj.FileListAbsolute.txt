@@ -1,0 +1,16 @@
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\bin\Debug\net5.0\NetCore.Docker.exe
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\bin\Debug\net5.0\NetCore.Docker.deps.json
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\bin\Debug\net5.0\NetCore.Docker.runtimeconfig.json
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\bin\Debug\net5.0\NetCore.Docker.runtimeconfig.dev.json
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\bin\Debug\net5.0\NetCore.Docker.dll
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\bin\Debug\net5.0\ref\NetCore.Docker.dll
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\bin\Debug\net5.0\NetCore.Docker.pdb
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.csproj.AssemblyReference.cache
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.AssemblyInfoInputs.cache
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.AssemblyInfo.cs
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.csproj.CoreCompileInputs.cache
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.dll
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\ref\NetCore.Docker.dll
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.pdb
+C:\Users\PC\visual\arquetype-next-justlasercut\CalculatorCuttingLength\obj\Debug\net5.0\NetCore.Docker.genruntimeconfig.cache

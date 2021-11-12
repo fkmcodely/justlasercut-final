@@ -1,76 +1,75 @@
-
 .header-just {
-    height: 120px;
-    padding-top: 1rem;
+  height: 120px;
+  padding-top: 1rem;
+  margin-bottom: 2.5rem;
+  @include downBreakpoint($breakpoint-up-md) {
+    height: 70px;
     margin-bottom: 2.5rem;
+  }
+  &__logo {
+    text-align: center;
+    cursor: pointer;
     @include downBreakpoint($breakpoint-up-md) {
-        height: 70px;
-        margin-bottom: 0.5rem;
+      text-align: left !important;
+      padding-left: 0px !important;
+      padding-right: 0px !important;
     }
-    &__logo {
-       text-align: center;
-       cursor: pointer;
-       @include downBreakpoint($breakpoint-up-md) {
-           text-align: left !important;
-           padding-left: 0px !important;
-           padding-right: 0px !important;
-       }
-    };
-    &__user-experience {
-        display: flex;
-    };
-    
-    &__menu-mobile {
+  }
+  &__user-experience {
+    display: flex;
+  }
+
+  &__menu-mobile {
+    display: none !important;
+    @include downBreakpoint($breakpoint-up-md) {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+    }
+  }
+  &__static {
+    padding-bottom: 0px !important;
+    @include downBreakpoint($breakpoint-up-md) {
+      .bussiness-contact {
         display: none !important;
-        @include downBreakpoint($breakpoint-up-md) {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: flex-end !important;
-        }
+      }
     }
-    &__static {
-        padding-bottom: 0px !important;
-        @include downBreakpoint($breakpoint-up-md) {
-            .bussiness-contact {
-                display: none !important;
-            }
-        }
+  }
+  &__user-experience-container {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center;
+    @include downBreakpoint($breakpoint-up-md) {
+      display: none !important;
     }
-    &__user-experience-container {
-        display: flex !important;
-        justify-content: flex-end !important;
-        align-items: center;
-        @include downBreakpoint($breakpoint-up-md) {
-            display: none !important;
-        }
-        p {
-            margin: 0px !important;
-            margin-left: 16px !important;
-        }
+    p {
+      margin: 0px !important;
+      margin-left: 16px !important;
     }
+  }
 }
 
 .menu-just {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-    &__container {
-        justify-content: space-evenly !important;
-        align-items: center !important;
-        @include downBreakpoint($breakpoint-up-md) {
-            display: none !important;
-        }
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  &__container {
+    justify-content: space-evenly !important;
+    align-items: center !important;
+    @include downBreakpoint($breakpoint-up-md) {
+      display: none !important;
     }
-    .ui.secondary.pointing.menu .active.item {
-        border-color: #CC555F;
-    }
+  }
+  .ui.secondary.pointing.menu .active.item {
+    border-color: #cc555f;
+  }
 }
 
 .bussiness-contact {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
 
-    @include downBreakpoint($breakpoint-up-lg) {
-        display: none !important;
-    };
-};
+  @include downBreakpoint($breakpoint-up-lg) {
+    display: none !important;
+  }
+}

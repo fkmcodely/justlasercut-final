@@ -4,7 +4,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import ModalSession from '../ModalSession';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-
+import MenuMobile from '../MenuMobile';
 import axios from 'axios';
 
 const HeaderJustLaserCut = (props) => {
@@ -12,6 +12,7 @@ const HeaderJustLaserCut = (props) => {
     const [mobileMenu,setMobileMenu] = useState(false);
     const [site,setSite] = useState();
     const router = useRouter()
+    const [show,setShow] = useState(false);
 
     useEffect(() => {
         const getSiteInfo = async () => {
@@ -26,6 +27,7 @@ const HeaderJustLaserCut = (props) => {
     },[]);
     
     return (
+        <>
         <Container fluid className="header-just" id="header-just">
             <Container>
                 <Grid columns={16}>
@@ -53,7 +55,7 @@ const HeaderJustLaserCut = (props) => {
                         </Grid.Column>
                         <Grid.Column mobile={7} className="header-just__menu-mobile">
                             <Icon name="th" onClick={() => {
-                                setMobileMenu(true)
+                                setShow(true)
                             }} size="big" color="black" />
                         </Grid.Column>
                     </Grid.Row>
@@ -61,6 +63,8 @@ const HeaderJustLaserCut = (props) => {
                 </Grid>
             </Container>
         </Container>
+        <MenuMobile show={show} setShow={setShow} />
+        </>
     );
 };
 

@@ -8,7 +8,6 @@ const handler = nextConnect();
 handler.use(middleware);
 
 handler.post((req,res) => {
-    console.log('jejejej')
     saveImage(req,res)
 });
 
