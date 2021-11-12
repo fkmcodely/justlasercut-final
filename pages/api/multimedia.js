@@ -2,18 +2,23 @@ import nextConnect from "next-connect";
 import middleware from "../../middleware/middleware";
 import fs from "fs";
 import { BASE_URL } from "../../constants/config";
+import * as path from 'path'
 
 const handler = nextConnect();
 handler.use(middleware);
 
 handler.post((req,res) => {
+    console.log('jejejej')
     saveImage(req,res)
 });
 
 const saveImage = ({ body , files, query } , res) => {
+    const rootDir = path.join(__dirname, '..')
+    
     try {
         fs.readFile(files.file[0].path , function (err,data) {
-            fs.writeFile(`${BASE_URL}public/${query.id}.png`,data, (err) => {
+            console.log(`${rootDir}${query.id}.png`)
+            fs.writeFile(`${rootDir}${query.id}.png`,data, (err) => {
                 if(err) {
                     console.error(`Error al guardar el fichero: ${err}`)
                 } else {

@@ -159,17 +159,16 @@ const ModalAddManual = ({ open , setOpen, rendered , language = 'ES', setUpdater
         setLoading(true);
         const fetchManual = async () => {
             try {
-                const request = await axios.post('/api/manual', {
+                const request = await axios.post(`${BASE_URL}/api/manual`, {
                     ...fields,
                     language: language === 0 ? 'ES' : 'EN'
                 });
                 if (multimedia) {
                     const data = new FormData();
                     data.append('file',multimedia);
-                    const uploadMedia = await axios.post('/api/multimedia', data,{
+                    const uploadMedia = await axios.post(`${BASE_URL}/api/multimedia`, data,{
                         params: {
                             id: request.data.id,
-                            folder: 'manual'
                         }
                     });
                 }
