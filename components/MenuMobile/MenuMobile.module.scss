@@ -6,6 +6,9 @@
   transition: right 1s;
   transition-timing-function: ease-out;
 }
+body {
+  overflow-x: hidden;
+}
 .menu-mobile {
   position: absolute;
   top: 0px;
