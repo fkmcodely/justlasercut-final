@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { Grid , Header , Menu, Divider} from "semantic-ui-react";
+import { Grid, Header, Menu, Divider } from "semantic-ui-react";
 import { BASE_URL } from '../../../constants/config';
+import FeedBack from './FeedBack';
 import Manual from './Manual';
 import Services from "./Services";
 import SiteForm from './SiteForm';
 
 const Configuration = () => {
-    const [option,setOption] = useState(0);
-    
+    const [option, setOption] = useState(0);
+
     return (
         <Grid columns="16" className="backoffice-configuration">
             <Grid.Row>
                 <Grid.Column width="16">
                     <Header>ADMINISTRACIÓN DE LA WEB</Header>
-                    <Divider/>
+                    <Divider />
                     <Menu>
                         <Menu.Item
                             onClick={() => setOption(0)}
@@ -32,10 +33,11 @@ const Configuration = () => {
                             name='Opiniones'
                         />
                     </Menu>
-                    <Divider/>
-                    { option === 0 && (<SiteForm option={option}/>)}
-                    { option === 1 && (<Manual option={option} />)}
-                    { option === 2 && (<Services option={option} />)}
+                    <Divider />
+                    {option === 0 && (<SiteForm option={option} />)}
+                    {option === 1 && (<Manual option={option} />)}
+                    {option === 2 && (<Services option={option} />)}
+                    {option === 3 && (<FeedBack option={option} />)}
                 </Grid.Column>
             </Grid.Row>
         </Grid>

@@ -258,7 +258,6 @@ const ModalEditManual = ({ rendered, language = 'ES', step }) => {
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
 
     useEffect(() => {
-        console.log('jejeje')
         setValue("order", step.order);
         setValue("description", step.description);
         setValue("title", step.title);

@@ -1,0 +1,250 @@
+import React, { useState, useEffect } from 'react';
+import { Grid, Header, Divider, Icon, Image, Modal, Button, Form, Table } from 'semantic-ui-react';
+import axios from "axios";
+const { v4: uuidv4 } = require('uuid');
+
+const FeedBack = () => {
+    const [language, setLanguage] = useState(0);
+    const [reviews, setReviews] = useState([]);
+    const [update, setUpdate] = useState();
+
+    useEffect(() => fetchFeedBack(), []);
+    useEffect(() => fetchFeedBack(), [update]);
+
+    const fetchFeedBack = async () => {
+        try {
+            const fetchFeed = await axios('/api/reviews');
+            setReviews(fetchFeed.data.list);
+        } catch (error) {
+            console.error('No se puede obtener los datos del servidor')
+        }
+    };
+
+
+    return (
+        <Grid columns={16}>
+            <Grid.Row>
+                <Grid.Column width={14}>
+                    <Header as="h3">Personalize la sección de comentarios</Header>
+                </Grid.Column>
+                <Grid.Column width={2} >
+                    <AddFeedBack action={setUpdate} render={<Button content="+" />} />
+                    <div className="languages">
+                        <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
+                            <Image src={`/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
+                        </div>
+                        <Divider vertical />
+                        <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
+                            <Image src={`/flag_en.png`} alt="flag_english" className="languages__flag" />
+                        </div>
+                    </div>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+                <Grid.Column width="16">
+                    <TableFeedBack action={setUpdate} list={reviews} />
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
+};
+
+const TableFeedBack = ({ list = [], action }) => {
+
+    const executeTask = () => {
+        console.log('ejecturae')
+        action(uuidv4());
+    };
+
+    return (
+        <Table>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>AUTOR</Table.HeaderCell>
+                    <Table.HeaderCell>MENSAJE</Table.HeaderCell>
+                    <Table.HeaderCell>AVATAR</Table.HeaderCell>
+                    <Table.HeaderCell>ACTIONS</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {
+                    list.map((review, index) => {
+                        const { autor, message, idAvatar } = review;
+                        return (
+                            <Table.Row key={index} className="table-general">
+                                <Table.Cell>{autor}</Table.Cell>
+                                <Table.Cell>{message}</Table.Cell>
+                                <Table.Cell>
+                                    {idAvatar && (
+                                        <Image src={`/${idAvatar}.png`} className="miniature-image" />
+                                    )}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Icon
+                                        size="large"
+                                        color="grey"
+                                        className="custom-dropdown__icon"
+                                        name='trash'
+                                    />
+                                    <EditFeedBack
+                                        action={executeTask}
+                                        render={<Icon size="large" color="grey" className="custom-dropdown__icon" name='pencil alternate' />}
+                                        review={review}
+                                    />
+                                </Table.Cell>
+                            </Table.Row>
+                        )
+                    })
+                }
+            </Table.Body>
+        </Table>
+    )
+}
+
+const AddFeedBack = ({ render, action }) => {
+    const [open, setOpen] = useState();
+    const [autor, setAutor] = useState('');
+    const [avatar, setAvatar] = useState();
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        setAutor('');
+        setMessage('');
+        setAvatar();
+    }, [open])
+
+    const modalProps = {
+        onClose: () => setOpen(false),
+        onOpen: () => setOpen(true),
+        open: open,
+        size: 'small',
+        trigger: render
+    };
+
+    const submitForm = async () => {
+        try {
+            const idTransaction = uuidv4();
+            const save = await axios.post('/api/reviews', {
+                autor: autor,
+                idAvatar: idTransaction,
+                id: idTransaction,
+                message: message
+            });
+            if (avatar) {
+                const data = new FormData();
+                data.append('file', avatar);
+                const uploadMedia = await axios.post(`/api/multimedia`, data, {
+                    params: {
+                        id: idTransaction,
+                    }
+                });
+            };
+
+            setAutor('');
+            setMessage('');
+            setAvatar();
+            setOpen(false);
+        } catch (err) {
+            console.error('Error al guardar comentario:', err);
+        }
+    };
+
+    return (
+        <Modal {...modalProps}>
+            <Modal.Header>
+                Añadir nuevo comentario
+            </Modal.Header>
+            <Modal.Content>
+                <Form>
+                    <input
+                        value={autor}
+                        onChange={ev => setAutor(ev.target.value)}
+                        placeholder="Nombre del autor" />
+                    <input
+                        type="file"
+                        name="mediaManual"
+                        onChange={ev => setAvatar(ev.target.files[0])}
+                    />
+                    <textarea
+                        value={message}
+                        onChange={ev => setMessage(ev.target.value)}
+                        placeholder="M" />
+                </Form>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={submitForm} primary content="GUARDAR" />
+            </Modal.Actions>
+        </Modal>
+    )
+}
+
+
+const EditFeedBack = ({ render, review, action }) => {
+    const [open, setOpen] = useState();
+    const [autor, setAutor] = useState('');
+    const [avatar, setAvatar] = useState();
+    const [message, setMessage] = useState('');
+
+    const modalProps = {
+        onClose: () => setOpen(false),
+        onOpen: () => setOpen(true),
+        open: open,
+        size: 'small',
+        trigger: render
+    };
+
+    useEffect(() => {
+        if (review) {
+            setAutor(review.autor);
+            setMessage(review.message);
+        }
+    }, [open])
+
+    const submitForm = async () => {
+        try {
+            const save = await axios.put('/api/reviews', {
+                autor: autor,
+                message: message
+            }, {
+                params: {
+                    id: review.id
+                }
+            });
+            action();
+            setAutor('');
+            setMessage('');
+            setAvatar();
+            setOpen(false);
+        } catch (err) {
+            console.error('Error al guardar comentario:', err);
+        }
+    };
+
+    return (
+        <Modal {...modalProps}>
+            <Modal.Header>
+                Editar comentario
+            </Modal.Header>
+            <Modal.Content>
+                <Form>
+                    <input
+                        value={autor}
+                        onChange={ev => setAutor(ev.target.value)}
+                        placeholder="Nombre del autor" />
+
+                    <textarea
+                        value={message}
+                        onChange={ev => setMessage(ev.target.value)}
+                        placeholder="M" />
+                </Form>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={submitForm} primary content="GUARDAR" />
+            </Modal.Actions>
+        </Modal>
+    )
+}
+
+
+
+export default FeedBack;
