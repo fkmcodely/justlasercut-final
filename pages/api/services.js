@@ -5,21 +5,44 @@ const bcrypt = require('bcrypt');
 import { BASE_URL_MONGO } from "../../constants/config";
 const url = BASE_URL_MONGO;
 
-export default function handlerServices(req,res) {
+export default function handlerServices(req, res) {
     const { method } = req;
-   
-    if(method === 'GET') {
-        getStepsServices(req,res);
+
+    if (method === 'GET') {
+        getStepsServices(req, res);
     }
-    if(method === 'POST') {
-        createStepService(req,res);  
+    if (method === 'POST') {
+        createStepService(req, res);
     }
-    if(method === 'PUT') {
-        editStepService(req,res);  
+    if (method === 'PUT') {
+        editStepService(req, res);
+    }
+    if (method === 'DELETE') {
+        deleteStepService(req, res);
     }
 }
 
-const editStepService = ({ body },res) => {
+const deleteStepService = ({ query }, res) => {
+    const deleteDocument = async () => {
+        try {
+            const session = await MongoClient.connect(BASE_URL_MONGO);
+            const db = session.db();
+            const collection = db.collection("ServicesSteps");
+            await collection.deleteOne({ id: query.id });
+
+            res.status(200).json({
+                message: 'Eliminado correctamente.'
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: `Error al eliminar el manual: ${err}`
+            })
+        }
+    };
+    deleteDocument();
+};
+
+const editStepService = ({ body }, res) => {
     const editService = async () => {
         try {
             const {
@@ -27,8 +50,8 @@ const editStepService = ({ body },res) => {
                 image,
                 video,
                 order,
-                description, 
-                buttons, 
+                description,
+                buttons,
                 language,
                 step
             } = body;
@@ -43,11 +66,11 @@ const editStepService = ({ body },res) => {
                     language: language
                 }
             };
-            const filter = { id : step};
+            const filter = { id: step };
             const session = await MongoClient.connect(url);
             const db = session.db();
             const collection = db.collection("ServicesSteps");
-            await collection.updateOne(filter,objectModified);
+            await collection.updateOne(filter, objectModified);
             res.status(200).json({
                 message: 'Se a actualizado correctamente.'
             })
@@ -56,12 +79,12 @@ const editStepService = ({ body },res) => {
             res.status(500).json({
                 message: `Error al actualizar el manual.`
             })
-        } 
+        }
     };
     editService();
 };
 
-const getStepsServices = ({ query },res) => {
+const getStepsServices = ({ query }, res) => {
     const fetchManualSteps = async () => {
         try {
             const session = await MongoClient.connect(url);
@@ -73,13 +96,13 @@ const getStepsServices = ({ query },res) => {
             } else {
                 fetchManul = await collection.find().toArray();
             }
-            const listOrdered = fetchManul.sort((a,b) => a.order - b.order);
+            const listOrdered = fetchManul.sort((a, b) => a.order - b.order);
 
             session.close();
             res.status(200).json({
                 services: listOrdered
             });
-        } catch(err) {
+        } catch (err) {
             res.status(500).json({
                 message: 'No se puede obtener los servicios de la base de datos.'
             });
@@ -88,7 +111,7 @@ const getStepsServices = ({ query },res) => {
     fetchManualSteps();
 };
 
-const createStepService = ({ body },res) => {
+const createStepService = ({ body }, res) => {
     const fetchInfoConfig = async () => {
         try {
             const { title = '', image = '', video = '', order = '', description = '', buttons = {}, language = 'es' } = body;
@@ -102,8 +125,8 @@ const createStepService = ({ body },res) => {
                 image: serviceId,
                 video,
                 order,
-                description, 
-                buttons, 
+                description,
+                buttons,
                 language
             });
             res.status(200).json({
