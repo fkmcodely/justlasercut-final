@@ -101,7 +101,7 @@ const ServiceTable = ({ language, services = [], setUpdate }) => {
                                     {image && (<Image src={`${BASE_URL}${image}.png`} alt="" className="miniature-image" />)}
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <ModalEditService className="icon_action" idService={id} step={stepService} open={openItem} setOpen={setOpenItem} rendered={<Icon size="large" color="grey" className="custom-dropdown__icon" name='pencil alternate' />} language='ES' />
+                                    <ModalEditService render={setUpdate} className="icon_action" idService={id} step={stepService} open={openItem} setOpen={setOpenItem} rendered={<Icon size="large" color="grey" className="custom-dropdown__icon" name='pencil alternate' />} language='ES' />
                                     <Icon
                                         onClick={() => {
                                             console.log('hiz clok')
@@ -228,32 +228,14 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'ES', setUpdate }
 }
 
 
-const ModalEditService = ({ idService, rendered, language = 'ES', step }) => {
+const ModalEditService = ({ idService, rendered, language = 'ES', step, render }) => {
     const [primary, setPrimary] = useState(typeof step.buttons?.primary?.title !== 'undefined' ? true : false);
     const [secondary, setSecondary] = useState(typeof step.buttons?.secondary?.title !== 'undefined' ? true : false);
     const [textArea, setTextArea] = useState('');
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
-    const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
-        defaultValues: {
-            order: step.order,
-            title: step.title,
-            description: step.description,
-            buttons: {
-                primary: {
-                    title: step.buttons?.primary?.title || '',
-                    href: step.buttons?.primary?.href || '',
-                    color: step.buttons?.primary?.color || '',
-                },
-                secondary: {
-                    title: step.buttons?.secondary?.title || '',
-                    href: step.buttons?.secondary?.href || '',
-                    color: step.buttons?.secondary?.color || '',
-                }
-            }
-        }
-    });
+    const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
 
     useEffect(() => {
         setValue("order", step.order);
@@ -267,6 +249,8 @@ const ModalEditService = ({ idService, rendered, language = 'ES', step }) => {
         setValue("buttons.secondary.title", step.buttons?.secondary?.title);
         setValue("buttons.secondary.href", step.buttons?.secondary?.href);
         setValue("buttons.secondary.color", step.buttons?.secondary?.color);
+
+        setTextArea(step.description)
     }, [open]);
 
     const modalProps = {
@@ -289,13 +273,16 @@ const ModalEditService = ({ idService, rendered, language = 'ES', step }) => {
         setLoading(true);
         const fetchManual = async () => {
             try {
-                const request = await axios.put('/api/service', {
+                const request = await axios.put('/api/services', {
                     step: step.id,
                     ...fields,
+                    description: textArea,
                     language: language
                 });
                 setLoading(false);
                 setOpen(false);
+                render(Math.random())
+                setTextArea('');
             } catch (err) {
                 console.error(`Error al actualizar el servicio: ${err}`);
                 setLoading(false);
@@ -314,7 +301,8 @@ const ModalEditService = ({ idService, rendered, language = 'ES', step }) => {
                 <Form onSubmit={handleSubmit(handleSubmitManual)}>
                     <input placeholder="Numero del manual:" type="number" {...register("order")} />
                     <input type="text" {...register("title")} placeholder="Titulo del paso" />
-                    <input className="manual-modal-edit__textarea" {...register("description")} placeholder="Describe la información del paso." />
+
+                    <textarea rows={4} value={textArea} onChange={ev => setTextArea(ev.target.value)} placeholder="Describe la información del paso." />
                     {
                         /*
                         <div>

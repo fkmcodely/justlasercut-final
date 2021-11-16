@@ -1,27 +1,27 @@
-import React , { useState } from 'react';
+import React, { useState } from 'react';
 import { Accordion, Grid, Container, Header, Icon, Divider, Image, Button } from 'semantic-ui-react';
 import { BASE_URL } from '../../constants/config';
 
-const DropDownJust = ({ title , list = [], folder = '' }) => {
-    const [selected,setSelected] = useState();
-    
+const DropDownJust = ({ title, list = [], folder = '' }) => {
+    const [selected, setSelected] = useState();
+
     const renderButtonPrimary = (option) => {
         const existButton = typeof option.buttons.primary !== 'undefined';
-        if(!existButton) return;
-        
+        if (!existButton) return;
+
         return (
-            <Button primary 
-                style={{backgroundColor: `${option.buttons.primary.color}`}} 
+            <Button primary
+                style={{ backgroundColor: `${option.buttons.primary.color}` }}
                 content={option.buttons.primary.title} href="" />
-        ) 
+        )
     };
     const renderButtonSecondary = (option) => {
         const existButton = typeof option.buttons.secondary !== 'undefined';
-        if(!existButton) return;
-        
+        if (!existButton) return;
+
         return (
-            <Button primary style={{backgroundColor: `${option.buttons.primary.color}`}} content={option.buttons.secondary.title} href="" />
-        ) 
+            <Button primary style={{ backgroundColor: `${option.buttons.primary.color}` }} content={option.buttons.secondary.title} href="" />
+        )
     };
     return (
         <Container className="dropdownjust">
@@ -33,13 +33,13 @@ const DropDownJust = ({ title , list = [], folder = '' }) => {
                         </Header>
                     </Grid.Column>
                 </Grid.Row>
-                <Divider/>
+                <Divider />
                 <Grid.Row className="dropdownjust__questions">
                     <Grid.Column width="14" mobile={16}>
                         <Accordion fluid styled>
                             {
-                                list.map((option,index) => {
-                                    return(
+                                list.map((option, index) => {
+                                    return (
                                         <>
                                             <Accordion.Title
                                                 key={index}
@@ -47,16 +47,16 @@ const DropDownJust = ({ title , list = [], folder = '' }) => {
                                                 index={index}
                                                 onClick={() => setSelected(index)}
                                             >
-                                            <div className="custom-dropdown">
-                                                <h3 className="custom-dropdown__title">{option.title}</h3>
-                                                <Icon size="large" className="custom-dropdown__icon" name='plus' />
-                                            </div>
-                                            
+                                                <div className="custom-dropdown">
+                                                    <h3 className="custom-dropdown__title">{option.title}</h3>
+                                                    <Icon size="large" className="custom-dropdown__icon" name='plus' />
+                                                </div>
+
                                             </Accordion.Title>
                                             <Accordion.Content className="custom-dropdown-content" active={selected === index}>
                                                 <div className="custom-dropdown-content__container">
                                                     <div className="image">
-                                                        <Image src={`${BASE_URL}/${option.image}`} alt={option.title} />
+                                                        <Image src={`${BASE_URL}${option.image}.png`} alt={option.title} />
                                                     </div>
                                                     <div className="description">
                                                         <p>{option.description}</p>
@@ -65,7 +65,7 @@ const DropDownJust = ({ title , list = [], folder = '' }) => {
                                                             {renderButtonSecondary(option)}
                                                         </div>
                                                     </div>
-                                                   
+
                                                 </div>
                                             </Accordion.Content>
                                         </>
