@@ -21,7 +21,6 @@ const handlerUploadFile = async ({ body }, res) => {
                 const messagesExceptions = ["Insert\r", "\r", "Point\r"];
                 const canPass = ["BOARD", "TYPE", "PLANCHA", "PLANCHA"];
                 const filterMessages = data.split('\n').filter((str) => !messagesExceptions.includes(str))
-                console.log(filterMessages)
                 const filter = filterMessages.filter((str) => str.includes('BOARD') || str.includes('TYPE') || str.includes('PLANCHA'))
 
                 let planchas = []
@@ -53,7 +52,7 @@ const handlerUploadFile = async ({ body }, res) => {
                     if (message.includes('PLANCHA')) {
                         planchas.push(object)
                         object = {
-                            planchaPropertie: '',
+                            planchaProperties: '',
                             capas: []
                         }
                     }
@@ -75,7 +74,7 @@ const handlerUploadFile = async ({ body }, res) => {
                         fileName: fileName,
                         id: idItem,
                         planchas: planchas
-                    })
+                    });
                 } catch (error) {
                     console.log('Error en sesion', error)
                 }
