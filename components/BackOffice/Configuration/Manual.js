@@ -108,11 +108,15 @@ const ManualTable = ({ language, manualItems, setUpdater }) => {
                         const { id, title, image, video, order, description, buttons, language } = stepManual;
 
                         return (
-                            <Table.Row>
+                            <Table.Row className="table-general">
                                 <Table.Cell>{order}</Table.Cell>
                                 <Table.Cell>{title}</Table.Cell>
                                 <Table.Cell>{description}</Table.Cell>
-                                <Table.Cell>{image !== '' ? image : video}</Table.Cell>
+                                <Table.Cell>
+                                    {image && (
+                                        <Image src={`${BASE_URL}/${image}`} className="miniature-image" />
+                                    )}
+                                </Table.Cell>
                                 <Table.Cell>
                                     <ModalEditManual
                                         step={stepManual}
