@@ -53,7 +53,20 @@ const TableFeedBack = ({ list = [], action }) => {
 
     const executeTask = () => {
         console.log('ejecturae')
-        action(uuidv4());
+        action(Math.random());
+    };
+
+    const deleteReview = async (id) => {
+        try {
+            const res = await axios.delete('/api/reviews', {
+                params: {
+                    id: id
+                }
+            });
+            action(Math.random())
+        } catch (error) {
+            console.log('Error al borrar Opinion')
+        }
     };
 
     return (
@@ -81,6 +94,7 @@ const TableFeedBack = ({ list = [], action }) => {
                                 </Table.Cell>
                                 <Table.Cell>
                                     <Icon
+                                        onClick={() => deleteReview(review.id)}
                                         size="large"
                                         color="grey"
                                         className="custom-dropdown__icon"
@@ -139,7 +153,7 @@ const AddFeedBack = ({ render, action }) => {
                     }
                 });
             };
-
+            action(Math.random())
             setAutor('');
             setMessage('');
             setAvatar();

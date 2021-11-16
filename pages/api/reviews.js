@@ -71,14 +71,14 @@ function createReview({ body }, res) {
 
 
 
-function deleteReview({ body }, res) {
+function deleteReview(req, res) {
     const deletes = async () => {
         try {
             const client = await MongoClient.connect(url);
             const db = client.db();
             const collection = db.collection("reviews");
             const fetchReview = await collection.deleteOne({
-                "email": body.id
+                id: req.query.id
             });
 
             return res.status(200).json({
