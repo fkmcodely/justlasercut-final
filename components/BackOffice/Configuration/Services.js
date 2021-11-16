@@ -299,10 +299,10 @@ const ModalEditService = ({ idService, rendered, language = 'ES', step, render }
             </Modal.Header>
             <Modal.Content>
                 <Form onSubmit={handleSubmit(handleSubmitManual)}>
-                    <input placeholder="Numero del manual:" type="number" {...register("order")} />
-                    <input type="text" {...register("title")} placeholder="Titulo del paso" />
+                    <input required placeholder="Numero del manual:" type="number" {...register("order")} />
+                    <input required type="text" {...register("title")} placeholder="Titulo del paso" />
 
-                    <textarea rows={4} value={textArea} onChange={ev => setTextArea(ev.target.value)} placeholder="Describe la información del paso." />
+                    <textarea required rows={4} value={textArea} onChange={ev => setTextArea(ev.target.value)} placeholder="Describe la información del paso." />
                     {
                         /*
                         <div>
