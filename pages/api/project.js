@@ -1,4 +1,7 @@
 import fs from "fs";
+import { MongoClient } from "mongodb";
+import { BASE_URL_MONGO } from "../../constants/config";
+const { v4: uuidv4 } = require('uuid');
 const child = require('child_process').execFile;
 
 export default (req, res) => {
@@ -7,14 +10,14 @@ export default (req, res) => {
     }
 }
 
-const handlerUploadFile = ({ body }, res) => {
+const handlerUploadFile = async ({ body }, res) => {
     const { fileName } = body;
     try {
         fs.writeFile('./LaserCutApp/file.txt', fileName, (err) => {
             if (err) throw err;
             let executablePath = "C:/Users/kevin.rivera/personal/justlasercut-final/LaserCutApp/bin/Debug/LaserCutApp.exe";
 
-            child(executablePath, function (err, data) {
+            child(executablePath, async function (err, data) {
                 const messagesExceptions = ["Insert\r", "\r", "Point\r"];
                 const canPass = ["BOARD", "TYPE", "PLANCHA", "PLANCHA"];
                 const filterMessages = data.split('\n').filter((str) => !messagesExceptions.includes(str))
@@ -50,15 +53,33 @@ const handlerUploadFile = ({ body }, res) => {
                     if (message.includes('PLANCHA')) {
                         planchas.push(object)
                         object = {
-                            board: '',
+                            planchaPropertie: '',
                             capas: []
                         }
                     }
                 });
-                let response = {
+                let projectItem561 = {
                     planchas: planchas
                 };
-                res.status(200).json(response)
+                try {
+                    const session = await MongoClient.connect(BASE_URL_MONGO);
+                    const db = session.db();
+                    const collection = db.collection("ProjectItem");
+                    const idItem = uuidv4();
+                    const ProjectItem = await collection.insertOne({
+                        fileName: fileName,
+                        id: idItem,
+                        planchas: planchas
+                    });
+                    res.status(200).json({
+                        fileName: fileName,
+                        id: idItem,
+                        planchas: planchas
+                    })
+                } catch (error) {
+                    console.log('Error en sesion', error)
+                }
+
             });
 
         })
