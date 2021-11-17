@@ -25,7 +25,7 @@ const FeedBack = () => {
         <Grid columns={16}>
             <Grid.Row>
                 <Grid.Column width={14}>
-                    <Header as="h3">Personalize la sección de comentarios</Header>
+                    <Header as="h3">CONFIGURACIÓN HOMEPAGE: COMENTARIOS</Header>
                 </Grid.Column>
                 <Grid.Column width={2} >
                     <AddFeedBack action={setUpdate} render={<Button content="+" />} />
@@ -75,7 +75,7 @@ const TableFeedBack = ({ list = [], action }) => {
                     <Table.HeaderCell>AUTOR</Table.HeaderCell>
                     <Table.HeaderCell>MENSAJE</Table.HeaderCell>
                     <Table.HeaderCell>AVATAR</Table.HeaderCell>
-                    <Table.HeaderCell>ACTIONS</Table.HeaderCell>
+                    <Table.HeaderCell>OPCIONES</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
