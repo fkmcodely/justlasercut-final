@@ -52,7 +52,6 @@ const FeedBack = () => {
 const TableFeedBack = ({ list = [], action }) => {
 
     const executeTask = () => {
-        console.log('ejecturae')
         action(Math.random());
     };
 
