@@ -23,7 +23,7 @@ const Services = ({ list }) => {
                                     <Image
                                         alt={service.title}
                                         href={service.link}
-                                        src={`${BASE_URL}public/${service.media}.png`} />
+                                        src={`${BASE_URL}${service.media}.png`} />
                                 </Grid.Column>
                             ))
                         }
