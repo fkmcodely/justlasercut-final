@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Grid, Header, Menu, Divider } from "semantic-ui-react";
+import { Grid, Menu, Divider, Header, Table } from "semantic-ui-react";
 import { BASE_URL } from '../../../constants/config';
 import FeedBack from './FeedBack';
 import Manual from './Manual';
 import Services from "./Services";
 import SiteForm from './SiteForm';
 import Steps from './Steps';
-
+import Gallery from './Gallery';
 const Configuration = () => {
     const [option, setOption] = useState(0);
 
@@ -37,6 +37,10 @@ const Configuration = () => {
                             onClick={() => setOption(4)}
                             name='Pasos'
                         />
+                        <Menu.Item
+                            onClick={() => setOption(5)}
+                            name='Galeria'
+                        />
                     </Menu>
                     <Divider />
                     {option === 0 && (<SiteForm option={option} />)}
@@ -44,6 +48,7 @@ const Configuration = () => {
                     {option === 2 && (<Services option={option} />)}
                     {option === 3 && (<FeedBack option={option} />)}
                     {option === 4 && (<Steps option={option} />)}
+                    {option === 5 && (<Gallery option={option} />)}
                 </Grid.Column>
             </Grid.Row>
         </Grid>

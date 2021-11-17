@@ -3,37 +3,37 @@ const { v4: uuidv4 } = require('uuid');
 import { BASE_URL_MONGO } from "../../constants/config";
 const url = BASE_URL_MONGO;
 
-export default function handler(req,res) {
+export default function handler(req, res) {
     const { method } = req;
-   
-    if(method === 'GET') {
-        getSiteResources(req,res);
+
+    if (method === 'GET') {
+        getSiteResources(req, res);
     }
-    if(method === 'POST') {
-        createResource(req,res);  
+    if (method === 'POST') {
+        createResource(req, res);
     }
-    if(method === 'PUT') {
-        putDocResource(req,res);  
+    if (method === 'PUT') {
+        putDocResource(req, res);
     }
-    if(method === 'DELETE') {
-        deleteResource(req,res);  
+    if (method === 'DELETE') {
+        deleteResource(req, res);
     }
 }
 
-const deleteResource = (req,res) => {
-    const resourceDelete =  async () => {
+const deleteResource = (req, res) => {
+    const resourceDelete = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection("resources");
-            const filter = { idResource : req.query.idResource };
+            const collection = db.collection("Gallery");
+            const filter = { idResource: req.query.idResource };
             await collection.deleteOne(filter);
-            
+
             res.status(200).json({
                 message: 'DeletedSuccesfully'
             })
         } catch (error) {
-            
+
             res.status(500).json({
                 message: 'DeleteFailed!'
             });
@@ -42,11 +42,11 @@ const deleteResource = (req,res) => {
     resourceDelete();
 };
 
-const getSiteResources = async (req,res) => {
+const getSiteResources = async (req, res) => {
     try {
         const session = await MongoClient.connect(BASE_URL_MONGO);
         const db = session.db();
-        const collection = db.collection("resources");
+        const collection = db.collection("Gallery");
         const getCollection = await collection.find().toArray();
 
         res.status(200).json({
@@ -59,19 +59,19 @@ const getSiteResources = async (req,res) => {
     }
 };
 
-const putDocResource = (req,res) => {
+const putDocResource = (req, res) => {
     const putResource = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection('resources');
-            const filter = { idResource : req.query.idResource };
+            const collection = db.collection('Gallery');
+            const filter = { idResource: req.query.id };
             const resourceUpdated = {
                 $set: {
                     ...req.body
                 }
             }
-            await collection.updateOne(filter,resourceUpdated);
+            await collection.updateOne(filter, resourceUpdated);
 
             res.status(200).json({
                 message: 'ModifiedSuccesfully!'
@@ -86,15 +86,15 @@ const putDocResource = (req,res) => {
     putResource();
 }
 
-const createResource = ({body},res) => {
+const createResource = ({ body }, res) => {
     const fetchResource = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection("resources");
+            const collection = db.collection("Gallery");
             await collection.insertOne({
                 ...body,
-                idResource: uuidv4()   
+                idResource: uuidv4()
             });
             res.status(200).json({
                 message: 'CreatedSuccesfully!'
