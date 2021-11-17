@@ -6,7 +6,6 @@ import axios from "axios";
 import { BASE_URL } from '../../../constants/config';
 import { description } from 'platform';
 
-
 const Steps = () => {
     const [language, setLanguage] = useState(0);
     const [update, setUpdate] = useState();
@@ -111,7 +110,7 @@ const StepsTable = ({ steps = [], update }) => {
             </Table.Body>
         </Table>
     )
-}
+};
 
 const AddStep = ({ render, update }) => {
     const [open, setOpen] = useState();
@@ -226,5 +225,6 @@ const EditStep = ({ render, update, step }) => {
             </Modal.Actions>
         </Modal>
     )
-}
+};
+
 export default Steps;
