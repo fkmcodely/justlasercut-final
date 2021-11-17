@@ -1,29 +1,15 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 import { BASE_URL } from '../../constants/config';
-const Reviews = () => {
+const Reviews = ({ list }) => {
 
-    const reviews = [
-        {
-            description: '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
-            author: 'Kevin 1'
-        },
-        {
-            description: '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
-            author: 'Kevin 2'
-        },
-        {
-            description: '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
-            author: 'Kevin 3'
-        }
-    ]
     return (
-        <Container fluid className="reviews"> 
+        <Container fluid className="reviews">
             <Container>
                 <Grid columns="16">
                     <Grid.Row className="reviews__list">
                         {
-                            reviews?.map((review,keyItem) => (
+                            list?.map((review, keyItem) => (
                                 <Review {...review} key={keyItem} />
                             ))
                         }
@@ -34,18 +20,18 @@ const Reviews = () => {
     );
 };
 
-const Review = ({ description , author }) => {
+const Review = ({ autor, message, avatar }) => {
 
-    return(
+    return (
         <Grid.Column mobile="16" tablet="8" computer="5" className="review">
             <Grid columns="16">
                 <Grid.Row>
                     <Grid.Column width="4" verticalAlign="middle">
-                        <Image src={`${BASE_URL}/avatar.png`} />
+                        <Image src={`/${avatar}.png`} />
                     </Grid.Column>
                     <Grid.Column width="12" verticalAlign="middle">
-                        <p>{description}</p>
-                        <p>{author}</p>
+                        <p>{message}</p>
+                        <p>{autor}</p>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

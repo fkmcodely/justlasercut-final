@@ -1,4 +1,4 @@
-import React, { useEffect , useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession, signIn, singOut, getSession, signOut } from "next-auth/react";
 import Banner from "../components/Banner";
@@ -15,29 +15,42 @@ const languages = {
 
 export default function Home() {
   const router = useRouter();
-  const [user,setUser] = useState();
+  const [user, setUser] = useState();
   const { locale } = router;
-  const { session , loading } = useSession();
+  const { session, loading } = useSession();
   const localCopy = languages[locale];
 
+  const [reviews, setReviews] = useState();
+
+  useEffect(async () => {
+    try {
+      const listReviews = await axios('/api/reviews');
+      const { data: { list } } = listReviews;
+
+      setReviews(list);
+    } catch (error) {
+      console.error('No se pudieron obtener los datos:', error);
+    }
+  }, []);
+
   useEffect(() => {
-    const session = async (req,res) => {
+    const session = async (req, res) => {
       const user = await getSession({ req });
-      if(user?.user) {
+      if (user?.user) {
         setUser(user.user);
       } else {
         setUser(false);
       }
     }
     session();
-  },[])
+  }, [])
 
   return (
     <>
       <Banner />
       <Steps />
       <Services />
-      <Reviews />
+      <Reviews list={reviews} />
       <ContactForm />
     </>
   );

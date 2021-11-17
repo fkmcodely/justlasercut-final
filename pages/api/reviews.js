@@ -27,7 +27,7 @@ async function editReview(req, res) {
         const client = await MongoClient.connect(url);
         const db = client.db();
         const collection = db.collection("reviews");
-        console.log('filter:', req.query.id)
+
         const filter = { id: req.query.id }
         const objectModified = {
             $set: {
@@ -103,7 +103,6 @@ function getAllReviews({ body }, res) {
             const db = client.db();
             const collection = db.collection("reviews");
             const request = await collection.find().toArray();
-
             return res.status(200).json({
                 list: request
             })
