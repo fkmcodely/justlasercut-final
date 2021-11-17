@@ -27,7 +27,7 @@ const deleteStepService = ({ query }, res) => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection("ServicesSteps");
+            const collection = db.collection("Services");
             await collection.deleteOne({ id: query.id });
 
             res.status(200).json({
@@ -69,7 +69,7 @@ const editStepService = ({ body }, res) => {
             const filter = { id: step };
             const session = await MongoClient.connect(url);
             const db = session.db();
-            const collection = db.collection("ServicesSteps");
+            const collection = db.collection("Services");
             await collection.updateOne(filter, objectModified);
             res.status(200).json({
                 message: 'Se a actualizado correctamente.'
@@ -89,7 +89,7 @@ const getStepsServices = ({ query }, res) => {
         try {
             const session = await MongoClient.connect(url);
             const db = session.db();
-            const collection = db.collection("ServicesSteps");
+            const collection = db.collection("Services");
             let fetchManul;
             if (query?.language !== 'all') {
                 fetchManul = await collection.find({ language: query.language }).toArray();
@@ -117,7 +117,7 @@ const createStepService = ({ body }, res) => {
             const { title = '', image = '', video = '', order = '', description = '', buttons = {}, language = 'es' } = body;
             const session = await MongoClient.connect(url);
             const db = session.db();
-            const collection = db.collection("ServicesSteps");
+            const collection = db.collection("Services");
             const serviceId = uuidv4();
             const createServiceStep = await collection.insertOne({
                 id: serviceId,

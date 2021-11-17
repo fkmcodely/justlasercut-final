@@ -5,13 +5,17 @@ const { v4: uuidv4 } = require('uuid');
 import axios from "axios";
 import { BASE_URL } from '../../../constants/config';
 import { description } from 'platform';
+import { useRouter } from 'next/router';
 
 const Steps = () => {
-    const [language, setLanguage] = useState(0);
+    const router = useRouter();
+    const { locale } = router;
+    const [language, setLanguage] = useState(locale);
     const [update, setUpdate] = useState();
     const [steps, setSteps] = useState();
 
     useEffect(() => fetchSteps(), []);
+    useEffect(() => fetchSteps(), [language]);
     useEffect(() => fetchSteps(), [update]);
 
     const fetchSteps = async () => {
@@ -31,13 +35,13 @@ const Steps = () => {
                     <Header>CONFIGURACIÓN HOMEPAGE: PASOS</Header>
                 </Grid.Column>
                 <Grid.Column width="2">
-                    <AddStep update={setUpdate} render={<Button content="+" />} />
+                    <AddStep language={language} update={setUpdate} render={<Button content="+" />} />
                     <div className="languages">
-                        <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                         </div>
                         <Divider vertical />
-                        <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('en')} className={`languages__container ${language === 'en' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag" />
                         </div>
                     </div>
@@ -45,14 +49,14 @@ const Steps = () => {
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width="16">
-                    <StepsTable update={setUpdate} steps={steps} />
+                    <StepsTable update={setUpdate} steps={steps} languages={language} />
                 </Grid.Column>
             </Grid.Row>
         </Grid>
     );
 };
 
-const StepsTable = ({ steps = [], update }) => {
+const StepsTable = ({ steps = [], update, languages }) => {
 
     const deleteStep = async (id) => {
         try {
@@ -78,10 +82,10 @@ const StepsTable = ({ steps = [], update }) => {
 
             <Table.Body>
                 {
-                    steps.map((step, index) => {
+                    steps.filter(entry => entry.language === languages).map((step, index) => {
                         const { title, description, source } = step;
                         return (
-                            <Table.Row key={index}>
+                            <Table.Row key={index} className="table-general">
                                 <Table.Cell>{title}</Table.Cell>
                                 <Table.Cell>{description}</Table.Cell>
                                 <Table.Cell>
@@ -112,7 +116,7 @@ const StepsTable = ({ steps = [], update }) => {
     )
 };
 
-const AddStep = ({ render, update }) => {
+const AddStep = ({ render, update, language }) => {
     const [open, setOpen] = useState();
     const [source, setSource] = useState();
     const [title, setTitle] = useState();
@@ -133,7 +137,8 @@ const AddStep = ({ render, update }) => {
                 idStep: idTransaction,
                 title: title,
                 description: description,
-                source: idTransaction
+                source: idTransaction,
+                language: language
             });
             if (source) {
                 const data = new FormData();

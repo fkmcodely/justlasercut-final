@@ -3,20 +3,24 @@ import axios from "axios";
 const { v4: uuidv4 } = require('uuid');
 import { Grid, Header, Button, Table, Modal, Divider, Form, Image, Icon, StepTitle } from 'semantic-ui-react';
 import { BASE_URL } from '../../../constants/config';
+import { useRouter } from 'next/dist/client/router';
 
 const Gallery = () => {
-    const [language, setLanguage] = useState(0);
+    const router = useRouter();
+    const { locale } = router;
+    const [language, setLanguage] = useState(locale);
     const [update, setUpdate] = useState();
     const [galleryList, setGalleryList] = useState();
 
     useEffect(() => fetchGallery(), []);
+    useEffect(() => fetchGallery(), [language]);
     useEffect(() => fetchGallery(), [update]);
 
     const fetchGallery = async () => {
         try {
             const fetchGalleryCall = await axios('/api/resources');
             const list = fetchGalleryCall.data.resources || [];
-            setGalleryList(list);
+            setGalleryList(list.filter((item) => item.language === language));
         } catch (error) {
             console.error('No se puede obtener los datos del servidor')
         }
@@ -29,13 +33,13 @@ const Gallery = () => {
                     <Header>CONFIGURACIÓN HOMEPAGE: GALERIA</Header>
                 </Grid.Column>
                 <Grid.Column width={2}>
-                    <AddResource update={setUpdate} render={<Button content="+" />} />
+                    <AddResource languageSelect={language} update={setUpdate} render={<Button content="+" />} />
                     <div className="languages">
-                        <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                         </div>
                         <Divider vertical />
-                        <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('en')} className={`languages__container ${language === 'en' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag" />
                         </div>
                     </div>
@@ -43,14 +47,14 @@ const Gallery = () => {
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width="16">
-                    <GalleryTable update={setUpdate} list={galleryList} />
+                    <GalleryTable languageSelect={language} update={setUpdate} list={galleryList} />
                 </Grid.Column>
             </Grid.Row>
         </Grid>
     );
 };
 
-const AddResource = ({ update, render }) => {
+const AddResource = ({ update, render, languageSelect }) => {
     const [seo, setSeo] = useState();
     const [media, setMedia] = useState();
     const [href, setHref] = useState();
@@ -70,7 +74,8 @@ const AddResource = ({ update, render }) => {
             const createCall = await axios.post('/api/resources', {
                 title: seo,
                 media: id,
-                link: href
+                link: href,
+                language: languageSelect
             });
             if (media) {
                 const data = new FormData();
@@ -184,7 +189,7 @@ const EditGalleryItem = ({ render, update, step }) => {
     )
 }
 
-const GalleryTable = ({ list = [], update }) => {
+const GalleryTable = ({ list = [], update, languageSelect }) => {
 
     const deleteItemGallery = async (id) => {
         try {
@@ -200,7 +205,7 @@ const GalleryTable = ({ list = [], update }) => {
     };
 
     return (
-        <Table>
+        <Table className="table-general">
             <Table.Header>
                 <Table.HeaderCell>SEO</Table.HeaderCell>
                 <Table.HeaderCell>ENLACE</Table.HeaderCell>
@@ -209,7 +214,7 @@ const GalleryTable = ({ list = [], update }) => {
             </Table.Header>
             <Table.Body>
                 {
-                    list.map((media, index) => {
+                    list.filter(entry => entry.language === languageSelect).map((media, index) => {
                         const { title, link } = media;
                         return (
                             <Table.Row key={index}>

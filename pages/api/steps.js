@@ -27,7 +27,7 @@ const deleteStep = (req, res) => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection("steps");
+            const collection = db.collection("Steps");
             const filter = { idStep: req.query.id };
             await collection.deleteOne(filter);
 
@@ -48,7 +48,7 @@ const getSiteSteps = async (req, res) => {
     try {
         const session = await MongoClient.connect(BASE_URL_MONGO);
         const db = session.db();
-        const collection = db.collection("steps");
+        const collection = db.collection("Steps");
         const getCollection = await collection.find().toArray();
 
         res.status(200).json({
@@ -66,7 +66,7 @@ const editStep = (req, res) => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection('steps');
+            const collection = db.collection('Steps');
             const filter = { idStep: req.query.id };
             const stepUpdated = {
                 $set: {
@@ -93,7 +93,7 @@ const createStep = ({ body }, res) => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
-            const collection = db.collection("steps");
+            const collection = db.collection("Steps");
             await collection.insertOne({
                 ...body,
             });

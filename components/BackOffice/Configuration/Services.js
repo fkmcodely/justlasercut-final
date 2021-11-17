@@ -3,10 +3,11 @@ import { Grid, Header, Button, Table, Modal, Divider, Form, Image, Icon } from '
 import { useForm } from 'react-hook-form';
 import axios from "axios";
 import { BASE_URL } from '../../../constants/config';
-
+import { useRouter } from 'next/router';
 const Services = () => {
+    const router = useRouter();
     const [modalAdd, setModalAdd] = useState(false);
-    const [language, setLanguage] = useState(0);
+    const [language, setLanguage] = useState(router);
     const [serviceItems, setServiceItems] = useState([]);
     const [update, setUpdate] = useState();
 
@@ -18,7 +19,7 @@ const Services = () => {
             try {
                 const fetchItems = await axios(`/api/services`, {
                     params: {
-                        language: language === 0 ? 'ES' : 'EN'
+                        language: language
                     }
                 });
                 const { data: { services } } = fetchItems;
@@ -40,11 +41,11 @@ const Services = () => {
                 </Grid.Column>
                 <Grid.Column width="4" style={{ display: 'flex', justifyContent: 'right' }} floated="right">
                     <div className="languages">
-                        <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                         </div>
                         <Divider vertical />
-                        <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('en')} className={`languages__container ${language === 'en' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag" />
                         </div>
                     </div>
@@ -147,7 +148,7 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'ES', setUpdate }
                 const request = await axios.post('/api/services', {
                     ...fields,
                     description: textArea,
-                    language: language === 0 ? 'ES' : 'EN'
+                    language: language
                 });
                 const data = new FormData();
                 if (multimedia) {

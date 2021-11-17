@@ -23,6 +23,8 @@ function Home(props) {
   const { session, loading } = useSession();
   const localCopy = languages[locale];
 
+  console.log(locale)
+
   useEffect(() => {
     const session = async (req, res) => {
       const user = await getSession({ req });
@@ -37,11 +39,10 @@ function Home(props) {
 
   return (
     <>
-      {/* Como mejor el background y el texto del banner pueden ser personalizables desde el backoffice */}
       <Banner />
-      <Steps steps={steps} />
-      <Services list={services} />
-      <Reviews list={reviews} />
+      <Steps steps={steps.filter(step => step.language === locale)} />
+      <Services list={services.filter(step => step.language === locale)} />
+      <Reviews list={reviews.filter(review => review.language === locale)} />
       <ContactForm />
     </>
   );

@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Header, Divider, Icon, Image, Modal, Button, Form, Table } from 'semantic-ui-react';
 import axios from "axios";
+import { useRouter } from "next/router";
 const { v4: uuidv4 } = require('uuid');
 
 const FeedBack = () => {
-    const [language, setLanguage] = useState(0);
+    const router = useRouter();
+    const { locale } = router;
+    const [language, setLanguage] = useState(locale);
     const [reviews, setReviews] = useState([]);
     const [update, setUpdate] = useState();
 
     useEffect(() => fetchFeedBack(), []);
-    useEffect(() => fetchFeedBack(), [update]);
+    useEffect(() => fetchFeedBack(), [update, language]);
 
     const fetchFeedBack = async () => {
         try {
             const fetchFeed = await axios('/api/reviews');
-            setReviews(fetchFeed.data.list);
+            setReviews(fetchFeed.data.list.filter((item) => item.language === language));
         } catch (error) {
             console.error('No se puede obtener los datos del servidor')
         }
@@ -28,13 +31,13 @@ const FeedBack = () => {
                     <Header as="h3">CONFIGURACIÓN HOMEPAGE: COMENTARIOS</Header>
                 </Grid.Column>
                 <Grid.Column width={2} >
-                    <AddFeedBack action={setUpdate} render={<Button content="+" />} />
+                    <AddFeedBack action={setUpdate} language={language} render={<Button content="+" />} />
                     <div className="languages">
-                        <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                             <Image src={`/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                         </div>
                         <Divider vertical />
-                        <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
+                        <div onClick={() => setLanguage('en')} className={`languages__container ${language === 'en' && ('languages__active')}`}>
                             <Image src={`/flag_en.png`} alt="flag_english" className="languages__flag" />
                         </div>
                     </div>
@@ -114,11 +117,13 @@ const TableFeedBack = ({ list = [], action }) => {
     )
 }
 
-const AddFeedBack = ({ render, action }) => {
+const AddFeedBack = ({ render, action, language }) => {
     const [open, setOpen] = useState();
     const [autor, setAutor] = useState('');
     const [avatar, setAvatar] = useState();
     const [message, setMessage] = useState('');
+    const router = useRouter();
+    const { locale } = router;
 
     useEffect(() => {
         setAutor('');
@@ -141,7 +146,8 @@ const AddFeedBack = ({ render, action }) => {
                 autor: autor,
                 idAvatar: idTransaction,
                 id: idTransaction,
-                message: message
+                message: message,
+                language: language
             });
             if (avatar) {
                 const data = new FormData();
