@@ -13,10 +13,11 @@ handler.post((req, res) => {
 
 const saveImage = ({ body, files, query }, res) => {
     const rootDir = path.join(__dirname, '..')
-    console.log(rootDir + query.id)
+    console.log(rootDir)
     try {
         fs.readFile(files.file[0].path, function (err, data) {
-            fs.writeFile(`public/${query.id}.png`, data, (err) => {
+            console.log(`Datoss: ${rootDir}public/${query.id}.png`)
+            fs.writeFile(`${rootDir}\${query.id}.png`, data, (err) => {
                 if (err) {
                     console.error(`Error al guardar el fichero: ${err}`)
                 } else {

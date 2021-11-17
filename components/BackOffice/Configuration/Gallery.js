@@ -75,7 +75,7 @@ const AddResource = ({ update, render }) => {
             if (media) {
                 const data = new FormData();
                 data.append('file', media);
-                await axios.post('/api/resources', data, {
+                await axios.post('/api/multimedia', data, {
                     params: {
                         id: id
                     }
