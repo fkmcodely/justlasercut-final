@@ -15,7 +15,7 @@ const languages = {
 }
 
 function Home(props) {
-  const { steps = [], reviews = [] } = props;
+  const { steps = [], reviews = [], services = [] } = props;
 
   const router = useRouter();
   const [user, setUser] = useState();
@@ -40,7 +40,7 @@ function Home(props) {
       {/* Como mejor el background y el texto del banner pueden ser personalizables desde el backoffice */}
       <Banner />
       <Steps steps={steps} />
-      <Services />
+      <Services list={services} />
       <Reviews list={reviews} />
       <ContactForm />
     </>
@@ -52,13 +52,15 @@ export async function getServerSideProps() {
   let steps = [];
   const data = await axios(`${BASE_URL}/api/steps`);
   const listReviews = await axios(`${BASE_URL}/api/reviews`);
+  const listServices = await axios(`${BASE_URL}/api/resources`);
   const { data: { list } } = listReviews;
   reviews = list;
   steps = data.data.steps
   return {
     props: {
       reviews: list,
-      steps: data.data.steps
+      steps: data.data.steps,
+      services: listServices.data.resources
     }
   }
 }

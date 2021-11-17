@@ -2,19 +2,10 @@ import React from 'react';
 import { Container, Grid, Header, Image, Button, Divider } from 'semantic-ui-react';
 import { BASE_URL } from "../../constants/config";
 
-const Services = () => {
+const Services = ({ list }) => {
 
-    const services = [
-        "branding",
-        "graphic",
-        "menuqr",
-        "metacrilato",
-        "printer",
-        "productos",
-        "renders",
-        "rotulos"
-    ]
-    
+    console.log(list);
+
     return (
         <Container fluid className="service">
             <Container>
@@ -27,9 +18,12 @@ const Services = () => {
                     </Grid.Row>
                     <Grid.Row>
                         {
-                            services.map((service,key) => (
+                            list.map((service, key) => (
                                 <Grid.Column key={key} computer={4} mobile={8} tablet={4} className="service__item">
-                                    <Image src={`${BASE_URL}/${service}.png`} />
+                                    <Image
+                                        alt={service.title}
+                                        href={service.link}
+                                        src={`${BASE_URL}public/${service.media}.png`} />
                                 </Grid.Column>
                             ))
                         }

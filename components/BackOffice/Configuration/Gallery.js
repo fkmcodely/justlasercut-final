@@ -217,7 +217,7 @@ const GalleryTable = ({ list = [], update }) => {
                                 <Table.Cell>{link}</Table.Cell>
                                 <Table.Cell>
                                     {media.media && (
-                                        <Image src={`${BASE_URL}/${media.media}.png`} className="miniature-image" />
+                                        <Image src={`${BASE_URL}${media.media}.png`} className="miniature-image" />
                                     )}
                                 </Table.Cell>
                                 <Table.Cell>
