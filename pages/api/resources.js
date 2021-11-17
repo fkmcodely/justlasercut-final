@@ -26,7 +26,7 @@ const deleteResource = (req, res) => {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
             const collection = db.collection("Gallery");
-            const filter = { idResource: req.query.idResource };
+            const filter = { idResource: req.query.id };
             await collection.deleteOne(filter);
 
             res.status(200).json({

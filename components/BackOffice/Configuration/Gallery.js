@@ -186,6 +186,19 @@ const EditGalleryItem = ({ render, update, step }) => {
 
 const GalleryTable = ({ list = [], update }) => {
 
+    const deleteItemGallery = async (id) => {
+        try {
+            const res = await axios.delete('/api/resources', {
+                params: {
+                    id: id
+                }
+            });
+            update(Math.random());
+        } catch (error) {
+            console.log('Error al borrar Opinion')
+        }
+    };
+
     return (
         <Table>
             <Table.Header>
@@ -209,7 +222,7 @@ const GalleryTable = ({ list = [], update }) => {
                                 </Table.Cell>
                                 <Table.Cell>
                                     <Icon
-                                        onClick={() => { }}
+                                        onClick={() => deleteItemGallery(media.idResource)}
                                         size="large"
                                         color="grey"
                                         className="custom-dropdown__icon"
