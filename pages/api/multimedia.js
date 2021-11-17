@@ -12,12 +12,12 @@ handler.post((req, res) => {
 });
 
 const saveImage = ({ body, files, query }, res) => {
-    const rootDir = path.join(__dirname, '..')
+    const rootDir = path.join(__dirname, '../public/')
     console.log(rootDir)
     try {
         fs.readFile(files.file[0].path, function (err, data) {
-            console.log(`Datoss: ${rootDir}public/${query.id}.png`)
-            fs.writeFile(`${rootDir}\${query.id}.png`, data, (err) => {
+            console.log(`Datoss: ${rootDir}${query.id}.png`)
+            fs.writeFile(`C:/Users/kevin.rivera/personal/justlasercut-final/public/${query.id}.png`, data, (err) => {
                 if (err) {
                     console.error(`Error al guardar el fichero: ${err}`)
                 } else {
