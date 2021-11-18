@@ -29,13 +29,13 @@ export default function Servicios({ servicesData = [] }) {
   const title = 'Servicios';
   const router = useRouter();
   const { locale } = router;
-
+  console.log(servicesData)
   return (
     <>
       <DropDownJust
         title={title}
         list={
-          servicesData.services.filter(({ language }) => language === locale.toUpperCase())
+          servicesData.services.filter(({ language }) => language === locale)
         } />
     </>
   );

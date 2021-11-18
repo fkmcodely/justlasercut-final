@@ -6,11 +6,13 @@ import axios from "axios";
 import { BASE_URL } from '../../../constants/config';
 import { CKEditor } from 'ckeditor4-react';
 import parse from 'html-react-parser';
+import { useRouter } from 'next/dist/client/router';
 
 const Manual = ({ option }) => {
+    const { locale } = useRouter();
     const [updater, setUpdater] = useState();
     const [modalAdd, setModalAdd] = useState(false);
-    const [language, setLanguage] = useState(0);
+    const [language, setLanguage] = useState(locale);
     const [manualItems, setManualItems] = useState([]);
 
     const fetchItems = () => {
@@ -18,7 +20,7 @@ const Manual = ({ option }) => {
             try {
                 const fetchItems = await axios(`/api/manual`, {
                     params: {
-                        language: language === 0 ? 'ES' : 'EN'
+                        language: language
                     }
                 });
                 const { data: { steps } } = fetchItems;
@@ -48,11 +50,11 @@ const Manual = ({ option }) => {
                     </Grid.Column>
                     <Grid.Column width="4" style={{ display: 'flex', justifyContent: 'right' }} floated="right">
                         <div className="languages">
-                            <div onClick={() => setLanguage(0)} className={`languages__container ${language === 0 && ('languages__active')}`}>
+                            <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                                 <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                             </div>
                             <Divider vertical />
-                            <div onClick={() => setLanguage(1)} className={`languages__container ${language === 1 && ('languages__active')}`}>
+                            <div onClick={() => setLanguage('en')} className={`languages__container ${language === 'en' && ('languages__active')}`}>
                                 <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag" />
                             </div>
                         </div>
@@ -155,6 +157,7 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
     const [loading, setLoading] = useState(false);
     const [multimedia, setMultimedia] = useState('');
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
+    const [text, setText] = useState(<p>Deje una descripción</p>);
 
     const modalProps = {
         onClose: () => setOpen(false),
@@ -171,7 +174,7 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
                 const request = await axios.post(`/api/manual`, {
                     ...fields,
                     description: text,
-                    language: language === 0 ? 'ES' : 'EN'
+                    language: language
                 });
                 if (multimedia) {
                     const data = new FormData();
@@ -198,8 +201,6 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
         fetchManual();
     };
 
-
-    const [text, setText] = useState(<p>Deje una descripción</p>);
     return (
         <Modal {...modalProps} className="manual-modal-add">
             <Modal.Header>
@@ -264,10 +265,10 @@ const ModalEditManual = ({ rendered, language = 'ES', step, setUpdater }) => {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
+    const [text, setText] = useState();
 
     useEffect(() => {
         setValue("order", step.order);
-        setValue("description", step.description);
         setValue("title", step.title);
 
         setValue("buttons.primary.title", step.buttons?.primary?.title);
@@ -294,6 +295,7 @@ const ModalEditManual = ({ rendered, language = 'ES', step, setUpdater }) => {
                 const request = await axios.put('/api/manual', {
                     step: step.id,
                     ...fields,
+                    description: text,
                     language: language
                 });
                 setUpdater(Math.random());
@@ -317,14 +319,11 @@ const ModalEditManual = ({ rendered, language = 'ES', step, setUpdater }) => {
                 <Form onSubmit={handleSubmit(handleSubmitManual)}>
                     <input placeholder="Numero del manual:" type="number" {...register("order")} />
                     <input type="text" {...register("title")} placeholder="Titulo del paso" />
-                    <input className="manual-modal-edit__textarea" {...register("description")} placeholder="Describe la información del paso." />
-                    {/*
-                        <div>
-                            <p>Archivos multimedia:</p>
-                            <input type="file" />
-                        </div>
-                    */}
-
+                    <CKEditor
+                        initData={step.description}
+                        data={text}
+                        onChange={evt => setText(evt.editor.getData())}
+                    />
                     <div className="manual-modal-edit__buttons">
                         <p className="primary">
                             ¿Desea añadir un boton primario?: <input type="checkbox" checked={primary} onChange={(ev) => setPrimary(ev.target.checked)} />

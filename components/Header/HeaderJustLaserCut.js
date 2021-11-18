@@ -16,7 +16,7 @@ const HeaderJustLaserCut = (props) => {
     const [site, setSite] = useState();
     const router = useRouter()
     const [show, setShow] = useState(false);
-    const { pathname, asPath, query } = router
+    const { pathname, asPath, query, locale } = router
 
     useEffect(() => {
         const getSiteInfo = async () => {
@@ -84,10 +84,9 @@ const HeaderJustLaserCut = (props) => {
                                             <Dropdown
                                                 inline
                                                 options={friendOptions}
-                                                defaultValue={friendOptions[0].value}
+                                                defaultValue={locale}
                                                 onChange={(ev, e) => {
                                                     router.push({ pathname, query }, asPath, { locale: e.value })
-
                                                 }}
                                             />
                                         </span>

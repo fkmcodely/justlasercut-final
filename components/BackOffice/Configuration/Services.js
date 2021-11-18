@@ -4,12 +4,16 @@ import { useForm } from 'react-hook-form';
 import axios from "axios";
 import { BASE_URL } from '../../../constants/config';
 import { useRouter } from 'next/router';
+import { CKEditor } from 'ckeditor4-react';
+import parse from 'html-react-parser';
+
 const Services = () => {
     const router = useRouter();
     const [modalAdd, setModalAdd] = useState(false);
-    const [language, setLanguage] = useState(router);
     const [serviceItems, setServiceItems] = useState([]);
     const [update, setUpdate] = useState();
+    const { locale } = router;
+    const [language, setLanguage] = useState(locale);
 
     useEffect(() => fetchItems(), [language]);
     useEffect(() => fetchItems(), [update]);
@@ -32,9 +36,9 @@ const Services = () => {
     };
 
     return (
-        <Grid columns="16">
+        <Grid columns="16" className="service-box">
             <Grid.Row>
-                <Grid.Column width="12">
+                <Grid.Column width="12" verticalAlign="middle">
                     <Header>
                         CONFIGURACIÓN DE SERVICIOS
                     </Header>
@@ -97,7 +101,7 @@ const ServiceTable = ({ language, services = [], setUpdate }) => {
                             <Table.Row key={index}>
                                 <Table.Cell>{order}</Table.Cell>
                                 <Table.Cell>{title}</Table.Cell>
-                                <Table.Cell>{description}</Table.Cell>
+                                <Table.Cell>{parse(description)}</Table.Cell>
                                 <Table.Cell>
                                     {image && (<Image src={`${BASE_URL}${image}.png`} alt="" className="miniature-image" />)}
                                 </Table.Cell>
@@ -105,7 +109,6 @@ const ServiceTable = ({ language, services = [], setUpdate }) => {
                                     <ModalEditService render={setUpdate} className="icon_action" idService={id} step={stepService} open={openItem} setOpen={setOpenItem} rendered={<Icon size="large" color="grey" className="custom-dropdown__icon" name='pencil alternate' />} language='ES' />
                                     <Icon
                                         onClick={() => {
-                                            console.log('hiz clok')
                                             deleteStepService(stepService.id)
                                         }}
                                         size="large"
@@ -125,7 +128,7 @@ const ServiceTable = ({ language, services = [], setUpdate }) => {
 };
 
 
-const ModalAddService = ({ open, setOpen, rendered, language = 'ES', setUpdate }) => {
+const ModalAddService = ({ open, setOpen, rendered, language = 'es', setUpdate }) => {
     const [primary, setPrimary] = useState(false);
     const [secondary, setSecondary] = useState(false);
     const [textArea, setTextArea] = useState('');
@@ -153,7 +156,7 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'ES', setUpdate }
                 const data = new FormData();
                 if (multimedia) {
                     data.append('file', multimedia);
-                    const uploadMedia = await axios.post('/api/multimedia', data, {
+                    await axios.post('/api/multimedia', data, {
                         params: {
                             id: request.data.id,
                             folder: 'services'
@@ -164,6 +167,7 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'ES', setUpdate }
                 reset();
                 setTextArea('');
                 setLoading(false);
+                setMultimedia();
                 setOpen(false);
             } catch (err) {
                 console.error(`Error al crear nuevo paso del manual: ${err}`);
@@ -185,7 +189,10 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'ES', setUpdate }
                 <Form onSubmit={handleSubmit(handleSubmitManual)} enctype="multipart/form-data">
                     <input required placeholder="Orden:" type="number" {...register("order")} />
                     <input required type="text" {...register("title")} placeholder="Titulo del servicio" />
-                    <textarea required rows={4} value={textArea} onChange={ev => setTextArea(ev.target.value)} placeholder="Describe la información del servicio." />
+                    <CKEditor
+                        data={textArea}
+                        onChange={evt => setTextArea(evt.editor.getData())}
+                    />
                     <div>
                         <p>Archivos multimedia:</p>
                         <input onChange={ev => setMultimedia(ev.target.files[0])} type="file" name="mediaService" />
@@ -302,8 +309,10 @@ const ModalEditService = ({ idService, rendered, language = 'ES', step, render }
                 <Form onSubmit={handleSubmit(handleSubmitManual)}>
                     <input required placeholder="Numero del manual:" type="number" {...register("order")} />
                     <input required type="text" {...register("title")} placeholder="Titulo del paso" />
-
-                    <textarea required rows={4} value={textArea} onChange={ev => setTextArea(ev.target.value)} placeholder="Describe la información del paso." />
+                    <CKEditor
+                        data={textArea}
+                        onChange={evt => setTextArea(evt.editor.getData())}
+                    />
                     {
                         /*
                         <div>

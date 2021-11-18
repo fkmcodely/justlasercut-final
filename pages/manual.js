@@ -11,9 +11,9 @@ const languages = {
 }
 
 export async function getServerSideProps(context) {
-  const res = await axios(`${BASE_URL}api/manual`,{
+  const res = await axios(`${BASE_URL}api/manual`, {
     params: {
-      language: 'all' 
+      language: 'all'
     }
   })
   if (!res) {
@@ -26,14 +26,14 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default function Manual({ manualData = []}) {
+export default function Manual({ manualData = [] }) {
   const title = 'Manual de usuario';
   const router = useRouter();
   const { locale } = router;
 
   return (
     <>
-      <DropDownJust list={manualData.steps.filter(({ language }) => language === locale.toUpperCase())} title={title} folder={'manual'}/>
+      <DropDownJust list={manualData.steps.filter(({ language }) => language === locale)} title={title} folder={'manual'} />
     </>
   );
 }

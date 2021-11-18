@@ -108,7 +108,7 @@ const createStepManualStep = ({ body }, res) => {
                 order,
                 description,
                 buttons,
-                language: 'ES'
+                language: body.language
             });
 
             res.status(200).json({
