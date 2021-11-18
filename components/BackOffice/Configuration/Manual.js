@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Header, Button, Table, Modal, Divider, Form, Image, Icon } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
-
+import dynamic from 'next/dynamic'
 import axios from "axios";
 import { BASE_URL } from '../../../constants/config';
+import { CKEditor } from 'ckeditor4-react';
+import parse from 'html-react-parser';
 
 const Manual = ({ option }) => {
     const [updater, setUpdater] = useState();
@@ -37,7 +39,7 @@ const Manual = ({ option }) => {
 
     return (
         <>
-            <Grid columns="16">
+            <Grid columns="16" className="boxed">
                 <Grid.Row>
                     <Grid.Column width="12" verticalAlign="middle">
                         <Header style={{ marginBottom: '0px !important' }}>
@@ -111,7 +113,9 @@ const ManualTable = ({ language, manualItems, setUpdater }) => {
                             <Table.Row className="table-general">
                                 <Table.Cell>{order}</Table.Cell>
                                 <Table.Cell>{title}</Table.Cell>
-                                <Table.Cell>{description}</Table.Cell>
+                                <Table.Cell><div className="table-boxed">
+                                    {parse(description)}
+                                </div></Table.Cell>
                                 <Table.Cell>
                                     {image && (
                                         <Image src={`${BASE_URL}/${image}`} className="miniature-image" />
@@ -119,6 +123,7 @@ const ManualTable = ({ language, manualItems, setUpdater }) => {
                                 </Table.Cell>
                                 <Table.Cell>
                                     <ModalEditManual
+                                        setUpdater={setUpdater}
                                         step={stepManual}
                                         open={openItem}
                                         setOpen={setOpenItem}
@@ -165,7 +170,7 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
             try {
                 const request = await axios.post(`/api/manual`, {
                     ...fields,
-                    description: textArea,
+                    description: text,
                     language: language === 0 ? 'ES' : 'EN'
                 });
                 if (multimedia) {
@@ -194,7 +199,7 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
     };
 
 
-
+    const [text, setText] = useState(<p>Deje una descripción</p>);
     return (
         <Modal {...modalProps} className="manual-modal-add">
             <Modal.Header>
@@ -206,7 +211,10 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
                 <Form onSubmit={handleSubmit(handleSubmitManual)}>
                     <input placeholder="Numero del manual:" type="number" {...register("order")} />
                     <input type="text" {...register("title")} placeholder="Titulo del paso" />
-                    <textarea value={textArea} rows={3} onChange={ev => setTextArea(ev.target.value)} placeholder="Describe la información del paso." />
+                    <CKEditor
+                        data={text}
+                        onChange={evt => setText(evt.editor.getData())}
+                    />
                     <div>
                         <p>Archivos multimedia:</p>
                         <input onChange={(ev) => { setMultimedia(ev.target.files[0]) }} type="file" name="mediaManual" />
@@ -249,7 +257,7 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
     )
 }
 
-const ModalEditManual = ({ rendered, language = 'ES', step }) => {
+const ModalEditManual = ({ rendered, language = 'ES', step, setUpdater }) => {
     const [primary, setPrimary] = useState(typeof step.buttons?.primary?.title !== 'undefined' ? true : false);
     const [secondary, setSecondary] = useState(typeof step.buttons?.secondary?.title !== 'undefined' ? true : false);
     const [textArea, setTextArea] = useState('');
@@ -288,6 +296,7 @@ const ModalEditManual = ({ rendered, language = 'ES', step }) => {
                     ...fields,
                     language: language
                 });
+                setUpdater(Math.random());
                 setLoading(false);
                 setOpen(false);
             } catch (err) {

@@ -73,3 +73,12 @@
 .icon-action {
     cursor: pointer !important;
 }
+
+.boxed {
+    max-height: 75vh;
+    overflow-y: scroll;
+}
+.table-boxed {
+    max-height: 5rem;
+    overflow-y: hidden;
+}

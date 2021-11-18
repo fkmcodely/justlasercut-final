@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Accordion, Grid, Container, Header, Icon, Divider, Image, Button } from 'semantic-ui-react';
 import { BASE_URL } from '../../constants/config';
+import parse from 'html-react-parser';
 
 const DropDownJust = ({ title, list = [], folder = '' }) => {
     const [selected, setSelected] = useState();
@@ -11,8 +12,9 @@ const DropDownJust = ({ title, list = [], folder = '' }) => {
 
         return (
             <Button primary
+                color="black"
                 style={{ backgroundColor: `${option.buttons.primary.color}` }}
-                content={option.buttons.primary.title} href="" />
+                content={option.buttons.primary.title} href={option.buttons.primary.href} />
         )
     };
     const renderButtonSecondary = (option) => {
@@ -20,7 +22,7 @@ const DropDownJust = ({ title, list = [], folder = '' }) => {
         if (!existButton) return;
 
         return (
-            <Button primary style={{ backgroundColor: `${option.buttons.primary.color}` }} content={option.buttons.secondary.title} href="" />
+            <Button color="black" primary href={option.buttons.primary.href} style={{ backgroundColor: `${option.buttons.primary.color}` }} content={option.buttons.secondary.title} href="" />
         )
     };
     return (
@@ -35,17 +37,18 @@ const DropDownJust = ({ title, list = [], folder = '' }) => {
                 </Grid.Row>
                 <Divider />
                 <Grid.Row className="dropdownjust__questions">
-                    <Grid.Column width="14" mobile={16}>
+                    <Grid.Column width="14" mobile={16} >
                         <Accordion fluid styled>
                             {
                                 list.map((option, index) => {
                                     return (
-                                        <>
+                                        <div className={`${index === 0 ? '' : 'border-type'}`}>
                                             <Accordion.Title
                                                 key={index}
                                                 active={selected === 0}
+                                                className="no-border"
                                                 index={index}
-                                                onClick={() => setSelected(index)}
+                                                onClick={() => setSelected(index === selected ? false : index)}
                                             >
                                                 <div className="custom-dropdown">
                                                     <h3 className="custom-dropdown__title">{option.title}</h3>
@@ -56,10 +59,10 @@ const DropDownJust = ({ title, list = [], folder = '' }) => {
                                             <Accordion.Content className="custom-dropdown-content" active={selected === index}>
                                                 <div className="custom-dropdown-content__container">
                                                     <div className="image">
-                                                        <Image src={`${BASE_URL}${option.image}.png`} alt={option.title} />
+                                                        <Image src={`${BASE_URL}${option.image}`} alt={option.title} />
                                                     </div>
                                                     <div className="description">
-                                                        <p>{option.description}</p>
+                                                        <p>{parse(option.description)}</p>
                                                         <div>
                                                             {renderButtonPrimary(option)}
                                                             {renderButtonSecondary(option)}
@@ -68,7 +71,7 @@ const DropDownJust = ({ title, list = [], folder = '' }) => {
 
                                                 </div>
                                             </Accordion.Content>
-                                        </>
+                                        </div>
                                     )
                                 })
                             }

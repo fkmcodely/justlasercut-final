@@ -41,28 +41,12 @@ const deleteStepManual = ({ query }, res) => {
 const editStepManual = ({ body }, res) => {
     const editStepManual = async () => {
         try {
-            const {
-                title,
-                image,
-                video,
-                order,
-                description,
-                buttons,
-                language,
-                step
-            } = body;
             const objectModified = {
                 $set: {
-                    title: title,
-                    image: image,
-                    video: video,
-                    order: order,
-                    description: description,
-                    buttons: buttons,
-                    language: language
+                    ...body
                 }
             };
-            const filter = { id: step };
+            const filter = { id: body.step };
             const session = await MongoClient.connect(url);
             const db = session.db();
             const collection = db.collection("Manual");
