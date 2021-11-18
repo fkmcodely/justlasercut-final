@@ -1,4 +1,12 @@
 {
-    "appName":"Farhos Es",
-    "authores": "@kevin.rivera@visual-limes-com"
+    "comofunciona": "Cómo funciona",
+    "inspiracionesrecursos": "Inspiraciones - Recursos",
+    "contacto": "Contacto",
+    "enviar": "Enviar",
+    "direccion": "Calle Utiel 6 bajo derecha",
+    "ciudad": "Valencia",
+    "codigopostal": "46020",
+    "españa": "España",
+    "derechos": "Todos los derechos reservados",
+    "newsletter": "Suscribete a nuestra newsletter"
 }

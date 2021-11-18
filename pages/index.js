@@ -17,9 +17,9 @@ const languages = {
 function Home(props) {
   const { steps = [], reviews = [], services = [] } = props;
 
-  const router = useRouter();
   const [user, setUser] = useState();
-  const { locale } = router;
+  const { locale } = useRouter();
+  const t = languages[locale];
 
   useEffect(() => {
     const session = async (req, res) => {
@@ -36,10 +36,10 @@ function Home(props) {
   return (
     <>
       <Banner />
-      <Steps steps={steps.filter(step => step.language === locale)} />
-      <Services list={services.filter(step => step.language === locale)} />
-      <Reviews list={reviews.filter(review => review.language === locale)} />
-      <ContactForm />
+      <Steps t={t} steps={steps.filter(step => step.language === locale)} />
+      <Services t={t} list={services.filter(step => step.language === locale)} />
+      <Reviews t={t} list={reviews.filter(review => review.language === locale)} />
+      <ContactForm t={t} />
     </>
   );
 }

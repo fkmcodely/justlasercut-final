@@ -4,23 +4,23 @@ import { useForm } from "react-hook-form";
 import { BASE_URL, BASE_URL_MONGO } from '../../constants/config';
 import axios from "axios";
 
-const ContactForm = () => {
+const ContactForm = ({ t }) => {
     const { register, handleSubmit, watch, reset, formState = { errors } } = useForm();
-    const [success,setSuccess] = useState(false);
-    const [error,setError] = useState(false);
-    const [loading,setLoading] = useState(false);
-    const [multimedia,setMultimedia] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [multimedia, setMultimedia] = useState('');
 
     const onSubmit = data => {
         const sendMessage = async () => {
             try {
                 setLoading(true);
-                const response = await axios.post(`${BASE_URL}api/contact`,{
+                const response = await axios.post(`${BASE_URL}api/contact`, {
                     ...data
                 });
                 const media = new FormData();
-                media.append('file',multimedia);
-                await axios.post(`${BASE_URL}/api/multimedia`,media,{
+                media.append('file', multimedia);
+                await axios.post(`${BASE_URL}/api/multimedia`, media, {
                     params: {
                         id: response.data.id
                     }
@@ -30,37 +30,37 @@ const ContactForm = () => {
                 setSuccess(true);
                 setTimeout(() => {
                     setSuccess(false);
-                },5000);
+                }, 5000);
             } catch (err) {
                 setError(true);
                 setTimeout(() => {
                     setError(false);
-                },5000);
+                }, 5000);
             }
         };
         sendMessage();
     }
-    
+
     return (
         <Container fluid className="contact-form">
             <Container>
                 <Grid columns="16">
                     <Grid.Row>
                         <Grid.Column width="16" textAlign="center">
-                            <Header as="h2">Contacto</Header>
-                            <Divider/>
+                            <Header as="h2">{t.contacto}</Header>
+                            <Divider />
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row className="contact-form__form">
                         <Grid.Column largeScreen="12" tablet="14" mobile="16">
-                            { success && (
+                            {success && (
                                 <Message
                                     success
                                     header='Tu mensaje se ha enviado correctamente'
                                     content='Nos pondremos en contacto contigo para responder tus dudas'
                                 />
                             )}
-                            { error && (
+                            {error && (
                                 <Message
                                     error
                                     header='¡Algo a salido mal!'
@@ -72,16 +72,16 @@ const ContactForm = () => {
                                     <input type="email" required placeholder="Correo Electronico" {...register("email")} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <input type="number" min="0" placeholder="Número de referencia" {...register("numberRef")}/>
+                                    <input type="number" min="0" placeholder="Número de referencia" {...register("numberRef")} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <input required type="text" placeholder="Asunto" {...register("subject")}/>
+                                    <input required type="text" placeholder="Asunto" {...register("subject")} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <textarea required rows="5" placeholder="Mensaje" {...register("message")}/>
+                                    <textarea required rows="5" placeholder="Mensaje" {...register("message")} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <Input onChange={(ev) => {setMultimedia(ev.target.files[0])}} type="file" name="mediaManual"/>
+                                    <Input onChange={(ev) => { setMultimedia(ev.target.files[0]) }} type="file" name="mediaManual" />
                                 </Form.Field>
                                 <Button loading={loading} className="button-main" loading={loading} type="submit" content='ENVIAR' primary />
                             </Form>

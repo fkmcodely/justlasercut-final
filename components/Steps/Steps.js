@@ -1,22 +1,14 @@
 import React from 'react';
 import { Container, Divider, Grid, Header, Image } from 'semantic-ui-react';
 
-const Steps = ({ steps = [] }) => {
-
-    const stepsOld = [
-        "1. Consulta nuestros materiales y elige los que necesites.",
-        "2. Descarga nuestra plantilla de trabajo y prepara tus archivos.",
-        "3. Sube tus archivos y obtén un presupuesto inmediato.",
-        "4. Tras revisar tus archivos, te mandaremos un link de compra.",
-        "5. Te lo mandamos a casa en 48h."
-    ]
+const Steps = ({ steps = [], t }) => {
 
     return (
         <Container fluid className="steps-just">
             <Container>
                 <Grid columns="16">
                     <Grid.Row className="steps-just__header">
-                        <Header as="h2">Cómo funciona</Header>
+                        <Header as="h2">{t.comofunciona}</Header>
                         <Divider />
                     </Grid.Row>
                     <Grid.Row className="step-just__container-items">

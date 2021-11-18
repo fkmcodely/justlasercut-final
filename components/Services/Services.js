@@ -2,9 +2,7 @@ import React from 'react';
 import { Container, Grid, Header, Image, Button, Divider } from 'semantic-ui-react';
 import { BASE_URL } from "../../constants/config";
 
-const Services = ({ list }) => {
-
-    console.log(list);
+const Services = ({ list, t }) => {
 
     return (
         <Container fluid className="service">
@@ -12,7 +10,7 @@ const Services = ({ list }) => {
                 <Grid columns="16">
                     <Grid.Row>
                         <Grid.Column width="16" className="service__title">
-                            <Header as="h2">Inspiraciones - Recursos</Header>
+                            <Header as="h2">{t.inspiracionesrecursos}</Header>
                             <Divider />
                         </Grid.Column>
                     </Grid.Row>
