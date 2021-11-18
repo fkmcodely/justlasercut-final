@@ -9,14 +9,20 @@ import MenuMobile from '../MenuMobile';
 import axios from 'axios';
 import { BASE_URL } from '../../constants/config';
 
+const languages = {
+    'es': require('../../locale/es/commons.json'),
+    'en': require('../../locale/en/commons.json'),
+};
+
 const HeaderJustLaserCut = (props) => {
     const { data: session } = useSession();
-    const { t, i18n } = useTranslation()
+    const { i18n } = useTranslation()
     const [mobileMenu, setMobileMenu] = useState(false);
     const [site, setSite] = useState();
     const router = useRouter()
     const [show, setShow] = useState(false);
     const { pathname, asPath, query, locale } = router
+    const t = languages[locale];
 
     useEffect(() => {
         const getSiteInfo = async () => {
@@ -68,12 +74,12 @@ const HeaderJustLaserCut = (props) => {
                                 <nav className="header-just__user-experience">
                                     <div className="header-identification-button margin-right-1">
                                         <Icon name="envelope outline" size="large" />
-                                        <p>Contacto</p>
+                                        <p>{t.contacto}</p>
                                     </div>
 
                                     {session ? (
                                         <>
-                                            <p>Bienvenido, {session.user.name}</p>
+                                            <p>Bienvenido</p>
                                         </>
                                     ) : (
                                         <ModalSession />
@@ -95,7 +101,7 @@ const HeaderJustLaserCut = (props) => {
                             </Grid.Column>
                             <Grid.Column mobile={7} className="header-just__menu-mobile">
                                 <Icon name="th" onClick={() => {
-                                    setShow(true)
+                                    setShow(true);
                                 }} size="big" color="black" />
                             </Grid.Column>
                         </Grid.Row>
@@ -110,30 +116,32 @@ const HeaderJustLaserCut = (props) => {
 
 
 const MenuJust = () => {
+    const { locale } = useRouter();
+    const t = languages[locale];
 
     const navigation = [
         {
-            title: "Tutoriales",
+            title: t.tutoriales,
             href: "/manual"
         },
         {
-            title: "Materiales",
+            title: t.materiales,
             href: "/materiales"
         },
         {
-            title: "Plantillas",
+            title: t.plantillas,
             href: "/plantillas"
         },
         {
-            title: "Servicios",
+            title: t.servicios,
             href: "/servicios"
         },
         {
-            title: "Blog",
+            title: t.blog,
             href: "/blog"
         },
         {
-            title: "tutoriales",
+            title: t.proyectos,
             href: "/user-profile"
         }
     ];
