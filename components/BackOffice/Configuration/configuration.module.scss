@@ -2,6 +2,11 @@
     padding: 2.5rem 2rem !important;
 }
 
+.box-language {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
 .manual-modal-edit {
     padding-bottom: 20px !important;
     &__textarea {
@@ -81,4 +86,10 @@
 .table-boxed {
     max-height: 5rem;
     overflow-y: hidden;
+}
+
+.feedback-modal {
+    &__name {
+        margin-bottom: 1rem !important;
+    }
 }

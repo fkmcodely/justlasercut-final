@@ -3,31 +3,32 @@ const { v4: uuidv4 } = require('uuid');
 import { BASE_URL_MONGO } from "../../constants/config";
 import moment from "moment";
 
-export default function contactIndexForm(req,res) {
+export default function contactIndexForm(req, res) {
     const { method } = req;
-    if(method === 'GET') {
-        getMessages(req,res)
+    if (method === 'GET') {
+        getMessages(req, res)
     }
 
-    if(method === 'POST') {
-        createMessage(req,res)
+    if (method === 'POST') {
+        createMessage(req, res)
     }
 
-    if(method === 'DELETE') {
-        deleteMessage(req,res)
+    if (method === 'DELETE') {
+        deleteMessage(req, res)
     }
-    if(method === 'PUT') {
-        checkMessage(req,res)
+    if (method === 'PUT') {
+        checkMessage(req, res)
     }
 }
 
-const getMessages = (req,res) => {
+const getMessages = (req, res) => {
     const getMessages = async () => {
         try {
             const client = await MongoClient.connect(BASE_URL_MONGO);
             const db = client.db();
             const collection = db.collection('messages');
             const messages = await collection.find().toArray();
+
             client.close();
             res.status(200).json({
                 messagesList: messages
@@ -41,19 +42,21 @@ const getMessages = (req,res) => {
     getMessages();
 };
 
-const checkMessage = ({ body , files, query },res) => {
+const checkMessage = ({ body, files, query }, res) => {
     const checkPutMessage = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = await session.db();
             const collection = db.collection("messages");
-            const filter = { idMessage : body.params.idMessage};
+            const filter = { idMessage: body.params.idMessage };
             const objectModified = {
                 $set: {
-                    isRead:body.body.readStatus,
+                    isRead: body.body.readStatus,
                 }
             };
-            await collection.updateOne(filter,objectModified);
+            await collection.updateOne(filter, objectModified);
+
+            client.close();
             res.status(200).json({
                 message: `Editado correctamente.`
             })
@@ -67,13 +70,15 @@ const checkMessage = ({ body , files, query },res) => {
     checkPutMessage();
 };
 
-const deleteMessage = ({ body , files, query },res) => {
+const deleteMessage = ({ body, files, query }, res) => {
     const delMessage = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = await session.db();
             const collection = db.collection("messages");
-            const delResponse = await collection.deleteOne({idMessage: query.idMessage });
+            const delResponse = await collection.deleteOne({ idMessage: query.idMessage });
+
+            client.close();
             res.status(200).json({
                 message: `Borrado correctamente.`
             })
@@ -87,8 +92,8 @@ const deleteMessage = ({ body , files, query },res) => {
     delMessage();
 };
 
-const createMessage = ({body},res) => {
-    const { email , numberRef = 0, subject, message} = body;
+const createMessage = ({ body }, res) => {
+    const { email, numberRef = 0, subject, message } = body;
     const fetchMessage = async () => {
         try {
             const client = await MongoClient.connect(BASE_URL_MONGO);
@@ -105,6 +110,7 @@ const createMessage = ({body},res) => {
                 isRead: false
             };
             await collection.insertOne(templateMessage);
+
             client.close();
             res.status(200).json({
                 id: id,
@@ -121,5 +127,5 @@ const createMessage = ({body},res) => {
             message: 'Falta información.'
         })
     }
-    
+
 };

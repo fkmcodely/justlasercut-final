@@ -70,6 +70,8 @@ const handlerUploadFile = async ({ body }, res) => {
                         id: idItem,
                         planchas: planchas
                     });
+
+                    session.close();
                     res.status(200).json({
                         fileName: fileName,
                         id: idItem,

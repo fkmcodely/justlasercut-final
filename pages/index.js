@@ -20,10 +20,6 @@ function Home(props) {
   const router = useRouter();
   const [user, setUser] = useState();
   const { locale } = router;
-  const { session, loading } = useSession();
-  const localCopy = languages[locale];
-
-  console.log(locale)
 
   useEffect(() => {
     const session = async (req, res) => {

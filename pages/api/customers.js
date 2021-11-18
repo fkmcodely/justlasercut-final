@@ -5,19 +5,19 @@ const bcrypt = require('bcrypt');
 import { BASE_URL_MONGO } from "../../constants/config";
 const url = BASE_URL_MONGO;
 
-export default function handler(req,res) {
+export default function handler(req, res) {
     const { method } = req;
-   
-    if(method === 'GET') {
-        getUser(req,res);
+
+    if (method === 'GET') {
+        getUser(req, res);
     }
-    if(method === 'POST') {
-        registerUser(req,res)
+    if (method === 'POST') {
+        registerUser(req, res)
     }
 }
 
 
-function getUser({ body },res) {
+function getUser({ body }, res) {
     const { email } = body;
     const fetch = async () => {
         try {
@@ -25,11 +25,12 @@ function getUser({ body },res) {
             const db = client.db();
             const collection = db.collection("customers");
             const request = await collection.findOne({ email });
-            
+
+            client.close();
             return res.status(200).json({
-               request
+                request
             })
-        } catch(err) {
+        } catch (err) {
             console.log(`Error: ${err}`)
         }
     };
@@ -37,13 +38,13 @@ function getUser({ body },res) {
 };
 
 
-function registerUser({ body },res) {
+function registerUser({ body }, res) {
     const fetch = async () => {
-        const { email , password, name, avatar = false } = body;
+        const { email, password, name, avatar = false } = body;
         const templateUser = {
             id: uuidv4(),
-            email:email,
-            password: bcrypt.hashSync(password,10),
+            email: email,
+            password: bcrypt.hashSync(password, 10),
             name: name,
             avatar: avatar,
             createdAt: moment().format('DD-MM-YYYY')
@@ -55,9 +56,9 @@ function registerUser({ body },res) {
             const response = await collection.insertOne(templateUser);
             client.close();
             return res.status(200).json({
-               
+
             })
-        } catch(err) {
+        } catch (err) {
             res.status(500)
         }
     }

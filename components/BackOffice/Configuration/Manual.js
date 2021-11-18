@@ -49,6 +49,14 @@ const Manual = ({ option }) => {
                         </Header>
                     </Grid.Column>
                     <Grid.Column width="4" style={{ display: 'flex', justifyContent: 'right' }} floated="right">
+                        <ModalAddManual
+                            primary
+                            language={language}
+                            rendered={<Button primary>+</Button>}
+                            open={modalAdd}
+                            setUpdater={setUpdater}
+                            setOpen={setModalAdd}
+                        />
                         <div className="languages">
                             <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                                 <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
@@ -58,13 +66,6 @@ const Manual = ({ option }) => {
                                 <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag" />
                             </div>
                         </div>
-                        <ModalAddManual
-                            language={language}
-                            rendered={<Button primary>+</Button>}
-                            open={modalAdd}
-                            setUpdater={setUpdater}
-                            setOpen={setModalAdd}
-                        />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>

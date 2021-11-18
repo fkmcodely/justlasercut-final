@@ -30,6 +30,7 @@ const deleteStepService = ({ query }, res) => {
             const collection = db.collection("Services");
             await collection.deleteOne({ id: query.id });
 
+            session.close();
             res.status(200).json({
                 message: 'Eliminado correctamente.'
             })
@@ -57,13 +58,7 @@ const editStepService = ({ body }, res) => {
             } = body;
             const objectModified = {
                 $set: {
-                    title: title,
-                    image: image,
-                    video: video,
-                    order: order,
-                    description: description,
-                    buttons: buttons,
-                    language: language
+                    ...body
                 }
             };
             const filter = { id: step };
@@ -71,6 +66,8 @@ const editStepService = ({ body }, res) => {
             const db = session.db();
             const collection = db.collection("Services");
             await collection.updateOne(filter, objectModified);
+
+            session.close();
             res.status(200).json({
                 message: 'Se a actualizado correctamente.'
             })
@@ -129,6 +126,8 @@ const createStepService = ({ body }, res) => {
                 buttons,
                 language
             });
+
+            session.close();
             res.status(200).json({
                 id: serviceId
             });

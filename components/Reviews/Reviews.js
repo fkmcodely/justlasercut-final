@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 import { BASE_URL } from '../../constants/config';
+import parse from 'html-react-parser';
+
 const Reviews = ({ list }) => {
 
     return (
@@ -20,17 +22,18 @@ const Reviews = ({ list }) => {
     );
 };
 
-const Review = ({ autor, message, avatar }) => {
 
+const Review = ({ autor, message, idAvatar }) => {
+    console.log(String(message).replace('<br />', ''))
     return (
         <Grid.Column mobile="16" tablet="8" computer="5" className="review">
             <Grid columns="16">
                 <Grid.Row>
                     <Grid.Column width="4" verticalAlign="middle">
-                        <Image src={`/${avatar}.png`} />
+                        <Image src={`/${idAvatar}.png`} />
                     </Grid.Column>
                     <Grid.Column width="12" verticalAlign="middle">
-                        <p>{message}</p>
+                        {parse(message.replace('<br />', ''))}
                         <p>{autor}</p>
                     </Grid.Column>
                 </Grid.Row>

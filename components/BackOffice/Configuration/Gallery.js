@@ -27,14 +27,14 @@ const Gallery = () => {
     };
 
     return (
-        <Grid columns="16">
+        <Grid columns="16" className="service-box">
             <Grid.Row>
-                <Grid.Column width={14}>
+                <Grid.Column width={12} verticalAlign="middle">
                     <Header>CONFIGURACIÓN HOMEPAGE: GALERIA</Header>
                 </Grid.Column>
-                <Grid.Column width={2}>
-                    <AddResource languageSelect={language} update={setUpdate} render={<Button content="+" />} />
+                <Grid.Column width={4}>
                     <div className="languages">
+                        <AddResource languageSelect={language} update={setUpdate} render={<Button primary content="+" />} />
                         <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                         </div>
@@ -198,6 +198,7 @@ const GalleryTable = ({ list = [], update, languageSelect }) => {
                     id: id
                 }
             });
+            console.log('axtualizar')
             update(Math.random());
         } catch (error) {
             console.log('Error al borrar Opinion')

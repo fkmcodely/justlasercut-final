@@ -3,6 +3,8 @@ import { Grid, Header, Divider, Icon, Image, Modal, Button, Form, Table } from '
 import axios from "axios";
 import { useRouter } from "next/router";
 const { v4: uuidv4 } = require('uuid');
+import { CKEditor } from 'ckeditor4-react';
+import parse from 'html-react-parser';
 
 const FeedBack = () => {
     const router = useRouter();
@@ -25,13 +27,13 @@ const FeedBack = () => {
 
 
     return (
-        <Grid columns={16}>
+        <Grid columns={16} className="service-box">
             <Grid.Row>
-                <Grid.Column width={14}>
+                <Grid.Column width={12} verticalAlign="middle">
                     <Header as="h3">CONFIGURACIÓN HOMEPAGE: COMENTARIOS</Header>
                 </Grid.Column>
-                <Grid.Column width={2} >
-                    <AddFeedBack action={setUpdate} language={language} render={<Button content="+" />} />
+                <Grid.Column width={4} className="box-language">
+                    <AddFeedBack action={setUpdate} language={language} render={<Button primary content="+" />} />
                     <div className="languages">
                         <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                             <Image src={`/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
@@ -41,6 +43,7 @@ const FeedBack = () => {
                             <Image src={`/flag_en.png`} alt="flag_english" className="languages__flag" />
                         </div>
                     </div>
+
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -88,7 +91,7 @@ const TableFeedBack = ({ list = [], action }) => {
                         return (
                             <Table.Row key={index} className="table-general">
                                 <Table.Cell>{autor}</Table.Cell>
-                                <Table.Cell>{message}</Table.Cell>
+                                <Table.Cell>{parse(message)}</Table.Cell>
                                 <Table.Cell>
                                     {idAvatar && (
                                         <Image src={`/${idAvatar}.png`} className="miniature-image" />
@@ -169,7 +172,7 @@ const AddFeedBack = ({ render, action, language }) => {
     };
 
     return (
-        <Modal {...modalProps}>
+        <Modal {...modalProps} className="feedback-modal">
             <Modal.Header>
                 Añadir nuevo comentario
             </Modal.Header>
@@ -178,16 +181,18 @@ const AddFeedBack = ({ render, action, language }) => {
                     <input
                         value={autor}
                         onChange={ev => setAutor(ev.target.value)}
-                        placeholder="Nombre del autor" />
+                        placeholder="Nombre del autor"
+                        className="feedback-modal__name"
+                    />
+                    <CKEditor
+                        data={message}
+                        onChange={evt => setMessage(evt.editor.getData())}
+                    />
                     <input
                         type="file"
                         name="mediaManual"
                         onChange={ev => setAvatar(ev.target.files[0])}
                     />
-                    <textarea
-                        value={message}
-                        onChange={ev => setMessage(ev.target.value)}
-                        placeholder="M" />
                 </Form>
             </Modal.Content>
             <Modal.Actions>
@@ -240,7 +245,7 @@ const EditFeedBack = ({ render, review, action }) => {
     };
 
     return (
-        <Modal {...modalProps}>
+        <Modal {...modalProps} className="feedback-modal">
             <Modal.Header>
                 Editar comentario
             </Modal.Header>
@@ -249,12 +254,14 @@ const EditFeedBack = ({ render, review, action }) => {
                     <input
                         value={autor}
                         onChange={ev => setAutor(ev.target.value)}
-                        placeholder="Nombre del autor" />
-
-                    <textarea
-                        value={message}
-                        onChange={ev => setMessage(ev.target.value)}
-                        placeholder="M" />
+                        placeholder="Nombre del autor"
+                        className="feedback-modal__name"
+                    />
+                    <CKEditor
+                        initData={review.message}
+                        data={message}
+                        onChange={evt => setMessage(evt.editor.getData())}
+                    />
                 </Form>
             </Modal.Content>
             <Modal.Actions>

@@ -22,6 +22,7 @@ export default function handler(req, res) {
 
 const deleteResource = (req, res) => {
     const resourceDelete = async () => {
+        console.log(req.query.id)
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
@@ -29,11 +30,12 @@ const deleteResource = (req, res) => {
             const filter = { idResource: req.query.id };
             await collection.deleteOne(filter);
 
+            session.close();
             res.status(200).json({
                 message: 'DeletedSuccesfully'
             })
         } catch (error) {
-
+            console.log(error)
             res.status(500).json({
                 message: 'DeleteFailed!'
             });
@@ -49,6 +51,7 @@ const getSiteResources = async (req, res) => {
         const collection = db.collection("Gallery");
         const getCollection = await collection.find().toArray();
 
+        session.close();
         res.status(200).json({
             message: 'GetSuccesfully!',
             resources: getCollection

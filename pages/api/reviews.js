@@ -36,6 +36,7 @@ async function editReview(req, res) {
         };
         const update = await collection.updateOne(filter, objectModified);
 
+        client.close();
         res.status(200).json({
             message: 'Se actualizo correctamente.'
         })
@@ -55,6 +56,7 @@ function createReview({ body }, res) {
                 show: true
             });
 
+            client.close();
             return res.status(200).json({
                 message: 'Review creada correctamente',
                 created: fetchReview
@@ -81,6 +83,7 @@ function deleteReview(req, res) {
                 id: req.query.id
             });
 
+            client.close();
             return res.status(200).json({
                 message: 'Review borrada correctamente',
                 created: fetchReview
@@ -103,6 +106,8 @@ function getAllReviews({ body }, res) {
             const db = client.db();
             const collection = db.collection("reviews");
             const request = await collection.find().toArray();
+
+            client.close();
             return res.status(200).json({
                 list: request
             })

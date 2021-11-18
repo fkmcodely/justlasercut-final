@@ -1,6 +1,6 @@
 let layers = data.split('\n').filter((str) => !messagesExceptions.includes(str));
 let boardProps = {};
-console.log(layers)
+
 filterMessages.forEach((message) => {
     if (message.includes('BOARD')) {
         const messageConvertToArray = message.split('-');

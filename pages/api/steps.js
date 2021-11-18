@@ -31,6 +31,7 @@ const deleteStep = (req, res) => {
             const filter = { idStep: req.query.id };
             await collection.deleteOne(filter);
 
+            session.close();
             res.status(200).json({
                 message: 'DeletedSuccesfully'
             })
@@ -51,6 +52,7 @@ const getSiteSteps = async (req, res) => {
         const collection = db.collection("Steps");
         const getCollection = await collection.find().toArray();
 
+        session.close();
         res.status(200).json({
             message: 'GetSuccesfully!',
             steps: getCollection
@@ -75,6 +77,7 @@ const editStep = (req, res) => {
             }
             await collection.updateOne(filter, stepUpdated);
 
+            session.close();
             res.status(200).json({
                 message: 'ModifiedSuccesfully!'
             });
@@ -97,6 +100,8 @@ const createStep = ({ body }, res) => {
             await collection.insertOne({
                 ...body,
             });
+
+            session.close();
             res.status(200).json({
                 message: 'CreatedSuccesfully!'
             });

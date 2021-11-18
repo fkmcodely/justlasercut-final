@@ -44,16 +44,15 @@ const Services = () => {
                     </Header>
                 </Grid.Column>
                 <Grid.Column width="4" style={{ display: 'flex', justifyContent: 'right' }} floated="right">
+                    <ModalAddService setUpdate={setUpdate} language={language} rendered={<Button primary>+</Button>} open={modalAdd} setOpen={setModalAdd} />
                     <div className="languages">
                         <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                         </div>
-                        <Divider vertical />
                         <div onClick={() => setLanguage('en')} className={`languages__container ${language === 'en' && ('languages__active')}`}>
                             <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag" />
                         </div>
                     </div>
-                    <ModalAddService setUpdate={setUpdate} language={language} rendered={<Button primary>+</Button>} open={modalAdd} setOpen={setModalAdd} />
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>

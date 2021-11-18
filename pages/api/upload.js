@@ -7,32 +7,30 @@ const handler = nextConnect()
 handler.use(middleware)
 
 handler.post(async (req, res) => {
-    console.log() 
-   let file = __dirname + '/' + req.files.data[0].originalFilename;
-   console.log(file)
-   try {
-        fs.readFile(req.files.data[0].path, function (err,data) {
-            fs.writeFile(`uploads/${req.files.data[0].originalFilename}`,data, function (err) {
+    let file = __dirname + '/' + req.files.data[0].originalFilename;
+    try {
+        fs.readFile(req.files.data[0].path, function (err, data) {
+            fs.writeFile(`uploads/${req.files.data[0].originalFilename}`, data, function (err) {
                 if (err) {
                     console.error(`Error al guardar fichero: ${err}`)
                 } else {
                     console.log('File uploaded successfully')
                     res.status(200).json({
-                        message:'Todo creado correctamente.'
+                        message: 'Todo creado correctamente.'
                     })
                 }
             })
         })
-   } catch (err) {
-       console.error(`Error de subida: ${err}`)
-   }
-   
+    } catch (err) {
+        console.error(`Error de subida: ${err}`)
+    }
+
 })
 
 export const config = {
-  api: {
-    bodyParser: false
-  }
+    api: {
+        bodyParser: false
+    }
 }
 
 export default handler

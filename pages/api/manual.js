@@ -26,6 +26,7 @@ const deleteStepManual = ({ query }, res) => {
             const collection = db.collection("Manual");
             await collection.deleteOne({ id: query.id });
 
+            session.close();
             res.status(200).json({
                 message: 'Eliminado correctamente.'
             })
@@ -51,6 +52,8 @@ const editStepManual = ({ body }, res) => {
             const db = session.db();
             const collection = db.collection("Manual");
             await collection.updateOne(filter, objectModified);
+
+            session.close();
             res.status(200).json({
                 message: 'Se a actualizado correctamente.'
             });
@@ -111,6 +114,7 @@ const createStepManualStep = ({ body }, res) => {
                 language: body.language
             });
 
+            session.close();
             res.status(200).json({
                 id: idManualStep,
                 configurationSite: createManualStep
