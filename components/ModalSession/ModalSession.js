@@ -51,7 +51,7 @@ const ModalSession = () => {
             </Modal.Header>
             <Modal.Content>
                 {option === 1 && (<FormSignIn t={t} />)}
-                {option === 0 && (<FormRegister t={t} />)}
+                {option === 0 && (<FormRegister t={t} setOption={setOption} />)}
             </Modal.Content>
         </Modal>
     );
@@ -127,9 +127,11 @@ const FormSignIn = ({ t }) => {
         </section>
     )
 }
-const FormRegister = ({ t }) => {
+const FormRegister = ({ t, setOption }) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [creatingUser, setCreatingUser] = useState();
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState();
 
     const submit = (form) => {
         const registerUser = async () => {
@@ -138,9 +140,21 @@ const FormRegister = ({ t }) => {
                 const createUser = await axios.post(`/api/customers`, {
                     ...form
                 });
+
                 if (createUser) {
+                    setSuccess(true);
                     setCreatingUser(false);
+                } else {
+                    setError(true);
                 }
+
+                setTimeout(() => {
+                    setError(false);
+                    setSuccess(false);
+                    if (createUser) {
+                        setOption(1);
+                    }
+                }, 3000);
             } catch (error) {
                 setCreatingUser(false);
             }
@@ -151,6 +165,20 @@ const FormRegister = ({ t }) => {
     return (
         <section className="signin">
             <p className="signin__text">{t.creacuenta}</p>
+            {success && (
+                <Message
+                    success
+                    header='Tu cuenta se a creado correctamente'
+                    content='Inicia sesión y empieza a navegar'
+                />
+            )}
+            {error && (
+                <Message
+                    error
+                    header='Ups...¡Algo a salido mal!'
+                    content='Intentalo mas tarde o escribenos a info@archicercle.com'
+                />
+            )}
             <Form className="signin__register-form" onSubmit={handleSubmit(submit)}>
                 <input {...register('name', { required: true })} placeholder='Nombre' fluid />
                 <input {...register('email', { required: true })} placeholder='Correo Electronico' type="email" fluid />

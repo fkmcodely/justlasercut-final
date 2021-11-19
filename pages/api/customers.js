@@ -56,7 +56,7 @@ function registerUser({ body }, res) {
             const response = await collection.insertOne(templateUser);
             client.close();
             return res.status(200).json({
-
+                customer: response
             })
         } catch (err) {
             res.status(500)
