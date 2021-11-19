@@ -56,7 +56,7 @@ const checkMessage = ({ body, files, query }, res) => {
             };
             await collection.updateOne(filter, objectModified);
 
-            client.close();
+            session.close();
             res.status(200).json({
                 message: `Editado correctamente.`
             })
@@ -78,7 +78,7 @@ const deleteMessage = ({ body, files, query }, res) => {
             const collection = db.collection("messages");
             const delResponse = await collection.deleteOne({ idMessage: query.idMessage });
 
-            client.close();
+            session.close();
             res.status(200).json({
                 message: `Borrado correctamente.`
             })
@@ -93,7 +93,7 @@ const deleteMessage = ({ body, files, query }, res) => {
 };
 
 const createMessage = ({ body }, res) => {
-    const { email, numberRef = 0, subject, message, id } = body;
+    const { email, numberRef = 0, subject, message, id, filename = '' } = body;
     const fetchMessage = async () => {
         try {
             const client = await MongoClient.connect(BASE_URL_MONGO);
@@ -107,7 +107,8 @@ const createMessage = ({ body }, res) => {
                 subject,
                 message,
                 date: moment().format('DD-MM-YYYY'),
-                isRead: false
+                isRead: false,
+                filename
             };
             await collection.insertOne(templateMessage);
 

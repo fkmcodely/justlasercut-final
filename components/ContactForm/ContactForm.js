@@ -39,6 +39,7 @@ const ContactForm = ({ t }) => {
                     setSuccess(false);
                 }, 5000);
             } catch (err) {
+                console.log(err)
                 setError(true);
                 setTimeout(() => {
                     setError(false);
@@ -89,7 +90,7 @@ const ContactForm = ({ t }) => {
                                 </Form.Field>
                                 <Form.Field>
                                     <Input onChange={(ev) => {
-                                        setFilename(ev.target.files[0]);
+                                        setFilename(ev.target.files[0].name);
                                         setMultimedia(ev.target.files[0]);
                                     }} type="file" name="mediaManual" />
                                 </Form.Field>

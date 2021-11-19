@@ -168,6 +168,20 @@ const ModalMessage = ({ render, message, deleteMessage, setUpdater }) => {
                         {message.message}
                     </p>
                 </Modal.Description>
+                <Button content="Descargar Adjunto" primary onClick={() => {
+                    const call = async () => {
+                        try {
+                            const data = await axios.get('/api/download', {
+                                params: {
+                                    filename: message.filename
+                                }
+                            });
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    };
+                    call();
+                }} />
             </Modal.Content>
             <Modal.Actions>
                 <Button
