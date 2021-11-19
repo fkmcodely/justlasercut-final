@@ -59,6 +59,7 @@ const AddResource = ({ update, render, languageSelect }) => {
     const [media, setMedia] = useState();
     const [href, setHref] = useState();
     const [open, setOpen] = useState();
+    const [filename, setFilename] = useState();
 
     const modalProps = {
         onClose: () => setOpen(false),
@@ -71,9 +72,10 @@ const AddResource = ({ update, render, languageSelect }) => {
     const createResource = async () => {
         try {
             const id = uuidv4()
+            const extension = filename.split('.').pop();
             const createCall = await axios.post('/api/resources', {
                 title: seo,
-                media: id,
+                media: `${id}.${extension}`,
                 link: href,
                 language: languageSelect
             });
@@ -115,7 +117,11 @@ const AddResource = ({ update, render, languageSelect }) => {
                         placeholder="Introduzca vinculo de la imagen" />
                     <input
                         name="mediaManual"
-                        onChange={ev => setMedia(ev.target.files[0])}
+                        onChange={ev => {
+                            setFilename(ev.target.files[0].name)
+                            setMedia(ev.target.files[0])
+                        }
+                        }
                         type="file"
                     />
                 </Form>
@@ -222,7 +228,7 @@ const GalleryTable = ({ list = [], update, languageSelect }) => {
                                 <Table.Cell>{link}</Table.Cell>
                                 <Table.Cell>
                                     {media.media && (
-                                        <Image src={`${BASE_URL}${media.media}.png`} className="miniature-image" />
+                                        <Image src={`${BASE_URL}${media.media}`} className="miniature-image" />
                                     )}
                                 </Table.Cell>
                                 <Table.Cell>
