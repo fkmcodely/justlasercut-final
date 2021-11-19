@@ -26,13 +26,14 @@ export async function getServerSideProps(context) {
 }
 
 export default function Servicios({ servicesData = [] }) {
-  const title = 'Servicios';
   const router = useRouter();
   const { locale } = router;
+  const t = languages[locale];
+
   return (
     <>
       <DropDownJust
-        title={title}
+        title={t.servicios}
         list={
           servicesData.services.filter(({ language }) => language === locale)
         } />

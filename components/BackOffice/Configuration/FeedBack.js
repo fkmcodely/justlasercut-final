@@ -94,7 +94,7 @@ const TableFeedBack = ({ list = [], action }) => {
                                 <Table.Cell>{parse(message)}</Table.Cell>
                                 <Table.Cell>
                                     {idAvatar && (
-                                        <Image src={`/${idAvatar}.png`} className="miniature-image" />
+                                        <Image src={`/${idAvatar}`} className="miniature-image" />
                                     )}
                                 </Table.Cell>
                                 <Table.Cell>

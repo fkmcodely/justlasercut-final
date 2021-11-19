@@ -147,7 +147,7 @@ const MenuJust = () => {
     ];
     return (
         <Grid.Row className="menu-just">
-            <Grid.Column width="16" verticalAlign>
+            <Grid.Column width="16" verticalAlign="middle">
                 <Menu pointing secondary className="menu-just__container">
                     {
                         navigation.map((page, index) => (

@@ -74,9 +74,9 @@ const FormSignIn = ({ t }) => {
                 />
             )}
             <p className="signin__text">{t.zonaprivada}</p>
-            <Form autocomplete="off">
-                <Input autocomplete="false" className="margin-bottom-1" fluid placeholder="email" type="email" required value={email} onChange={ev => setEmail(ev.target.value)} />
-                <Input autocomplete="false" className="margin-bottom-1" fluid placeholder="Contraseña" type="password" required value={password} onChange={ev => setPassword(ev.target.value)} />
+            <Form >
+                <Input className="margin-bottom-1" fluid placeholder="email" type="email" required value={email} onChange={ev => setEmail(ev.target.value)} />
+                <Input className="margin-bottom-1" fluid placeholder="Contraseña" type="password" required value={password} onChange={ev => setPassword(ev.target.value)} />
                 <Button
                     disabled={(email && password) === '' ? true : false}
                     fluid

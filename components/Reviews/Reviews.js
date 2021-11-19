@@ -29,7 +29,7 @@ const Review = ({ autor, message, idAvatar }) => {
             <Grid columns="16">
                 <Grid.Row>
                     <Grid.Column width="4" verticalAlign="middle">
-                        <Image src={`/${idAvatar}.png`} />
+                        <Image src={`/${idAvatar}`} />
                     </Grid.Column>
                     <Grid.Column width="12" verticalAlign="middle">
                         {parse(message.replace('<br />', ''))}

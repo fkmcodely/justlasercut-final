@@ -6,11 +6,17 @@ import { useRouter } from 'next/router';
 import parse from "html-react-parser";
 const { v4: uuidv4 } = require('uuid');
 
+const languages = {
+    'es': require('../../locale/es/commons.json'),
+    'en': require('../../locale/en/commons.json'),
+};
+
 const Banner = ({ info }) => {
     const [files, setFiles] = useState({});
     const fileInputField = useRef(null)
     const { locale } = useRouter();
     const [bannerInfo, setBannerInfo] = useState();
+    const t = languages[locale];
 
     useEffect(() => {
         info.forEach((banner) => {
@@ -49,7 +55,7 @@ const Banner = ({ info }) => {
     }
 
     return (
-        <Container fluid className="banner">
+        <Container fluid={true} className="banner">
             <Container className="banner__container">
                 <Grid columns="16" className="banner__grid">
                     <Grid.Column computer="8" tablet={8} mobile={16} className="banner__manual">
@@ -57,15 +63,13 @@ const Banner = ({ info }) => {
                     </Grid.Column>
                     <Grid.Column computer="8" tablet={8} mobile={16} className="banner__start-shop">
                         <div className="upload-box">
-                            <div class="inputfile-box">
+                            <div className="inputfile-box">
                                 <input onChange={(ev) => { updateItemProject(ev) }} type="file" id="file" ref={fileInputField} o />
-                                <label for="file">
-                                    <span id="file-name" class="file-box"></span>
-                                    <span class="file-button">
-                                        <i class="fa fa-upload" aria-hidden="true"></i>
-                                        <p>
-                                            Si ya tienes lo archivos, puedes subir archivos desde la página de materiales o directamente aquí.
-                                        </p>
+                                <label htmlFor="file">
+                                    <span id="file-name" className="file-box"></span>
+                                    <span className="file-button">
+                                        <i className="fa fa-upload" aria-hidden="true"></i>
+                                        <p>{t.subirdxf}</p>
                                     </span>
                                 </label>
                             </div>

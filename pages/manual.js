@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
-import { getManualSteps } from "../services/manual";
 import DropDownJust from "../components/DropDownJust";
 import axios from "axios";
 import { BASE_URL } from "../constants/config";
@@ -27,13 +26,13 @@ export async function getServerSideProps(context) {
 }
 
 export default function Manual({ manualData = [] }) {
-  const title = 'Manual de usuario';
   const router = useRouter();
   const { locale } = router;
+  const t = languages[locale];
 
   return (
     <>
-      <DropDownJust list={manualData.steps.filter(({ language }) => language === locale)} title={title} folder={'manual'} />
+      <DropDownJust list={manualData.steps.filter(({ language }) => language === locale)} title={t.manual} folder={'manual'} />
     </>
   );
 }

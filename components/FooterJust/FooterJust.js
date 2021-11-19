@@ -46,9 +46,9 @@ const FooterJust = () => {
                             <p>{t.privacidad}</p>
                         </Grid.Column>
                         <Grid.Column width="4">
-                            <Icon name="instagram" size="big" color="white />" />
-                            <Icon name="facebook" size="big" color="white />" />
-                            <Icon name="twitter" size="big" color="white />" />
+                            <Icon name="instagram" size="big" />
+                            <Icon name="facebook" size="big" />
+                            <Icon name="twitter" size="big" />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
