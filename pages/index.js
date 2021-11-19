@@ -15,8 +15,8 @@ const languages = {
 }
 
 function Home(props) {
-  const { steps = [], reviews = [], services = [] } = props;
-
+  const { banner, steps = [], reviews = [], services = [] } = props;
+  console.log(banner)
   const [user, setUser] = useState();
   const { locale } = useRouter();
   const t = languages[locale];
@@ -35,7 +35,7 @@ function Home(props) {
 
   return (
     <>
-      <Banner />
+      <Banner info={banner} />
       <Steps t={t} steps={steps.filter(step => step.language === locale)} />
       <Services t={t} list={services.filter(step => step.language === locale)} />
       <Reviews t={t} list={reviews.filter(review => review.language === locale)} />
@@ -47,17 +47,22 @@ function Home(props) {
 export async function getServerSideProps() {
   let reviews = [];
   let steps = [];
+  let bannerSend = {};
   const data = await axios(`${BASE_URL}/api/steps`);
   const listReviews = await axios(`${BASE_URL}/api/reviews`);
   const listServices = await axios(`${BASE_URL}/api/resources`);
+  const banner = await axios(`${BASE_URL}/api/banner`);
+
   const { data: { list } } = listReviews;
   reviews = list;
   steps = data.data.steps
+  bannerSend = banner.data.response;
   return {
     props: {
       reviews: list,
       steps: data.data.steps,
-      services: listServices.data.resources
+      services: listServices.data.resources,
+      banner: bannerSend
     }
   }
 }

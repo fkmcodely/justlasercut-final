@@ -79,7 +79,7 @@ const SiteForm = ({ option }) => {
                 idToEdit = titlepageEn.idBanner;
             }
             const newTitle = await axios.put('/api/banner', {
-                title: text
+                title: language === 'es' ? text : textEn
             }, {
                 params: {
                     id: idToEdit

@@ -24,7 +24,6 @@ const Reviews = ({ list }) => {
 
 
 const Review = ({ autor, message, idAvatar }) => {
-    console.log(String(message).replace('<br />', ''))
     return (
         <Grid.Column mobile="16" tablet="8" computer="5" className="review">
             <Grid columns="16">

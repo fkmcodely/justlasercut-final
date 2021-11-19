@@ -1,12 +1,24 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Container, Grid, Image } from "semantic-ui-react";
 import { BASE_URL } from '../../constants/config';
 import axios from "axios";
+import { useRouter } from 'next/router';
+import parse from "html-react-parser";
 const { v4: uuidv4 } = require('uuid');
 
-const Banner = () => {
+const Banner = ({ info }) => {
     const [files, setFiles] = useState({});
     const fileInputField = useRef(null)
+    const { locale } = useRouter();
+    const [bannerInfo, setBannerInfo] = useState();
+
+    useEffect(() => {
+        info.forEach((banner) => {
+            if (banner.language === locale) {
+                setBannerInfo(banner);
+            }
+        })
+    }, [info, locale]);
 
     const updateItemProject = (ev) => {
         setFiles([0]);
@@ -41,17 +53,7 @@ const Banner = () => {
             <Container className="banner__container">
                 <Grid columns="16" className="banner__grid">
                     <Grid.Column computer="8" tablet={8} mobile={16} className="banner__manual">
-                        <p>
-                            JustLasercut es una platafora que hace realidad tus ideas.
-                            Tanto si controlas programas de diseño como si simplemente tienes una idea que quieres realizar,
-                            estamos aquí para hacerla realidad.
-                            <ul>
-                                <li>- Lee el <a href="/manual">manual</a> de preparación de archivos.</li>
-                                <li>- Consulta nuestra gama de materiales.</li>
-                                <li>- Descarga nuestra plantilla de trabajo, en AutoCAD o en Illustrator. </li>
-                                <li>-Si aun tienes dudas, o necesitas ayuda con tu diseño, contáctanos.</li>
-                            </ul>
-                        </p>
+                        {bannerInfo?.title && (parse(bannerInfo?.title))}
                     </Grid.Column>
                     <Grid.Column computer="8" tablet={8} mobile={16} className="banner__start-shop">
                         <div className="upload-box">
