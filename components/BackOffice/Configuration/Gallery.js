@@ -198,7 +198,6 @@ const GalleryTable = ({ list = [], update, languageSelect }) => {
                     id: id
                 }
             });
-            console.log('axtualizar')
             update(Math.random());
         } catch (error) {
             console.log('Error al borrar Opinion')

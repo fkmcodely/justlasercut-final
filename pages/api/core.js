@@ -1,12 +1,11 @@
 const child = require('child_process').execFile;
 const executableRoute = './CalculatorCuttingLength/Program.cs';
 
-export default (req,res) => {
-    if(req.method === 'GET') {
-        console.log('---------------------------------->')
-        require('child_process').exec('cd CalculatorCuttingLength && dotnet run', function (err,data){
-            
-            if(err) {
+export default (req, res) => {
+    if (req.method === 'GET') {
+        require('child_process').exec('cd CalculatorCuttingLength && dotnet run', function (err, data) {
+
+            if (err) {
                 console.error(err);
                 return;
             }
@@ -15,6 +14,5 @@ export default (req,res) => {
                 response: data
             })
         });
-        console.log('---------------------------------->')
     };
 };

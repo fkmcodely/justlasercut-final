@@ -22,7 +22,6 @@ export default function handler(req, res) {
 
 const deleteResource = (req, res) => {
     const resourceDelete = async () => {
-        console.log(req.query.id)
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();

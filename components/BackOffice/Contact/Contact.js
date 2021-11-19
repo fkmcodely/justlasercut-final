@@ -1,24 +1,24 @@
 import axios from 'axios';
-import React, { useEffect , useState } from 'react';
-import { Grid , Header, Divider , Table , Icon, Modal, Button, Image, Checkbox, Message } from "semantic-ui-react";
+import React, { useEffect, useState } from 'react';
+import { Grid, Header, Divider, Table, Icon, Modal, Button, Image, Checkbox, Message } from "semantic-ui-react";
 import { BASE_URL } from '../../../constants/config';
 
 const Contact = () => {
-    const [messagesList,setMessagesList] = useState([]);
-    const [updater,setUpdater] = useState();
-    const [error,setError] = useState(false);
+    const [messagesList, setMessagesList] = useState([]);
+    const [updater, setUpdater] = useState();
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         const fetchMessages = async () => {
             try {
                 const response = await axios(`${BASE_URL}api/contact`);
                 setMessagesList(response.data.messagesList)
-            } catch (err) { 
+            } catch (err) {
                 setError(true);
             }
         }
         fetchMessages();
-    },[updater]);
+    }, [updater]);
 
     return (
         <Grid columns="16" className="backoffice-contact">
@@ -30,8 +30,8 @@ const Contact = () => {
             </Grid.Row>
             <Grid.Row className="backoffice-contact__messages-table">
                 <Grid.Column width="16">
-                    <MessagesTable 
-                        messagesList={messagesList}  
+                    <MessagesTable
+                        messagesList={messagesList}
                         updater={updater}
                         setUpdater={setUpdater}
                     />
@@ -41,11 +41,11 @@ const Contact = () => {
     );
 };
 
-const MessagesTable = ({ messagesList , updater, setUpdater }) => {
+const MessagesTable = ({ messagesList, updater, setUpdater }) => {
     const deleteMessage = (id) => {
         const deleteMessageById = async () => {
             try {
-                const requestMessage = await axios.delete(`/api/contact`,{
+                const requestMessage = await axios.delete(`/api/contact`, {
                     params: {
                         idMessage: id
                     }
@@ -59,10 +59,10 @@ const MessagesTable = ({ messagesList , updater, setUpdater }) => {
         };
         deleteMessageById();
     };
-    
+
     return (
         <>
-            
+
             <Table celled columns="16">
                 <Table.Header>
                     <Table.Row>
@@ -74,73 +74,73 @@ const MessagesTable = ({ messagesList , updater, setUpdater }) => {
                         <Table.HeaderCell>OPCIONES</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
-                
+
                 <Table.Body>
                     {
-                        messagesList.map((messageItem,index) => {
-                            const { email , subject, message, date = '', idMessage, isRead = false } = messageItem;
+                        messagesList.map((messageItem, index) => {
+                            const { email, subject, message, date = '', idMessage, isRead = false } = messageItem;
                             return (
-                                <Table.Row key={index} onClick={() => console.log('pepas  ')}>
+                                <Table.Row key={index} >
                                     <Table.Cell>{isRead ? 'SI' : 'NO'}</Table.Cell>
                                     <Table.Cell>{subject}</Table.Cell>
                                     <Table.Cell>{email}</Table.Cell>
                                     <Table.Cell>{date}</Table.Cell>
                                     <Table.Cell>{message}</Table.Cell>
-                                    <Table.Cell> 
+                                    <Table.Cell>
                                         <ModalMessage
-                                            setUpdater={setUpdater} 
+                                            setUpdater={setUpdater}
                                             deleteMessage={deleteMessage}
                                             message={messageItem}
                                             render={<Icon size="large" color="grey" className="custom-dropdown__icon" name='eye' />} />
-                                        <Icon 
+                                        <Icon
                                             onClick={() => deleteMessage(idMessage)}
-                                            size="large" 
-                                            color="grey" 
-                                            className="custom-dropdown__icon" 
-                                            name='trash' 
+                                            size="large"
+                                            color="grey"
+                                            className="custom-dropdown__icon"
+                                            name='trash'
                                         />
                                     </Table.Cell>
                                 </Table.Row>
                             )
                         })
                     }
-                    
+
                 </Table.Body>
             </Table>
         </>
     )
 };
 
-const ModalMessage = ({render , message, deleteMessage, setUpdater }) => {
+const ModalMessage = ({ render, message, deleteMessage, setUpdater }) => {
     const [open, setOpen] = useState(false)
-    const [isChecked,setIsChecked] = useState(message.isRead);
+    const [isChecked, setIsChecked] = useState(message.isRead);
 
     const EditStatusItemMessage = () => {
         const request = async () => {
             try {
-                const response = await axios.put(`/api/contact`,{
-                    params:{
+                const response = await axios.put(`/api/contact`, {
+                    params: {
                         idMessage: message.idMessage
                     },
                     body: {
                         readStatus: isChecked
                     }
-                });       
+                });
                 if (response.status === 200) {
                     setUpdater(Math.random());
                     setOpen(false)
-                };      
+                };
             } catch (err) {
                 console.error(`Error al editar el estado del mensaje: ${err}`)
             }
         };
         request();
     };
-    
+
     useEffect(() => {
         EditStatusItemMessage()
-    },[isChecked])
-    
+    }, [isChecked])
+
     return (
         <Modal
             onClose={() => setOpen(false)}
@@ -163,17 +163,17 @@ const ModalMessage = ({render , message, deleteMessage, setUpdater }) => {
             </Modal.Header>
             <Modal.Content>
                 <Modal.Description>
-                <Header>{message.email} - {message.date}</Header>
-                <p>
-                   {message.message}
-                </p>
+                    <Header>{message.email} - {message.date}</Header>
+                    <p>
+                        {message.message}
+                    </p>
                 </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
                 <Button
-                content="ACEPTAR"
-                onClick={() => setOpen(false)}
-                positive
+                    content="ACEPTAR"
+                    onClick={() => setOpen(false)}
+                    positive
                 />
             </Modal.Actions>
         </Modal>

@@ -23,7 +23,6 @@ const Steps = ({ steps = [], t }) => {
 
 const Step = (step) => {
     const { description, title, source } = step.step;
-    console.log(step)
     return (
         <Grid.Column computer={3} tablet={5} mobile={8} className="step-just">
             <Image src="./Rectangle.png" />

@@ -9,10 +9,13 @@ import { BASE_URL } from '../../../constants/config';
 const SiteForm = ({ option }) => {
     const [site, setSite] = useState(false);
     const { locale } = useRouter();
-    console.log(locale)
     const [loading, setLoading] = useState(false);
     const [language, setLanguage] = useState(locale);
-    const [text, setText] = useState();
+    const [text, setText] = useState(false);
+    const [textEn, setTextEn] = useState(false);
+
+    const [titlepage, setTitlepage] = useState();
+    const [titlepageEn, setTitlepageEn] = useState();
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
         defaultValues: {
@@ -23,9 +26,18 @@ const SiteForm = ({ option }) => {
         },
     });
 
-    useEffect(() => {
-        fetchDataSite();
-    }, []);
+    const getBannerInfo = async () => {
+        try {
+            const getResult = await axios('/api/banner');
+            const filterArrayResult = getResult.data.response
+            setTitlepage(filterArrayResult.filter(entry => entry.language === 'es')[0]);
+            setTitlepageEn(filterArrayResult.filter(entry => entry.language === 'en')[0]);
+            setText(filterArrayResult.filter(entry => entry.language === 'es')[0].title);
+            setTextEn(filterArrayResult.filter(entry => entry.language === 'en')[0].title);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const saveSiteInfo = (data) => {
         setLoading(true);
@@ -57,6 +69,36 @@ const SiteForm = ({ option }) => {
         };
         fetchData();
     };
+
+    const updatePageTitle = async () => {
+        try {
+            let idToEdit;
+            if (language === 'es') {
+                idToEdit = titlepage.idBanner;
+            } else {
+                idToEdit = titlepageEn.idBanner;
+            }
+            const newTitle = await axios.put('/api/banner', {
+                title: text
+            }, {
+                params: {
+                    id: idToEdit
+                }
+            });
+            console.log('Actualizado');
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        getBannerInfo();
+        fetchDataSite();
+    }, []);
+
+    useEffect(() => {
+        getBannerInfo();
+    }, [language]);
 
     return (
         <Grid columns="16" className="site-data">
@@ -110,11 +152,26 @@ const SiteForm = ({ option }) => {
                             <Grid.Column width="16">
                                 <Form>
                                     <p>Descripción principal de la página:</p>
-                                    <CKEditor
-                                        data={text}
-                                        onChange={evt => setText(evt.editor.getData())}
-                                    />
-                                    <Button primary type="submit" content="Aceptar" />
+                                    {
+                                        (text && language === 'es') && (
+                                            <CKEditor
+                                                initData={text}
+                                                data={text}
+                                                onChange={evt => setText(evt.editor.getData())}
+                                            />
+                                        )
+                                    }
+                                    {
+                                        (textEn && language === 'en') && (
+                                            <CKEditor
+                                                initData={textEn}
+                                                data={textEn}
+                                                onChange={evt => setTextEn(evt.editor.getData())}
+                                            />
+                                        )
+                                    }
+
+                                    <Button onClick={() => updatePageTitle()} primary content='Actualizar' content="Aceptar" />
                                 </Form>
                             </Grid.Column>
                         </Grid.Row>
