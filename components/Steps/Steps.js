@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Divider, Grid, Header, Image } from 'semantic-ui-react';
-
+import { BASE_URL } from '../../constants/config';
 const Steps = ({ steps = [], t }) => {
 
     return (
@@ -25,7 +25,7 @@ const Step = (step) => {
     const { description, title, source } = step.step;
     return (
         <Grid.Column computer={3} tablet={5} mobile={8} className="step-just">
-            <Image src="./Rectangle.png" />
+            <Image src={`${BASE_URL}${source}`} />
             <Header as="h4">{title}</Header>
             {description && (<p>{description}</p>)}
         </Grid.Column>

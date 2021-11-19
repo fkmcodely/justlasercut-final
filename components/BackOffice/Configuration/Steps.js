@@ -90,7 +90,7 @@ const StepsTable = ({ steps = [], update, languages }) => {
                                 <Table.Cell>{description}</Table.Cell>
                                 <Table.Cell>
                                     {source && (
-                                        <Image src={`/${source}.png`} className="miniature-image" />
+                                        <Image src={`/${source}`} className="miniature-image" />
                                     )}
                                 </Table.Cell>
                                 <Table.Cell>
@@ -121,6 +121,7 @@ const AddStep = ({ render, update, language }) => {
     const [source, setSource] = useState();
     const [title, setTitle] = useState();
     const [description, setDescription] = useState();
+    const [filename, setFilename] = useState();
 
     const modalProps = {
         onClose: () => setOpen(false),
@@ -133,11 +134,12 @@ const AddStep = ({ render, update, language }) => {
     const createStep = async () => {
         try {
             const idTransaction = uuidv4();
+            const extension = filename.split('.').pop();
             const save = await axios.post('/api/steps', {
                 idStep: idTransaction,
                 title: title,
                 description: description,
-                source: idTransaction,
+                source: `${idTransaction}.${extension}`,
                 language: language
             });
             if (source) {
@@ -168,7 +170,10 @@ const AddStep = ({ render, update, language }) => {
                 <Form>
                     <input placeholder="Titulo" value={title} onChange={ev => setTitle(ev.target.value)} />
                     <textarea value={description} onChange={ev => setDescription(ev.target.value)} placeholder="Descripcion" rows={4} />
-                    <input type="file" name="mediaManual" onChange={ev => setSource(ev.target.files[0])} />
+                    <input type="file" name="mediaManual" onChange={ev => {
+                        setFilename(ev.target.files[0].name)
+                        setSource(ev.target.files[0])
+                    }} />
                 </Form>
             </Modal.Content>
             <Modal.Actions>
