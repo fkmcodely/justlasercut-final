@@ -46,7 +46,7 @@ const checkMessage = ({ body, files, query }, res) => {
     const checkPutMessage = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
-            const db = await session.db();
+            const db = session.db();
             const collection = db.collection("messages");
             const filter = { idMessage: body.params.idMessage };
             const objectModified = {
@@ -93,13 +93,13 @@ const deleteMessage = ({ body, files, query }, res) => {
 };
 
 const createMessage = ({ body }, res) => {
-    const { email, numberRef = 0, subject, message } = body;
+    const { email, numberRef = 0, subject, message, id } = body;
     const fetchMessage = async () => {
         try {
             const client = await MongoClient.connect(BASE_URL_MONGO);
             const db = client.db();
             const collection = db.collection("messages");
-            const id = uuidv4();
+
             const templateMessage = {
                 idMessage: id,
                 email,

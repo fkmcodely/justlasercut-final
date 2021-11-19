@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Container, Grid, Form, Input, Button, Header, Divider, Message } from 'semantic-ui-react';
 import { useForm } from "react-hook-form";
-import { BASE_URL, BASE_URL_MONGO } from '../../constants/config';
+import { BASE_URL } from '../../constants/config';
 import axios from "axios";
+const { v4: uuidv4 } = require('uuid');
 
 const ContactForm = ({ t }) => {
     const { register, handleSubmit, watch, reset, formState = { errors } } = useForm();
@@ -10,20 +11,24 @@ const ContactForm = ({ t }) => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [multimedia, setMultimedia] = useState('');
+    const [filename, setFilename] = useState();
 
     const onSubmit = data => {
         const sendMessage = async () => {
             try {
                 setLoading(true);
+                const id = uuidv4();
+                const extension = filename.split('.').pop();
                 const response = await axios.post(`/api/contact`, {
-                    ...data
+                    ...data,
+                    filename: `${id}.${extension}`
                 });
                 if (multimedia) {
                     const media = new FormData();
                     media.append('file', multimedia);
                     await axios.post(`${BASE_URL}/api/multimedia`, media, {
                         params: {
-                            id: response.data.id
+                            id: id
                         }
                     })
                 }
@@ -83,7 +88,10 @@ const ContactForm = ({ t }) => {
                                     <textarea required rows="5" placeholder="Mensaje" {...register("message")} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <Input onChange={(ev) => { setMultimedia(ev.target.files[0]) }} type="file" name="mediaManual" />
+                                    <Input onChange={(ev) => {
+                                        setFilename(ev.target.files[0]);
+                                        setMultimedia(ev.target.files[0]);
+                                    }} type="file" name="mediaManual" />
                                 </Form.Field>
                                 <Button loading={loading} className="button-main" loading={loading} type="submit" content='ENVIAR' primary />
                             </Form>
