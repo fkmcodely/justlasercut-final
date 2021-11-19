@@ -111,15 +111,15 @@ const getStepsServices = ({ query }, res) => {
 const createStepService = ({ body }, res) => {
     const fetchInfoConfig = async () => {
         try {
-            const { title = '', image = '', video = '', order = '', description = '', buttons = {}, language = 'es' } = body;
+            const { title = '', image = '', video = '', order = '', description = '', buttons = {}, language = 'es', id } = body;
             const session = await MongoClient.connect(url);
             const db = session.db();
             const collection = db.collection("Services");
-            const serviceId = uuidv4();
+            const serviceId = id;
             const createServiceStep = await collection.insertOne({
                 id: serviceId,
                 title,
-                image: serviceId,
+                image,
                 video,
                 order,
                 description,

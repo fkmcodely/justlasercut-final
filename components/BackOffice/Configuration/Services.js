@@ -6,6 +6,7 @@ import { BASE_URL } from '../../../constants/config';
 import { useRouter } from 'next/router';
 import { CKEditor } from 'ckeditor4-react';
 import parse from 'html-react-parser';
+const { v4: uuidv4 } = require('uuid');
 
 const Services = () => {
     const router = useRouter();
@@ -102,7 +103,7 @@ const ServiceTable = ({ language, services = [], setUpdate }) => {
                                 <Table.Cell>{title}</Table.Cell>
                                 <Table.Cell>{parse(description)}</Table.Cell>
                                 <Table.Cell>
-                                    {image && (<Image src={`${BASE_URL}${image}.png`} alt="" className="miniature-image" />)}
+                                    {image && (<Image src={`${BASE_URL}${image}`} alt="" className="miniature-image" />)}
                                 </Table.Cell>
                                 <Table.Cell>
                                     <ModalEditService render={setUpdate} className="icon_action" idService={id} step={stepService} open={openItem} setOpen={setOpenItem} rendered={<Icon size="large" color="grey" className="custom-dropdown__icon" name='pencil alternate' />} language='ES' />
@@ -134,6 +135,7 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'es', setUpdate }
     const [loading, setLoading] = useState(false);
     const [multimedia, setMultimedia] = useState('');
     const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
+    const [filename, setFilename] = useState();
 
     const modalProps = {
         onClose: () => setOpen(false),
@@ -146,18 +148,22 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'es', setUpdate }
     const handleSubmitManual = (fields) => {
         setLoading(true);
         const fetchManual = async () => {
+            const extension = filename.split('.').pop();
+            const id = uuidv4();
             try {
                 const request = await axios.post('/api/services', {
                     ...fields,
                     description: textArea,
-                    language: language
+                    language: language,
+                    image: `${id}.${extension}`,
+                    id: id
                 });
                 const data = new FormData();
                 if (multimedia) {
                     data.append('file', multimedia);
                     await axios.post('/api/multimedia', data, {
                         params: {
-                            id: request.data.id,
+                            id: id,
                             folder: 'services'
                         }
                     });
@@ -194,7 +200,10 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'es', setUpdate }
                     />
                     <div>
                         <p>Archivos multimedia:</p>
-                        <input onChange={ev => setMultimedia(ev.target.files[0])} type="file" name="mediaService" />
+                        <input onChange={ev => {
+                            setFilename(ev.target.files[0].name);
+                            setMultimedia(ev.target.files[0]);
+                        }} type="file" name="mediaService" />
                     </div>
                     <div className="manual-modal-add__buttons">
                         <p className="primary">
