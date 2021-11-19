@@ -116,14 +116,14 @@ const ModalMessage = ({ render, message, deleteMessage, setUpdater }) => {
     const [isChecked, setIsChecked] = useState(message.isRead);
 
     const EditStatusItemMessage = () => {
+
         const request = async () => {
             try {
                 const response = await axios.put(`/api/contact`, {
+                    readStatus: isChecked
+                }, {
                     params: {
                         idMessage: message.idMessage
-                    },
-                    body: {
-                        readStatus: isChecked
                     }
                 });
                 if (response.status === 200) {
@@ -168,20 +168,12 @@ const ModalMessage = ({ render, message, deleteMessage, setUpdater }) => {
                         {message.message}
                     </p>
                 </Modal.Description>
-                <Button content="Descargar Adjunto" primary onClick={() => {
-                    const call = async () => {
-                        try {
-                            const data = await axios.get('/api/download', {
-                                params: {
-                                    filename: message.filename
-                                }
-                            });
-                        } catch (err) {
-                            console.log(err);
-                        }
-                    };
-                    call();
-                }} />
+
+                <Button
+                    as='a'
+                    download='adjunto.png'
+                    href={`${BASE_URL}api/download?filename=${message.filename}`}
+                    content='Descargar' />
             </Modal.Content>
             <Modal.Actions>
                 <Button

@@ -21,7 +21,8 @@ const ContactForm = ({ t }) => {
                 const extension = filename.split('.').pop();
                 const response = await axios.post(`/api/contact`, {
                     ...data,
-                    filename: `${id}.${extension}`
+                    filename: `${id}.${extension}`,
+                    id: id
                 });
                 if (multimedia) {
                     const media = new FormData();

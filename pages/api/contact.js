@@ -48,10 +48,10 @@ const checkMessage = ({ body, files, query }, res) => {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
             const collection = db.collection("messages");
-            const filter = { idMessage: body.params.idMessage };
+            const filter = { idMessage: query.idMessage };
             const objectModified = {
                 $set: {
-                    isRead: body.body.readStatus,
+                    isRead: body.readStatus,
                 }
             };
             await collection.updateOne(filter, objectModified);
