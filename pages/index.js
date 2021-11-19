@@ -8,6 +8,7 @@ import Reviews from "../components/Reviews/Reviews";
 import ContactForm from "../components/ContactForm/ContactForm";
 import axios from "axios";
 import { BASE_URL } from "../constants/config";
+import ButtonTop from "../components/ButtonTop/ButtonTop";
 
 const languages = {
   en: require('../locale/en/commons.json'),
@@ -40,6 +41,7 @@ function Home(props) {
       <Services t={t} list={services.filter(step => step.language === locale)} />
       <Reviews t={t} list={reviews.filter(review => review.language === locale)} />
       <ContactForm t={t} />
+      <ButtonTop />
     </>
   );
 }
