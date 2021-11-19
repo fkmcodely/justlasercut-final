@@ -97,16 +97,16 @@ const getStepsManual = ({ query }, res) => {
 const createStepManualStep = ({ body }, res) => {
     const fetchInfoConfig = async () => {
         try {
-            const { title = '', image = '', video = '', order = '', description = '', buttons = {} } = body;
+            const { title = '', image = '', video = '', order = '', description = '', buttons = {}, id } = body;
             const session = await MongoClient.connect(url);
             const db = session.db();
             const collection = db.collection("Manual");
-            const idManualStep = uuidv4();
+            const idManualStep = id;
             const createManualStep = await collection.insertOne({
                 id: idManualStep,
                 title,
-                image: `${idManualStep}.png`,
-                video: `${idManualStep}.png`,
+                image: `${image}`,
+                video: `${image}`,
                 order,
                 description,
                 buttons,

@@ -68,7 +68,6 @@ const DropDownJust = ({ title, list = [], folder = '' }) => {
                                                             {renderButtonSecondary(option)}
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </Accordion.Content>
                                         </div>

@@ -124,9 +124,9 @@ const AddFeedBack = ({ render, action, language }) => {
     const [open, setOpen] = useState();
     const [autor, setAutor] = useState('');
     const [avatar, setAvatar] = useState();
+    const [nameFile, setNameFile] = useState();
     const [message, setMessage] = useState('');
     const router = useRouter();
-    const { locale } = router;
 
     useEffect(() => {
         setAutor('');
@@ -143,11 +143,12 @@ const AddFeedBack = ({ render, action, language }) => {
     };
 
     const submitForm = async () => {
+        const extension = nameFile.split('.').pop();
         try {
             const idTransaction = uuidv4();
             const save = await axios.post('/api/reviews', {
                 autor: autor,
-                idAvatar: idTransaction,
+                idAvatar: `${idTransaction}.${extension}`,
                 id: idTransaction,
                 message: message,
                 language: language
@@ -180,7 +181,7 @@ const AddFeedBack = ({ render, action, language }) => {
                 <Form>
                     <input
                         value={autor}
-                        onChange={ev => setAutor(ev.target.value)}
+                        onChange={ev => { setAutor(ev.target.value) }}
                         placeholder="Nombre del autor"
                         className="feedback-modal__name"
                     />
@@ -191,7 +192,10 @@ const AddFeedBack = ({ render, action, language }) => {
                     <input
                         type="file"
                         name="mediaManual"
-                        onChange={ev => setAvatar(ev.target.files[0])}
+                        onChange={ev => {
+                            setNameFile(ev.target.files[0].name)
+                            setAvatar(ev.target.files[0])
+                        }}
                     />
                 </Form>
             </Modal.Content>

@@ -7,6 +7,7 @@ import { BASE_URL } from '../../../constants/config';
 import { CKEditor } from 'ckeditor4-react';
 import parse from 'html-react-parser';
 import { useRouter } from 'next/dist/client/router';
+const { v4: uuidv4 } = require('uuid');
 
 const Manual = ({ option }) => {
     const { locale } = useRouter();
@@ -159,7 +160,7 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
     const [multimedia, setMultimedia] = useState('');
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
     const [text, setText] = useState(<p>Deje una descripción</p>);
-
+    const [nameFile, setNameFile] = useState();
     const modalProps = {
         onClose: () => setOpen(false),
         onOpen: () => setOpen(true),
@@ -170,19 +171,24 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
 
     const handleSubmitManual = (fields) => {
         setLoading(true);
+        const extension = nameFile.split('.').pop() || '';
         const fetchManual = async () => {
             try {
+                const id = uuidv4();
                 const request = await axios.post(`/api/manual`, {
                     ...fields,
                     description: text,
-                    language: language
+                    language: language,
+                    image: `${id}.${extension}`,
+                    video: `${id}.${extension}`,
+                    id: id
                 });
                 if (multimedia) {
                     const data = new FormData();
                     data.append('file', multimedia);
                     const uploadMedia = await axios.post(`/api/multimedia`, data, {
                         params: {
-                            id: request.data.id,
+                            id: id,
                         }
                     });
                 }
@@ -219,7 +225,10 @@ const ModalAddManual = ({ open, setOpen, rendered, language = 'ES', setUpdater }
                     />
                     <div>
                         <p>Archivos multimedia:</p>
-                        <input onChange={(ev) => { setMultimedia(ev.target.files[0]) }} type="file" name="mediaManual" />
+                        <input onChange={(ev) => {
+                            setNameFile(ev.target.files[0].name)
+                            setMultimedia(ev.target.files[0])
+                        }} type="file" name="mediaManual" />
                     </div>
                     <div className="manual-modal-add__buttons">
                         <p className="primary">
