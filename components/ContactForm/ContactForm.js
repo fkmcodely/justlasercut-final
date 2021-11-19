@@ -15,16 +15,18 @@ const ContactForm = ({ t }) => {
         const sendMessage = async () => {
             try {
                 setLoading(true);
-                const response = await axios.post(`${BASE_URL}api/contact`, {
+                const response = await axios.post(`/api/contact`, {
                     ...data
                 });
-                const media = new FormData();
-                media.append('file', multimedia);
-                await axios.post(`${BASE_URL}/api/multimedia`, media, {
-                    params: {
-                        id: response.data.id
-                    }
-                })
+                if (multimedia) {
+                    const media = new FormData();
+                    media.append('file', multimedia);
+                    await axios.post(`${BASE_URL}/api/multimedia`, media, {
+                        params: {
+                            id: response.data.id
+                        }
+                    })
+                }
                 reset();
                 setLoading(false);
                 setSuccess(true);

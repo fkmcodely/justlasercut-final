@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Header, Icon, Image, Modal, Form, Input, Divider } from 'semantic-ui-react'
+import { Button, Header, Icon, Image, Modal, Form, Input, Divider, Message } from 'semantic-ui-react'
 import { session, signIn, signOut } from "next-auth/react"
 import { useForm } from 'react-hook-form';
 import { BASE_URL } from '../../constants/config';
@@ -50,7 +50,6 @@ const ModalSession = () => {
                 </section>
             </Modal.Header>
             <Modal.Content>
-                {/* Necesitamos dos componentes una para el registro y otra para el inicio de sesion */}
                 {option === 1 && (<FormSignIn t={t} />)}
                 {option === 0 && (<FormRegister t={t} />)}
             </Modal.Content>
@@ -59,27 +58,52 @@ const ModalSession = () => {
 };
 
 const FormSignIn = ({ t }) => {
-
+    const [error, setError] = useState(false);
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     return (
         <section className="signin">
+            {error && (
+                <Message
+                    error
+                    header='Ups...¡Algo a salido mal!'
+                    content='Email o Contraseña incorrectos.'
+                />
+            )}
             <p className="signin__text">{t.zonaprivada}</p>
-            <Form>
-                <Input className="margin-bottom-1" fluid placeholder="email" type="email" required value={email} onChange={ev => setEmail(ev.target.value)} />
-                <Input className="margin-bottom-1" fluid placeholder="Contraseña" type="password" required value={password} onChange={ev => setPassword(ev.target.value)} />
+            <Form autocomplete="off">
+                <Input autocomplete="false" className="margin-bottom-1" fluid placeholder="email" type="email" required value={email} onChange={ev => setEmail(ev.target.value)} />
+                <Input autocomplete="false" className="margin-bottom-1" fluid placeholder="Contraseña" type="password" required value={password} onChange={ev => setPassword(ev.target.value)} />
                 <Button
                     disabled={(email && password) === '' ? true : false}
                     fluid
+                    loading={loading}
                     className="signin__btn signin__btn--email"
                     onClick={() => {
+                        setLoading(true);
                         signIn('credentials',
                             {
                                 username: email,
                                 password: password,
-                                callbackUrl: `${window.location.origin}`
-                            })
+                                redirect: false,
+                            }).then((err, res) => {
+                                if (err) {
+                                    setError(true);
+                                } else {
+
+                                    router.push('/');
+                                }
+                            }).finally((res) => {
+                                setEmail();
+                                setPassword();
+                                setTimeout(() => {
+                                    setError(false);
+                                }, 3000);
+                                setLoading(false)
+                            });
                     }}>
                     <Icon as="i" name="mail" size="large" color="white" />
                     {t.loginemail}
@@ -118,7 +142,6 @@ const FormRegister = ({ t }) => {
                     setCreatingUser(false);
                 }
             } catch (error) {
-                console.error(`Error al registrar usuario:`, error);
                 setCreatingUser(false);
             }
         };
