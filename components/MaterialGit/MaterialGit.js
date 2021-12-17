@@ -1,57 +1,28 @@
 
 import React from 'react';
-import { Grid , Container, Button } from 'semantic-ui-react';
+import { Grid, Container, Button } from 'semantic-ui-react';
 import Filters from '../Filters/Filters';
 import Material from "../Material";
 
 
-const MaterialGit = () => {
+const MaterialGit = ({ list: { materials } }) => {
+
+
     return (
         <Container fluid className="material-git">
             <Grid columns="16" padded>
                 <Grid.Row>
                     <Grid.Column width="3">
-                        <Filters/>
+                        <Filters />
                     </Grid.Column>
                     <Grid.Column width="13">
                         <Grid columns="16" className="material-git__list" padded relaxed>
                             <HelpCard />
-                            <Material 
-                                image="https://lorempixel.com/g/300/201/" 
-                                name="Tablero de DM. 5mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/202/" 
-                                name="Tablero de DM. 5mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/203/" 
-                                name="Tablero de DM. 3mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/204/" 
-                                name="Tablero de DM. 3mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/201/" 
-                                name="Tablero de DM. 5mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/202/" 
-                                name="Tablero de DM. 5mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/203/" 
-                                name="Tablero de DM. 3mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/204/" 
-                                name="Tablero de DM. 3mm" 
-                            />
-                            <Material 
-                                image="https://lorempixel.com/g/300/204/" 
-                                name="Tablero de DM. 3mm" 
-                            />
+                            {
+                                materials?.map(material => (
+                                    <Material name={material.title.es} image={material.image} />
+                                ))
+                            }
                         </Grid>
                     </Grid.Column>
                 </Grid.Row>
@@ -61,14 +32,14 @@ const MaterialGit = () => {
 };
 
 const HelpCard = () => {
-    return(
+    return (
         <Grid.Column width="3" className="help-card">
             <Grid columns="16">
                 <Grid.Row>
                     <Grid.Column width="16" className="help-card__bg">
-                        <p style={{maxHeight: '80px',overflow: 'hidden'}}>
-                            Usa los filtros para encontrar el material que necesites y 
-                            elige el tamaño de plancha y grosor que necesites. 
+                        <p style={{ maxHeight: '80px', overflow: 'hidden' }}>
+                            Usa los filtros para encontrar el material que necesites y
+                            elige el tamaño de plancha y grosor que necesites.
                         </p>
                     </Grid.Column>
                 </Grid.Row>

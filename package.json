@@ -19,6 +19,7 @@
     "bcrypt": "^5.0.1",
     "ckeditor4-react": "^2.0.1",
     "dns": "^0.2.2",
+    "dxf": "^4.6.1",
     "eslint-config-airbnb": "^18.2.1",
     "formidable": "^2.0.1",
     "google-maps-react": "^2.0.6",
