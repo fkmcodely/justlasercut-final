@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+const { v4: uuidv4 } = require('uuid');
 
 const initialState = {
-    id: null,
+    id: uuidv4(),
     items: []
 }
 
@@ -10,7 +11,7 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addItem: (state, action) => {
-            state.items = state.items.push(action.payload);
+            state.items = [...state.items, action.payload];
         },
         deleteItem: (state, action) => {
             state.items = state.items.push(action.payload);

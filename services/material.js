@@ -10,6 +10,7 @@ export const getServices = async () => {
     };
 }
 
+export const getMaterials = async () => await axios(`/api/materials`);
 export const createMaterial = async (material) => {
     try {
         const post = await axios.post(`/api/materials`, material);
@@ -19,14 +20,18 @@ export const createMaterial = async (material) => {
         console.error(`Error al crear material.`);
     }
 };
+export const deleteMaterial = async (id) => await axios.delete(`/api/materials`, {
+    params: {
+        id: id
+    }
+})
 
 export const getCategoryMaterials = async () => await axios(`/api/material-category`);
 export const deleteCategoryMaterials = async (id) => await axios.delete(`/api/material-category`, {
-    query: {
+    data: {
         id: id
     }
 });
-
 export const createCategoryMaterial = async (categoryMaterial) => {
     try {
         const post = await axios.post(`/api/material-category`, categoryMaterial);

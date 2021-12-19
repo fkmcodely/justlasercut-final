@@ -18,14 +18,14 @@ export default (req, res) => {
     };
 }
 
-const DeleteCategory = ({ query }, res) => {
+const DeleteCategory = ({ body, query }, res) => {
+    const { id } = body;
     const deleteDocument = async () => {
         try {
             const session = await MongoClient.connect(BASE_URL_MONGO);
             const db = session.db();
             const collection = db.collection("CategoryMaterial");
-            console.log(query.id)
-            await collection.deleteOne({ id: query.id });
+            await collection.deleteOne({ id: id });
 
             session.close();
             res.status(200).json({

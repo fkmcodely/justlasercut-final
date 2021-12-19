@@ -5,7 +5,7 @@ import Filters from '../Filters/Filters';
 import Material from "../Material";
 
 
-const MaterialGit = ({ list: { materials } }) => {
+const MaterialGit = ({ list: { result } }) => {
 
 
     return (
@@ -19,8 +19,8 @@ const MaterialGit = ({ list: { materials } }) => {
                         <Grid columns="16" className="material-git__list" padded relaxed>
                             <HelpCard />
                             {
-                                materials?.map(material => (
-                                    <Material name={material.title.es} image={material.image} />
+                                result?.map(material => (
+                                    <Material material={material} name={material.title.es} image={material.image} />
                                 ))
                             }
                         </Grid>
@@ -33,11 +33,11 @@ const MaterialGit = ({ list: { materials } }) => {
 
 const HelpCard = () => {
     return (
-        <Grid.Column width="3" className="help-card">
+        <Grid.Column width="3" className="help-card" style={{ height: '20rem' }}>
             <Grid columns="16">
                 <Grid.Row>
                     <Grid.Column width="16" className="help-card__bg">
-                        <p style={{ maxHeight: '80px', overflow: 'hidden' }}>
+                        <p style={{ height: '80px', overflow: 'hidden' }}>
                             Usa los filtros para encontrar el material que necesites y
                             elige el tamaño de plancha y grosor que necesites.
                         </p>

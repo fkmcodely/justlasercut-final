@@ -10,9 +10,12 @@ const CreationMaterialModal = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
     const [plateSizes, setPlateSizes] = useState([]);
+    const [weightList, setWeightList] = useState([]);
 
     const [width, setWidth] = useState();
     const [height, setHeight] = useState();
+    const [weight, setWeight] = useState();
+
     const [filename, setFilename] = useState();
     const [media, setMedia] = useState();
 
@@ -21,7 +24,13 @@ const CreationMaterialModal = () => {
             const handler = async () => {
                 const id = uuidv4();
                 const extension = filename.split('.').pop();
-                const post = await createMaterial({ ...data, plateSizes, id: id, image: `${id}.${extension}` });
+                const post = await createMaterial({
+                    ...data,
+                    plateSizes,
+                    weightList,
+                    id: id,
+                    image: `${id}.${extension}`
+                });
                 if (media) {
                     const data = new FormData();
                     data.append('file', media);
@@ -51,9 +60,19 @@ const CreationMaterialModal = () => {
         setPlateSizes(plateSizes.filter(plate => plate.id !== id));
         reset();
     };
+
+    const handlerWeightSizes = (typeOperation, id = null) => {
+        if (typeOperation === true) {
+            setWeightList([...weightList, { id: uuidv4(), weight: weight }]);
+            reset();
+            return;
+        }
+        setWeightList(weightList.filter(plate => plate.id !== id));
+    }
+
     const reset = () => {
-        setWidth();
-        setHeight();
+        setWidth('');
+        setHeight('');
     };
 
     return (
@@ -61,7 +80,7 @@ const CreationMaterialModal = () => {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             open={open}
-            trigger={<Button primary>+</Button>}
+            trigger={<Button primary>+ Añadir material</Button>}
         >
             <Modal.Header></Modal.Header>
             <Modal.Content scrolling>
@@ -69,18 +88,21 @@ const CreationMaterialModal = () => {
                     <Header>Formulario de creación de material</Header>
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            <div>
-                                <label>Nombre (ES)</label>
-                                <input {...register("title.es", { required: true })} type="text" />
-                                {errors?.title?.es && <span>El campo es obligatorio</span>}
-                            </div>
-                            <div>
-                                <label>Nombre (EN)</label>
-                                <input {...register("title.en", { required: true })} type="text" />
-                                {errors?.title?.en && <span>El campo es obligatorio</span>}
+                            <div style={{ display: 'flex', marginBottom: '1rem', justifyContent: 'space-between' }}>
+                                <div style={{ width: '48%' }}>
+                                    <label>Nombre (ES)</label>
+                                    <input {...register("title.es", { required: true })} type="text" />
+                                    {errors?.title?.es && <span>El campo es obligatorio</span>}
+                                </div>
+                                <div style={{ width: '48%' }}>
+                                    <label>Nombre (EN)</label>
+                                    <input {...register("title.en", { required: true })} type="text" />
+                                    {errors?.title?.en && <span>El campo es obligatorio</span>}
+                                </div>
                             </div>
                             <input
                                 name="mediaManual"
+                                style={{ marginBottom: '1rem' }}
                                 onChange={ev => {
                                     setFilename(ev.target.files[0].name)
                                     setMedia(ev.target.files[0])
@@ -88,38 +110,68 @@ const CreationMaterialModal = () => {
                                 }
                                 type="file"
                             />
-                            <select {...register("materialCategory", { required: true })}>
+                            <select style={{ marginBottom: '1rem' }} {...register("materialCategory", { required: true })}>
                                 <option value="value2" selected>Carton</option>
                             </select>
-                            <select {...register("surfacePainting", { required: true })}>
+                            <select style={{ marginBottom: '1rem' }} {...register("surfacePainting", { required: true })}>
                                 <option value="value2" selected>1</option>
                                 <option value="value2" selected>2</option>
                                 <option value="value2" selected>Ninguno</option>
                             </select>
-                            <div>
-                                <div>
+                            <div style={{ border: '1px solid gray', padding: '.5rem' }}>
+                                <div style={{ display: 'flex' }}>
                                     <input type="number" placeholder="Ancho" value={width} onChange={(ev) => setWidth(ev.target.value)} />
                                     <input type="number" placeholder="Alto" value={height} onChange={(ev) => setHeight(ev.target.value)} />
-                                    <Button content='+' primary onClick={() => handlerPlateSizes(true)} />
+                                    <Button content='+' primary onClick={(ev) => {
+                                        ev.preventDefault();
+                                        handlerPlateSizes(true)
+                                    }} />
                                 </div>
-                                <div>
-                                    Lista
+                                <p>Lista de tamaños:</p>
+                                <div style={{ display: 'flex', marginBottom: '1rem' }}>
                                     {
                                         plateSizes.map(({ width, height, id }) => (
-                                            <div>
-                                                <p>{width}X{height}</p>
-                                                <Button color='red' content="-" onClick={() => handlerPlateSizes(false, id)} />
+                                            <div style={{ display: 'flex', marginRight: '.5rem', border: '1px solid gray', width: 'fit-content', padding: '.7rem' }}>
+                                                <p style={{ marginRight: '1rem' }}>- {width}x{height}mm</p>
+                                                <Button color='red' content="-" size="tiny" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handlerPlateSizes(false, id)
+                                                }} />
                                             </div>
                                         ))
                                     }
                                 </div>
                             </div>
-                            <div>
-                                <label>
+
+                            <div style={{ border: '1px solid gray', padding: '.5rem', marginTop: '1rem' }}>
+                                <div style={{ display: 'flex' }}>
+                                    <input type="number" placeholder="Ancho" value={weight} onChange={(ev) => setWeight(ev.target.value)} />
+                                    <Button content='+' primary onClick={(ev) => {
+                                        ev.preventDefault();
+                                        handlerWeightSizes(true)
+                                    }} />
+                                </div>
+                                <p>Lista de grosores:</p>
+                                <div style={{ display: 'flex' }}>
+                                    {
+                                        weightList.map(({ weight, id }) => (
+                                            <div style={{ display: 'flex', marginRight: '.5rem', border: '1px solid gray', width: 'fit-content', padding: '.7rem' }}>
+                                                <p style={{ marginRight: '1rem' }}>- {weight}cm</p>
+                                                <Button color='red' content="-" onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handlerWeightSizes(false, id)
+                                                }} />
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', border: '1px solid gray', padding: '1rem', marginTop: '1rem' }}>
+                                <label style={{ width: '50%' }}>
                                     Precio por minuto maquina grande:
                                     <input type="number" {...register("prices.priceMinuteLargeMachine")} />
                                 </label>
-                                <label>
+                                <label style={{ width: '50%' }}>
                                     Precio por minuto maquina pequeña:
                                     <input type="number" {...register("prices.priceMinuteSmallMachine")} />
                                 </label>
@@ -144,7 +196,7 @@ const CreationMaterialModal = () => {
                                     <input type="number" {...register("prices.minimumPricePaint")} />
                                 </label>
                             </div>
-                            <input type="submit" />
+                            <input style={{ backgroundColor: 'blue', color: 'white', width: '120px', height: '40px', marginTop: '1rem' }} type="submit" />
                         </div>
                     </Form>
                 </Modal.Description>

@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form";
 function CreationCategoryModal() {
     const [open, setOpen] = React.useState(false);
     const [categoryList, setCategoryList] = useState([]);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, reset, handleSubmit, watch, formState: { errors } } = useForm();
 
     const handlerDeleteCategory = async (id) => {
         try {
-            const del = await deleteCategoryMaterials(id);
-            console.log(del)
+            await deleteCategoryMaterials(id);
+            reset();
         } catch (e) {
             console.error(`No se puede eliminar la categoria`)
         }
@@ -23,6 +23,7 @@ function CreationCategoryModal() {
             const info = await getCategoryMaterials();
             const { data: { steps } } = info;
             setCategoryList(steps);
+            reset();
         } catch (err) {
             console.error(`Error al obtener categorias:`, err);
         }
@@ -32,6 +33,7 @@ function CreationCategoryModal() {
         try {
             const post = await createCategoryMaterial(data);
             setOpen(false);
+            reset();
         } catch (err) {
             console.log('Error al crear categoria del material')
         }
@@ -42,7 +44,7 @@ function CreationCategoryModal() {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             open={open}
-            trigger={<Button>+ Añadir Categoria</Button>}
+            trigger={<Button primary>+ Añadir Categoria</Button>}
         >
             <Modal.Header>Formulario de creación de categorias</Modal.Header>
             <Modal.Content>
@@ -50,18 +52,18 @@ function CreationCategoryModal() {
                     <Form onSubmit={handleSubmit(onSubmitData)}>
                         <div>
                             <div>
-                                <input {...register('category.name.es')} />
-                                <input {...register('category.name.en')} />
+                                <input {...register('category.name.es')} style={{ marginBottom: '10px' }} placeholder="Nombre de categoria en Español" />
+                                <input {...register('category.name.en')} style={{ marginBottom: '10px' }} placeholder="Nombre de categoria en Ingles" />
                             </div>
                             <input type="submit" />
                         </div>
                     </Form>
                     <Divider />
-                    <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                         {
                             categoryList.map(category => (
-                                <div>
-                                    <p>{category.category.name.es}</p>
+                                <div style={{ border: '1px solid gray', padding: '10px' }}>
+                                    <p>{category?.category?.name?.es}</p>
                                     <Button content='Elimiar' color='red' onClick={() => handlerDeleteCategory(category.id)} />
                                 </div>
                             ))
@@ -71,7 +73,7 @@ function CreationCategoryModal() {
             </Modal.Content>
             <Modal.Actions>
                 <Button color='black' onClick={() => setOpen(false)}>
-                    Nope
+                    SALIR
                 </Button>
             </Modal.Actions>
         </Modal>

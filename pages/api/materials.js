@@ -10,12 +10,28 @@ export default function Material(req, res) {
     if (req.method === 'DELETE') deleteMaterial(req, res);
 }
 
+const getMaterials = async (req, res) => {
+    console.log('inicia sh')
+    try {
+        const client = await MongoClient.connect(BASE_URL_MONGO);
+        const db = client.db();
+        const collection = db.collection('Materials');
+
+        const modify = await collection.find().toArray();
+        res.status(200).json({
+            result: modify
+        });
+    } catch (e) {
+        res.status(500)
+    }
+}
+
 const deleteMaterial = async (req, res) => {
     try {
         const client = await MongoClient.connect(BASE_URL_MONGO);
         const db = client.db();
         const collection = db.collection('Materials');
-        const filter = { idMaterial: req.query.idMaterial };
+        const filter = { id: req.query.id };
 
         const modify = await collection.deleteOne(filter);
 
@@ -46,9 +62,7 @@ const ModifyMaterial = async (req, res) => {
             result: objectModify
         });
     } catch (error) {
-        res.status(500).json({
-            error: error
-        });
+        res.status(500)
     }
 };
 
@@ -73,7 +87,7 @@ const createMaterial = async (req, res) => {
     }
 };
 
-const getMaterials = async (req, res) => {
+const getCategoryMaterials = async (req, res) => {
     try {
         const client = await MongoClient.connect(BASE_URL_MONGO)
         const db = client.db();
