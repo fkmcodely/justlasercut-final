@@ -12,6 +12,7 @@ const CreationMaterialModal = () => {
     const [plateSizes, setPlateSizes] = useState([]);
     const [weightList, setWeightList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    const [subcategoryList, setSubcategoryList] = useState([]);
 
     const [width, setWidth] = useState();
     const [height, setHeight] = useState();
@@ -21,14 +22,23 @@ const CreationMaterialModal = () => {
     const [media, setMedia] = useState();
 
     useEffect(async () => {
-        console.log('chef')
         try {
             const { data: { steps } } = await axios(`/api/material-category`);
-            setCategoryList(steps);
+            const subcategory = await axios(`/api/material-subcategory`);
+            setSubcategoryList(subcategory.data.steps);
+            setCategoryList(steps)
         } catch (err) {
             console.error(`Error al obtener lista de categorias: ${err}`)
         }
     }, []);
+
+    const handlerSelectCategory = (id) => {
+        const handler = async () => {
+            const subcategory = await axios(`/api/material-subcategory`);
+            setSubcategoryList(subcategory?.data?.steps.filter(category => category.subcategory.categoryId === id));
+        };
+        handler();
+    };
 
     const onSubmit = data => {
         try {
@@ -121,10 +131,19 @@ const CreationMaterialModal = () => {
                                 }
                                 type="file"
                             />
-                            <select style={{ marginBottom: '1rem' }} {...register("materialCategory", { required: true })}>
+                            <select style={{ marginBottom: '1rem' }} {...register("materialCategory", {
+                                onChange: (ev) => handlerSelectCategory(ev.target.value)
+                            })}>
                                 {
                                     categoryList.map(({ category, id }) => (
                                         <option value={id} selected>{category?.name?.es}</option>
+                                    ))
+                                }
+                            </select>
+                            <select style={{ marginBottom: '1rem' }} {...register("materialSubCategory", { required: true })}>
+                                {
+                                    subcategoryList.map(({ subcategory, id }) => (
+                                        <option value={id} selected>{subcategory?.name?.es}</option>
                                     ))
                                 }
                             </select>
