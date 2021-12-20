@@ -1,25 +1,25 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Container, Button } from 'semantic-ui-react';
 import Filters from '../Filters/Filters';
 import Material from "../Material";
 
 
 const MaterialGit = ({ list: { result } }) => {
-
+    const [listFiltered, setListFiltered] = useState([]);
 
     return (
         <Container fluid className="material-git">
             <Grid columns="16" padded>
                 <Grid.Row>
                     <Grid.Column width="3">
-                        <Filters />
+                        <Filters setList={setListFiltered} list={result} />
                     </Grid.Column>
                     <Grid.Column width="13">
                         <Grid columns="16" className="material-git__list" padded relaxed>
                             <HelpCard />
                             {
-                                result?.map(material => (
+                                listFiltered?.map(material => (
                                     <Material material={material} name={material.title.es} image={material.image} />
                                 ))
                             }
