@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Header, Image, Modal, Form } from 'semantic-ui-react'
+import React, { useState, useEffect } from 'react';
+import { Button, Header, Divider, Image, Modal, Form } from 'semantic-ui-react'
 import { useForm } from "react-hook-form";
 import { createMaterial } from "../../../services/material";
 import axios from "axios";
@@ -11,6 +11,7 @@ const CreationMaterialModal = () => {
 
     const [plateSizes, setPlateSizes] = useState([]);
     const [weightList, setWeightList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
 
     const [width, setWidth] = useState();
     const [height, setHeight] = useState();
@@ -18,6 +19,16 @@ const CreationMaterialModal = () => {
 
     const [filename, setFilename] = useState();
     const [media, setMedia] = useState();
+
+    useEffect(async () => {
+        console.log('chef')
+        try {
+            const { data: { steps } } = await axios(`/api/material-category`);
+            setCategoryList(steps);
+        } catch (err) {
+            console.error(`Error al obtener lista de categorias: ${err}`)
+        }
+    }, []);
 
     const onSubmit = data => {
         try {
@@ -48,7 +59,6 @@ const CreationMaterialModal = () => {
             console.log('Error.', err);
             setOpen(false)
         }
-        console.log(data);
     };
 
     const handlerPlateSizes = (typeOperation, id = null) => {
@@ -111,7 +121,11 @@ const CreationMaterialModal = () => {
                                 type="file"
                             />
                             <select style={{ marginBottom: '1rem' }} {...register("materialCategory", { required: true })}>
-                                <option value="value2" selected>Carton</option>
+                                {
+                                    categoryList.map(({ category, id }) => (
+                                        <option value={id} selected>{category.name.es}</option>
+                                    ))
+                                }
                             </select>
                             <select style={{ marginBottom: '1rem' }} {...register("surfacePainting", { required: true })}>
                                 <option value="value2" selected>1</option>
@@ -164,6 +178,69 @@ const CreationMaterialModal = () => {
                                             </div>
                                         ))
                                     }
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', border: '1px solid gray', padding: '1rem', marginTop: '1rem' }}>
+                                <div>
+                                    Corte interior:
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.insideCut.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.insideCut.power")} />
+                                    </div>
+                                </div>
+                                <div>
+                                    Corte exterior:
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.outsideCut.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.outsideCut.power")} />
+                                    </div>
+                                </div>
+                                <Divider />
+                                <div>
+                                    Grabado (Bajo):
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.lowEngraving.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.lowEngraving.power")} />
+                                    </div>
+                                </div>
+                                <div>
+                                    Grabado (Medio):
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.mediumEngraving.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.mediumEngraving.power")} />
+                                    </div>
+                                </div>
+                                <div>
+                                    Grabado (Alto):
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.hightEngraving.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.hightEngraving.power")} />
+                                    </div>
+                                </div>
+                                <Divider />
+                                <div>
+                                    Grabado Relleno (Bajo):
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.lowFillEngraving.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.lowFillEngraving.power")} />
+                                        <input type="number" placeholder="Resolución" {...register("cuttingReport.lowFillEngraving.resolution")} />
+                                    </div>
+                                </div>
+                                <div>
+                                    Grabado Relleno (Medio):
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.mediumFillEngraving.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.mediumFillEngraving.power")} />
+                                        <input type="number" placeholder="Resolución" {...register("cuttingReport.mediumFillEngraving.resolution")} />
+                                    </div>
+                                </div>
+                                <div>
+                                    Grabado Relleno (Alto):
+                                    <div>
+                                        <input type="number" placeholder="Velocidad" {...register("cuttingReport.hightFillEngraving.velocity")} />
+                                        <input type="number" placeholder="Potencia" {...register("cuttingReport.hightFillEngraving.power")} />
+                                        <input type="number" placeholder="Resolución" {...register("cuttingReport.lowFillEngraving.resolution")} />
+                                    </div>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', border: '1px solid gray', padding: '1rem', marginTop: '1rem' }}>

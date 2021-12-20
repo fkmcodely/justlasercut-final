@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Button, Image, Divider } from "semantic-ui-react";
 import { deleteMaterial } from "../../../services/material";
+import axios from "axios";
 
 const CardMaterial = ({ material }) => {
     const { title, image, materialCategory, id } = material;
+    const [categoryList, setCategoryList] = useState([]);
+    const category = categoryList.find(category => category.id === materialCategory);
+
+    useEffect(async () => {
+        try {
+            const { data: { steps } } = await axios(`/api/material-category`);
+            setCategoryList(steps);
+        } catch (err) {
+            console.error(`Error al obtener lista de categorias: ${err}`)
+        }
+    }, []);
 
     return (
         <Grid columns="16" key={id} style={{ border: '1px solid gray' }}>
@@ -25,7 +37,7 @@ const CardMaterial = ({ material }) => {
                 <Grid.Column width="16" >
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <p><b>{title?.es}</b></p>
-                        <span>{materialCategory}</span>
+                        <span>{category?.category?.name?.es}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <p>precio</p>

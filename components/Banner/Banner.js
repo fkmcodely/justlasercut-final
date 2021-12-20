@@ -42,7 +42,6 @@ const Banner = ({ info }) => {
                     const handleCreateItemProject = await axios.post('/api/project', {
                         fileName: fileName
                     });
-                    console.log(handleCreateItemProject.data);
                 }
             } catch (error) {
                 console.error(`Error al subir fichero al servidor`, error);

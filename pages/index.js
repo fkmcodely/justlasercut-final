@@ -17,7 +17,6 @@ const languages = {
 
 function Home(props) {
   const { banner, steps = [], reviews = [], services = [] } = props;
-  console.log(banner)
   const [user, setUser] = useState();
   const { locale } = useRouter();
   const t = languages[locale];

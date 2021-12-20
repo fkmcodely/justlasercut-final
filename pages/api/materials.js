@@ -11,7 +11,6 @@ export default function Material(req, res) {
 }
 
 const getMaterials = async (req, res) => {
-    console.log('inicia sh')
     try {
         const client = await MongoClient.connect(BASE_URL_MONGO);
         const db = client.db();
