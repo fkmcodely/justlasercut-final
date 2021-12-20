@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Grid, Header, Divider } from 'semantic-ui-react';
 import CreationCategoryModal from './CreationCategoryModal';
 import CreationMaterialModal from "./CreationMaterialModal";
+import CreationSubtitleModal from "./CreationSubCategoryModa";
 import { getMaterials } from "../../../services/material";
 import CardMaterial from "./CardMaterial";
 
@@ -33,6 +34,7 @@ const Material = () => {
                 <Grid.Column width="8" style={{ paddingTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
                     <CreationMaterialModal />
                     <CreationCategoryModal />
+                    <CreationSubtitleModal />
                 </Grid.Column>
             </Grid.Row>
             <Divider />

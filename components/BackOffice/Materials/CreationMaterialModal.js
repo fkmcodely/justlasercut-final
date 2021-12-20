@@ -90,6 +90,7 @@ const CreationMaterialModal = () => {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             open={open}
+            size='fullscreen'
             trigger={<Button primary>+ Añadir material</Button>}
         >
             <Modal.Header></Modal.Header>
@@ -123,7 +124,7 @@ const CreationMaterialModal = () => {
                             <select style={{ marginBottom: '1rem' }} {...register("materialCategory", { required: true })}>
                                 {
                                     categoryList.map(({ category, id }) => (
-                                        <option value={id} selected>{category.name.es}</option>
+                                        <option value={id} selected>{category?.name?.es}</option>
                                     ))
                                 }
                             </select>

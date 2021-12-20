@@ -10,6 +10,7 @@ export const getServices = async () => {
     };
 }
 
+/*---------------------------------------| MATERIALES |------------------------------------------------- */
 export const getMaterials = async () => await axios(`/api/materials`);
 export const createMaterial = async (material) => {
     try {
@@ -26,6 +27,7 @@ export const deleteMaterial = async (id) => await axios.delete(`/api/materials`,
     }
 })
 
+/*---------------------------------------| CATEGORIAS |------------------------------------------------- */
 export const getCategoryMaterials = async () => await axios(`/api/material-category`);
 export const deleteCategoryMaterials = async (id) => await axios.delete(`/api/material-category`, {
     data: {
@@ -35,6 +37,23 @@ export const deleteCategoryMaterials = async (id) => await axios.delete(`/api/ma
 export const createCategoryMaterial = async (categoryMaterial) => {
     try {
         const post = await axios.post(`/api/material-category`, categoryMaterial);
+        const { data } = post;
+        return data;
+    } catch (err) {
+        console.error(`Error al create categoria: ${err}`);
+    }
+}
+
+/*---------------------------------------| SUBCATEGORIAS |------------------------------------------------- */
+export const getSubCategoryMaterials = async () => await axios(`/api/material-subcategory`);
+export const deleteSubCategoryMaterials = async (id) => await axios.delete(`/api/material-subcategory`, {
+    data: {
+        id: id
+    }
+});
+export const createSubCategoryMaterial = async (subcategoryMaterial) => {
+    try {
+        const post = await axios.post(`/api/material-subcategory`, subcategoryMaterial);
         const { data } = post;
         return data;
     } catch (err) {
