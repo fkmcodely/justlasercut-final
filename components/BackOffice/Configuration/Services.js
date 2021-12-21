@@ -134,8 +134,8 @@ const ModalAddService = ({ open, setOpen, rendered, language = 'es', setUpdate }
     const [textArea, setTextArea] = useState('');
     const [loading, setLoading] = useState(false);
     const [multimedia, setMultimedia] = useState('');
-    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
     const [filename, setFilename] = useState();
+    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
 
     const modalProps = {
         onClose: () => setOpen(false),

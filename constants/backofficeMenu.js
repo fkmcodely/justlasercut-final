@@ -31,4 +31,8 @@ export const BACKOFFICE_OPTIONS = [
         name: "Configuración General",
         index: 7
     },
+    {
+        name: "Configuración Blog",
+        index: 8
+    },
 ]

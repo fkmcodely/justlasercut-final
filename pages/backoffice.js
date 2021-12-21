@@ -5,6 +5,7 @@ import Contact from '../components/BackOffice/Contact/Contact';
 import Users from '../components/BackOffice/Users';
 import Configuration from '../components/BackOffice/Configuration/Configuration';
 import Material from '../components/BackOffice/Materials/';
+import Blog from "../components/BackOffice/Blog/Blog";
 
 const backoffice = () => {
     const [menuSelected, setMenuSelected] = useState(5)
@@ -27,6 +28,7 @@ const backoffice = () => {
                             {menuSelected === 5 && (<Users />)}
                             {menuSelected === 6 && (<Contact />)}
                             {menuSelected === 7 && (<Configuration />)}
+                            {menuSelected === 8 && (<Blog />)}
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
