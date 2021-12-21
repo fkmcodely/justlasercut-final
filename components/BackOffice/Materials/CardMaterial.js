@@ -18,13 +18,12 @@ const CardMaterial = ({ material }) => {
     }, []);
 
     return (
-        <Grid columns="16" key={id} style={{ border: '1px solid gray' }}>
+        <Grid columns="16" key={id} style={{ border: '1px solid gray', marginRight: '5px' }}>
             <Grid.Row>
-                <Grid.Column width="8" style={{ display: 'flex' }}>
+                <Grid.Column width="16" style={{ display: 'flex', justifyContent: 'flex-end' }} >
                     <Button size="mini" color='red' onClick={async () => {
                         const res = await deleteMaterial(id);
                     }}>Eliminar</Button>
-                    <Button size="mini" color='instagram'>Editar</Button>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row style={{ padding: '0px' }}>

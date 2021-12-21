@@ -71,7 +71,7 @@ function CreationSubcategoryCategoryModal() {
                         </div>
                     </Form>
                     <Divider />
-                    <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
                         {
                             categoryList.map(category => (
                                 <div style={{ border: '1px solid gray', padding: '10px' }}>

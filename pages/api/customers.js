@@ -14,17 +14,47 @@ export default function handler(req, res) {
     if (method === 'POST') {
         registerUser(req, res)
     }
+    if (method === 'PUT') {
+        editCustomer(req, res)
+    }
 }
 
+const editCustomer = (req, res) => {
+    const putStep = async () => {
+        try {
+            const session = await MongoClient.connect(BASE_URL_MONGO);
+            const db = session.db();
+            const collection = db.collection('customers');
+            const filter = { id: req.body.id };
 
-function getUser({ body }, res) {
-    const { email } = body;
+            const stepUpdated = {
+                $set: {
+                    ...req.body
+                }
+            }
+            await collection.updateOne(filter, stepUpdated);
+
+            session.close();
+            res.status(200).json({
+                message: 'ModifiedSuccesfully!'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: error
+            });
+        }
+    };
+    putStep();
+}
+
+function getUser(req, res) {
     const fetch = async () => {
         try {
             const client = await MongoClient.connect(url);
             const db = client.db();
             const collection = db.collection("customers");
-            const request = await collection.findOne({ email });
+            const request = await collection.find().toArray();
 
             client.close();
             return res.status(200).json({

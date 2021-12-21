@@ -17,6 +17,7 @@ const CreationMaterialModal = () => {
     const [width, setWidth] = useState();
     const [height, setHeight] = useState();
     const [weight, setWeight] = useState();
+    const [stock, setStock] = useState();
 
     const [filename, setFilename] = useState();
     const [media, setMedia] = useState();
@@ -73,7 +74,7 @@ const CreationMaterialModal = () => {
 
     const handlerPlateSizes = (typeOperation, id = null) => {
         if (typeOperation === true) {
-            setPlateSizes([...plateSizes, { id: uuidv4(), width: width, height: height }]);
+            setPlateSizes([...plateSizes, { id: uuidv4(), width: width, height: height, stock: stock }]);
             reset();
             return;
         }
@@ -93,6 +94,7 @@ const CreationMaterialModal = () => {
     const reset = () => {
         setWidth('');
         setHeight('');
+        setStock('')
     };
 
     return (
@@ -156,6 +158,7 @@ const CreationMaterialModal = () => {
                                 <div style={{ display: 'flex' }}>
                                     <input type="number" placeholder="Ancho" value={width} onChange={(ev) => setWidth(ev.target.value)} />
                                     <input type="number" placeholder="Alto" value={height} onChange={(ev) => setHeight(ev.target.value)} />
+                                    <input type="number" placeholder="Stock" value={stock} onChange={(ev) => setStock(ev.target.value)} />
                                     <Button content='+' primary onClick={(ev) => {
                                         ev.preventDefault();
                                         handlerPlateSizes(true)
@@ -164,9 +167,9 @@ const CreationMaterialModal = () => {
                                 <p>Lista de tamaños:</p>
                                 <div style={{ display: 'flex', marginBottom: '1rem' }}>
                                     {
-                                        plateSizes.map(({ width, height, id }) => (
+                                        plateSizes.map(({ width, height, id, stock }) => (
                                             <div style={{ display: 'flex', marginRight: '.5rem', border: '1px solid gray', width: 'fit-content', padding: '.7rem' }}>
-                                                <p style={{ marginRight: '1rem' }}>- {width}x{height}mm</p>
+                                                <p style={{ marginRight: '1rem' }}>- {width}x{height}mm - Stock: {stock}</p>
                                                 <Button color='red' content="-" size="tiny" onClick={(e) => {
                                                     e.preventDefault();
                                                     handlerPlateSizes(false, id)
@@ -190,7 +193,7 @@ const CreationMaterialModal = () => {
                                     {
                                         weightList.map(({ weight, id }) => (
                                             <div style={{ display: 'flex', marginRight: '.5rem', border: '1px solid gray', width: 'fit-content', padding: '.7rem' }}>
-                                                <p style={{ marginRight: '1rem' }}>- {weight}cm</p>
+                                                <p style={{ marginRight: '1rem' }}>- {weight}mm</p>
                                                 <Button color='red' content="-" onClick={(e) => {
                                                     e.preventDefault();
                                                     handlerWeightSizes(false, id)

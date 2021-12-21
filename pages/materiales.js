@@ -25,7 +25,6 @@ export async function getServerSideProps(context) {
 export default function Materials({ servicesData }) {
   const router = useRouter();
   const title = 'Lo que necesitas es amor. Y contrachapado, que quema doradito.';
-  console.log(servicesData)
   return (
     <>
       <PageBanner title={title} />

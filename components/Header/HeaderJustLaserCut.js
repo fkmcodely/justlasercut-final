@@ -72,14 +72,18 @@ const HeaderJustLaserCut = (props) => {
                             </Grid.Column>
                             <Grid.Column computer={5} tablet={10} className="header-just__user-experience-container">
                                 <nav className="header-just__user-experience">
-                                    <div className="header-identification-button margin-right-1">
+                                    <div className="header-identification-button margin-right-1" onClick={() => {
+                                        router.push('/contacto');
+                                    }}>
                                         <Icon name="envelope outline" size="large" />
                                         <p>{t.contacto}</p>
                                     </div>
 
                                     {session ? (
                                         <>
-                                            <p>Bienvenido</p>
+                                            <Button primary content='Perfil' onClick={() => {
+                                                router.push('/perfil');
+                                            }} />
                                         </>
                                     ) : (
                                         <ModalSession />
