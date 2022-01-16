@@ -42,6 +42,7 @@ const Banner = ({ info }) => {
                     const handleCreateItemProject = await axios.post('/api/project', {
                         fileName: fileName
                     });
+                    console.log(handleCreateItemProject)
                 }
             } catch (error) {
                 console.error(`Error al subir fichero al servidor`, error);
@@ -63,7 +64,7 @@ const Banner = ({ info }) => {
                     <Grid.Column computer="8" tablet={8} mobile={16} className="banner__start-shop">
                         <div className="upload-box">
                             <div className="inputfile-box">
-                                <input onChange={(ev) => { updateItemProject(ev) }} type="file" id="file" ref={fileInputField} o />
+                                <input onChange={(ev) => { updateItemProject(ev) }} type="file" id="file" ref={fileInputField} />
                                 <label htmlFor="file">
                                     <span id="file-name" className="file-box"></span>
                                     <span className="file-button">
