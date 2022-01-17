@@ -2,6 +2,8 @@ import React , { useState , useEffect, useRef } from 'react';
 import { Container, Grid, Header, Button, Icon, Form, Input } from "semantic-ui-react";
 import ProjectCart from '../components/ProjectCart/ProjectCart';
 import { useRouter } from 'next/router';
+import axios from 'axios';
+const { v4: uuidv4 } = require('uuid');
 
 const languages = {
     'es': require('../locale/es/commons.json'),
@@ -9,7 +11,7 @@ const languages = {
 };
 
 const proyectos = () => {
-    const [isUploadView,setUploadView] = useState(true);
+    const [isUploadView,setUploadView] = useState(false);
 
     return (
         <Container className='proyectos'>
@@ -27,7 +29,26 @@ const UploadProject = ({ setUploadView }) => {
     const t = languages[locale];
 
     const updateItemProject = (ev) => {
-
+        setFiles([0]);
+        const startProject = async () => {
+            try {   
+                const data = new FormData();
+                data.append('file',ev.target.files[0]);
+                const uploadMedia = await axios.post(`/api/dfx`, data, {
+                    params: {
+                        id: uuidv4()
+                    }
+                });
+                const fileName = uploadMedia.data.message;
+                const handleCreateItemProject = await axios.post(`/api/project`, {
+                    fileName: fileName
+                });
+                console.log(handleCreateItemProject);
+            } catch (err) {
+                console.error(`Error al subir fichero al servidor:`,err);
+            }
+        };
+        startProject();
     };
     
     return (

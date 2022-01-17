@@ -40,3 +40,13 @@
     border: 1px solid #CC555F;
     border-style: dashed;
 }
+
+.project-view {
+    &__svg {
+        border: 1px solid black;
+        min-height: 149px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
