@@ -76,6 +76,7 @@ const handlerUploadFile = async ({ body }, res) => {
                     const parsed = dxf.parseString(fs.readFileSync(path, 'utf-8'))
                     const svg = dxf.toSVG(parsed);
                     fs.writeFile('C:/Users/Usuario/Documents/justlasercut-final/public/',svg,'utf-8');
+                    console.log('guardado')
                     res.status(200).json({
                         fileName: fileName,
                         id: idItem,
