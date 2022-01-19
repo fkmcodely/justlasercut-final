@@ -1,7 +1,9 @@
 import React , { useState , useEffect, useRef } from 'react';
 import { Container, Grid, Header, Button, Icon, Form, Input } from "semantic-ui-react";
 import ProjectCart from '../components/ProjectCart/ProjectCart';
+import { useDispatch , useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { addItem } from '../redux/reducers/cartSlice';
 import axios from 'axios';
 const { v4: uuidv4 } = require('uuid');
 
@@ -25,9 +27,26 @@ const proyectos = () => {
 const UploadProject = ({ setUploadView }) => {
     const fileInputField = useRef(null)
     const [files, setFiles] = useState({});
+    const [fileData,setFileData] = useState({});
     const { locale } = useRouter();
+    const dispatch = useDispatch();
     const t = languages[locale];
-
+    const [name,setName] = useState('');
+    const createBodyItemProject = () => {
+        return (
+            {
+                idProjectItem: uuidv4(),
+                name: '',
+                file: null,
+                material: null,
+                extras: [],
+                previsualizacion: '',
+                weight: '',
+                copias: 1
+            }
+        )
+    }
+    
     const updateItemProject = (ev) => {
         setFiles([0]);
         const startProject = async () => {
@@ -40,15 +59,24 @@ const UploadProject = ({ setUploadView }) => {
                     }
                 });
                 const fileName = uploadMedia.data.message;
-                const handleCreateItemProject = await axios.post(`/api/project`, {
+                const res = await axios.post(`/api/project`, {
                     fileName: fileName
                 });
-                console.log(handleCreateItemProject);
+                setFileData(res.data);
+                
             } catch (err) {
                 console.error(`Error al subir fichero al servidor:`,err);
             }
         };
         startProject();
+    };
+    
+    const handlerCreateProject = () => {
+        let defaultProjectStructure = createBodyItemProject();
+        defaultProjectStructure.file = fileData;
+        defaultProjectStructure.name = name;
+        dispatch(addItem(defaultProjectStructure));
+        setUploadView(false);
     };
     
     return (
@@ -57,7 +85,7 @@ const UploadProject = ({ setUploadView }) => {
                 <Grid.Column computer={16}>
                     <p className='name'>
                         <b>Nombre de tu proyecto: </b>
-                        <Input type='text' />
+                        <Input value={name} onChange={(ev) => setName(ev.target.value)} type='text' />
                     </p>
                 </Grid.Column>
             </Grid.Row>
@@ -86,7 +114,7 @@ const UploadProject = ({ setUploadView }) => {
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column>
-                    <Button positive>Continuar</Button>
+                    <Button onClick={() => handlerCreateProject()} positive>Continuar</Button>
                 </Grid.Column>
             </Grid.Row>
         </Grid>

@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Container, Grid, Image } from "semantic-ui-react";
 import { BASE_URL } from '../../constants/config';
 import axios from "axios";
-import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import router, { useRouter } from 'next/router';
 import parse from "html-react-parser";
+import { addItem } from '../../redux/reducers/cartSlice';
 const { v4: uuidv4 } = require('uuid');
 
 const languages = {
@@ -14,10 +16,10 @@ const languages = {
 const Banner = ({ info }) => {
     const [files, setFiles] = useState({});
     const fileInputField = useRef(null)
+    const dispatch = useDispatch();
     const { locale } = useRouter();
     const [bannerInfo, setBannerInfo] = useState();
     const t = languages[locale];
-
     useEffect(() => {
         info.forEach((banner) => {
             if (banner.language === locale) {
@@ -26,6 +28,20 @@ const Banner = ({ info }) => {
         })
     }, [info, locale]);
 
+    const createBodyItemProject = () => {
+        return (
+            {
+                idProjectItem: uuidv4(),
+                name: '',
+                file: null,
+                material: null,
+                extras: [],
+                previsualizacion: '',
+                weight: ''
+            }
+        )
+    }
+    
     const updateItemProject = (ev) => {
         setFiles([0]);
         const startProject = async () => {
@@ -39,10 +55,13 @@ const Banner = ({ info }) => {
                         }
                     });
                     const fileName = uploadMedia.data.message;
-                    const handleCreateItemProject = await axios.post('/api/project', {
+                    const res = await axios.post('/api/project', {
                         fileName: fileName
                     });
-                    console.log(handleCreateItemProject)
+                    let defaultProjectStructure = createBodyItemProject();
+                    defaultProjectStructure.file = res.data;
+                    dispatch(addItem(defaultProjectStructure));
+                    router.push('/proyectos');
                 }
             } catch (error) {
                 console.error(`Error al subir fichero al servidor`, error);

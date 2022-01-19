@@ -15,7 +15,7 @@ const handlerUploadFile = async ({ body }, res) => {
     try {
         fs.writeFile('./LaserCutApp/file.txt', fileName, (err) => {
             if (err) throw err;
-            let executablePath = "C:/Users/krivera/Documents/kevin/justlasercut-final/LaserCutApp/bin/Debug/LaserCutApp.exe";
+            let executablePath = "C:/Users/Usuario/Documents/justlasercut-final/LaserCutApp/bin/Debug/LaserCutApp.exe";
 
             child(executablePath, async function (err, data) {
                 const messagesExceptions = ["Insert\r", "\r", "Point\r"];

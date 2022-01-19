@@ -51,3 +51,14 @@ C:\Users\kevin.rivera\personal\justlasercut-final\LaserCutApp\obj\Debug\LaserCut
 C:\Users\kevin.rivera\personal\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.CopyComplete
 C:\Users\kevin.rivera\personal\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.exe
 C:\Users\kevin.rivera\personal\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.pdb
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.exe
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.pdb
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\bin\Debug\LaserCutApp.exe.config
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\bin\Debug\LaserCutApp.exe
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\bin\Debug\LaserCutApp.pdb
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\bin\Debug\netDxf.pdb
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\bin\Debug\netDxf.xml
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.SuggestedBindingRedirects.cache
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.CopyComplete
