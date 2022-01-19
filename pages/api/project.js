@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 import { BASE_URL_MONGO } from "../../constants/config";
 const { v4: uuidv4 } = require('uuid');
 const child = require('child_process').execFile;
-
+const dxf = require('dxf');
 export default (req, res) => {
     if (req.method === 'POST') {
         handlerUploadFile(req, res);
@@ -72,6 +72,10 @@ const handlerUploadFile = async ({ body }, res) => {
                     });
 
                     session.close();
+                    const path = `C:/Users/Usuario/Documents/justlasercut-final/LaserCutApp/test/${fileName}`
+                    const parsed = dxf.parseString(fs.readFileSync(path, 'utf-8'))
+                    const svg = dxf.toSVG(parsed);
+                    fs.writeFile('C:/Users/Usuario/Documents/justlasercut-final/public/',svg,'utf-8');
                     res.status(200).json({
                         fileName: fileName,
                         id: idItem,
