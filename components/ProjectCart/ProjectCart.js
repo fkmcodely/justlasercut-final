@@ -1,6 +1,6 @@
 import React , { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, Checkbox, Grid, Header, Icon, Input, Select } from "semantic-ui-react";
+import { Button, Checkbox, Grid, Header, Icon, Input, Select, Image } from "semantic-ui-react";
 
 const ProjectCart = () => {
     //Obtener lista de proyectos subidos desde redux;
@@ -55,7 +55,11 @@ const ProjectItem = ({ item }) => {
             <Grid.Row>
                 <Grid.Column width={4}>
                     <div className='project-view__svg'>
-                        <p>Previsualización.</p>
+                        {
+                            file && (
+                                <Image fluid src={file.previsualization} />
+                            )
+                        }
                     </div>
                 </Grid.Column>
                 <Grid.Column width={10}>

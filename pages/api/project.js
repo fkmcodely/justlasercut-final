@@ -80,7 +80,8 @@ const handlerUploadFile = async ({ body }, res) => {
                     res.status(200).json({
                         fileName: fileName,
                         id: idItem,
-                        planchas: planchas
+                        planchas: planchas,
+                        previsualization: `${fileName.replace('.dxf','.svg')}`
                     });
                 } catch (error) {
                     console.log('Error en sesion', error)

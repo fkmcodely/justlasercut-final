@@ -44,7 +44,8 @@
 .project-view {
     &__svg {
         border: 1px solid black;
-        min-height: 149px;
+        height: 149px;
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
