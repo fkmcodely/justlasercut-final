@@ -4,10 +4,7 @@
 }
 .project-cart {
     min-height: 10rem;
-    border-top: 1px solid #616161;
-    border-bottom: 1px solid #616161;
-    border-top-style: dashed;
-    border-bottom-style: dashed;
+    padding: 25px 0px;
     padding-top: 20px;
     font-weight: 600;
 
@@ -54,6 +51,21 @@
 p {
     font-weight: normal !important;
 }
+b {
+    font-weight: 600;
+}
+.bold {
+    font-weight: 700 !important;
+}
+.boton-plus {
+    margin-bottom: 14px !important;
+    font-size: 2rem !important;
+}
+
+.boton-plus-local {
+    display: flex !important;
+    align-items: center !important;
+}
 .project-view {
     border-bottom: 1px dashed #616161;
     section {
@@ -63,6 +75,14 @@ p {
         h5 {
             margin: 0px !important;
         }
+    }
+}
+
+.project-cart-view {
+    min-height: 140px;
+    .empty-message {
+        color: #000000;
+        font-weight: 500 !important;
     }
 }
 
@@ -113,4 +133,46 @@ li {
     margin-top: 8px;
     justify-content: space-between;
     align-items: center;
+}
+
+.jf-right{
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+.drag-drop {
+    border: 2px solid #CC555F !important;
+    border-style: dashed !important;
+    height: 100px !important;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    span {
+        text-decoration: underline;
+        font-weight: 600;
+    }
+}
+
+.dashed {
+    border-bottom: 1px dashed #616161 !important;
+}
+
+.n-pdb {
+    padding-bottom: 0px !important;
+}
+
+.tx-gray {
+    color: gray !important;
+}
+
+.delete-icon {
+    color: #5569CC;
+    margin-left: 2rem !important;
+}
+.flex-end {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-end !important;
 }

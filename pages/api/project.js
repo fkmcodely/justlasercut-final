@@ -11,7 +11,7 @@ export default (req, res) => {
 }
 
 const handlerUploadFile = async ({ body }, res) => {
-    const { fileName } = body;
+    const { fileName, originalName } = body;
     try {
         fs.writeFile('./LaserCutApp/file.txt', fileName, (err) => {
             if (err) throw err;
@@ -75,13 +75,13 @@ const handlerUploadFile = async ({ body }, res) => {
                     const path = `C:/Users/Usuario/Documents/justlasercut-final/LaserCutApp/test/${fileName}`
                     const parsed = dxf.parseString(fs.readFileSync(path, 'utf-8'))
                     const svg = dxf.toSVG(parsed);
-                    console.log(fileName)
                     fs.writeFile(`C:/Users/Usuario/Documents/justlasercut-final/public/${fileName.replace('.dxf','.svg')}`,svg,'utf-8');
                     res.status(200).json({
                         fileName: fileName,
                         id: idItem,
                         planchas: planchas,
-                        previsualization: `${fileName.replace('.dxf','.svg')}`
+                        previsualization: `${fileName.replace('.dxf','.svg')}`,
+                        originalName: originalName
                     });
                 } catch (error) {
                     console.log('Error en sesion', error)

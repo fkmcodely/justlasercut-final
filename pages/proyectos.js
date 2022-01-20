@@ -53,6 +53,7 @@ const UploadProject = ({ setUploadView }) => {
             try {   
                 const data = new FormData();
                 data.append('file',ev.target.files[0]);
+                const originalName = ev.target.files[0].name;
                 const uploadMedia = await axios.post(`/api/dfx`, data, {
                     params: {
                         id: uuidv4()
@@ -60,7 +61,8 @@ const UploadProject = ({ setUploadView }) => {
                 });
                 const fileName = uploadMedia.data.message;
                 const res = await axios.post(`/api/project`, {
-                    fileName: fileName
+                    fileName: fileName,
+                    originalName: originalName
                 });
                 setFileData(res.data);
                 
@@ -124,15 +126,27 @@ const UploadProject = ({ setUploadView }) => {
 const MainApp = ({setUploadView}) => {
     return (
         <Grid columns={16}>
-            <Grid.Row>
+            <Grid.Row className='n-pdb'>
                 <Grid.Column computer={16}>
-                    <Header as='h1'>Tu proyecto actual:</Header>
+                    <Header as='h1' className='dashed'>Tu presupuesto:</Header>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column computer={16} className='project-cart'>
                     <ProjectCart />
-                    <hr/>
+                </Grid.Column>
+            </Grid.Row>
+           
+            <Grid.Row>
+                <Grid.Column computer={16}>
+                    <div className='drag-drop'>
+                        <p><span>Sube</span> o arrastra más archivos aquí</p>
+                    </div>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row>
+                <Grid.Column computer={16} className='jf-right'>
                     <Button positive onClick={() => setUploadView(true)}>
                         <Icon corner size='large' name='plus' />
                         CREAR
