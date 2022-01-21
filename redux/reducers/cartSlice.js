@@ -32,6 +32,23 @@ export const cartSlice = createSlice({
                 return item
             })
         },
+        addExtra: (state,action) => {
+            state.items = state.items.map( item => {
+                if(item.idProjectItem === action.payload.itemId) {
+                    item.extras = [...item.extras,action.payload.extras]
+                };
+                return item
+            })
+        },
+        deleteExtra: (state,action) => {
+            state.items = state.items.map( item => {
+                if(item.idProjectItem === action.payload.itemId) {
+                    console.log(action.payload.id)
+                    item.extras = item.extras.filter((item) => item.id === action.payload.id)
+                };
+                return item
+            })
+        },
     }
 });
 
@@ -39,7 +56,9 @@ export const {
     addItem: addItem, 
     deleteItem: deleteItem, 
     setMaterial: setMaterial,
-    setGrosor: setGrosor 
+    setGrosor: setGrosor,
+    addExtra: addExtra ,
+    deleteExtra: deleteExtra
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React , { useEffect, useState } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
-import { deleteItem , setMaterial, setGrosor } from '../../redux/reducers/cartSlice';
+import { addExtra } from '../../redux/reducers/cartSlice';
+import { extras } from '../../constants/extras';
+import { deleteItem , setMaterial, setGrosor, deleteExtra } from '../../redux/reducers/cartSlice';
 import { Button, Checkbox, Grid, Header, Icon, Input, Select, Image, Search } from "semantic-ui-react";
 
 const ProjectCart = () => {
@@ -38,7 +40,6 @@ const ProjectItem = ({ item }) => {
     const [anchos,setAnchos] = useState([]);
 
     const dispatch = useDispatch();
-    
     const [products,setProducts] = useState([]);
     const [searchMaterial,setSearchMaterial] = useState([]);
     const { file } = item;
@@ -143,7 +144,7 @@ const ProjectItem = ({ item }) => {
     useEffect(() => {
         getCategories();
         getMateriales();
-    },[]);
+    },[show]);
     
     return(
         <Grid columns={16} className='project-view'>
@@ -269,6 +270,7 @@ const ProjectItem = ({ item }) => {
                                 <Select 
                                     className='select-material-options__material' 
                                     options={materiales} 
+                                    defaultValue={item.material}
                                     onChange={(e,{ value }) => {
                                         setProductSelected(value);
                                     }}
@@ -276,6 +278,7 @@ const ProjectItem = ({ item }) => {
                                 <Select 
                                     className='select-material-options__weight' 
                                     options={anchos} 
+                                    defaultValue={item.weight}
                                     onChange={(e,{ value }) => {
                                         setWeightSelected(value);
                                     }}
@@ -287,6 +290,10 @@ const ProjectItem = ({ item }) => {
                                 icon="search"
                                 placeholder="Buscar material..."
                                 results={products}
+                                onResultSelect={(ev,x) => {
+                                    console.log(x.result.value)
+                                    setProductSelected(x.result.value);
+                                }}
                                 resultRenderer={resRender}
                             />
                                 <div>
@@ -295,43 +302,31 @@ const ProjectItem = ({ item }) => {
                             </div>
                             <h5 className='title-dashed'>Extras:</h5>
                             <div>
-                                <div style={{ display: 'flex' , alignItems: 'center', justifyContent: 'space-between'}}>
-                                    <p>
-                                        - Lamina antiguemaduras por una cara 
-                                    </p>
-                                    <div className='flex'>
-                                        <p>3$/plancha</p>
-                                        <Checkbox />
-                                    </div>
-                                    
-                                </div>
-                                <div style={{ display: 'flex' , alignItems: 'center', justifyContent: 'space-between'}}>
-                                    <p>
-                                        - Lamina antiguemaduras por una cara 
-                                    </p>
-                                    <div className='flex'>
-                                        <p>3$/plancha</p>
-                                        <Checkbox />
-                                    </div>
-                                </div>
-                                <div style={{ display: 'flex' , alignItems: 'center', justifyContent: 'space-between'}}>
-                                <p>
-                                        - Lamina antiguemaduras por una cara 
-                                    </p>
-                                    <div className='flex'>
-                                        <p>3$/plancha</p>
-                                        <Checkbox />
-                                    </div>
-                                </div>
-                                <div style={{ display: 'flex' , alignItems: 'center', justifyContent: 'space-between'}}>
-                                    <p>
-                                        - Lamina antiguemaduras por una cara 
-                                    </p>
-                                    <div className='flex'>
-                                        <p>3$/plancha</p>
-                                        <Checkbox />
-                                    </div>
-                                </div>
+                                {
+                                    extras.map(extra => {
+                                        const existChecked = item.extras.some(ev => parseInt(ev.id) === parseInt(extra.id) )
+                                        return (
+                                            <div style={{ display: 'flex' , alignItems: 'center', justifyContent: 'space-between'}}>
+                                                <p>
+                                                    - {extra.text}
+                                                </p>
+                                                <div className='flex center'>
+                                                    <p>{extra.price}/plancha</p>
+                                                    <Checkbox 
+                                                        defaultChecked={existChecked}
+                                                        onChange={(ev,data) => {
+                                                        const { checked } = data;
+                                                        if(checked) {
+                                                            dispatch(addExtra({ itemId: item.idProjectItem, extras : extra }))
+                                                        } else {
+                                                            dispatch(deleteExtra({ itemId: item.idProjectItem, id : extra.id }))
+                                                        }
+                                                    }}/>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </Grid.Column>
                     </Grid.Row>

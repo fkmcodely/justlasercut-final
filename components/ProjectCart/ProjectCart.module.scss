@@ -85,6 +85,13 @@ b {
         font-weight: 500 !important;
     }
 }
+.center {
+    p {
+        margin: 0px !important;
+        margin-right: 10px !important;
+    }
+    align-items: center;
+}
 
 .title-dashed {
     border-bottom: 1px dashed #616161;
