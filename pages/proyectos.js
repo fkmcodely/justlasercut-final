@@ -91,13 +91,7 @@ const UploadProject = ({ setUploadView }) => {
                     </p>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row>
-               <Grid.Column computer={16}>
-                <Header as="h3">
-                    Tu presupuesto
-                </Header>
-               </Grid.Column>
-            </Grid.Row>
+           
             <Grid.Row>
                 <Grid.Column computer={16}>
                     <div className="upload-box">
@@ -124,11 +118,19 @@ const UploadProject = ({ setUploadView }) => {
 }
 
 const MainApp = ({setUploadView}) => {
+    const [name,setName] = useState('');
+
     return (
         <Grid columns={16}>
-            <Grid.Row className='n-pdb'>
+            <Grid.Row >
                 <Grid.Column computer={16}>
-                    <Header as='h1' className='dashed'>Tu presupuesto:</Header>
+                    <Header as='h1'>Tu presupuesto:</Header>
+                </Grid.Column>
+                <Grid.Column computer={16}  className='dashed title-project' style={{ marginTop: '1.5rem', marginTop: '1.5rem'}}>
+                    <p className='name'>
+                        <b>Nombre de tu proyecto: </b>
+                        <Input value={name} onChange={(ev) => setName(ev.target.value)} className='mg-2 input-project' type='text' />
+                    </p>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>

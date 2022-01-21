@@ -146,7 +146,7 @@ const MenuJust = () => {
         },
         {
             title: t.proyectos,
-            href: "/user-profile"
+            href: "/proyectos"
         }
     ];
     return (

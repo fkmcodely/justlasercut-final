@@ -146,6 +146,11 @@ const ProjectItem = ({ item }) => {
         getMateriales();
     },[show]);
     
+    const getNameMaterial = () => {
+        const material = materiales.find((obj) => obj.id === item.material);
+        return material.text
+    };
+
     return(
         <Grid columns={16} className='project-view'>
             <Grid.Row>
@@ -175,7 +180,7 @@ const ProjectItem = ({ item }) => {
                             !show && (
                                 <Grid.Row>
                                     <Grid.Column computer={8}>
-                                        <p><b>Material:</b> "Seleccionar material"</p>
+                                        <p><b>Material:</b> {getNameMaterial()}</p>
                                     </Grid.Column>
                                     <Grid.Column computer={8}>
                                         <p><b>Extras seleccionados:</b></p>
@@ -199,14 +204,62 @@ const ProjectItem = ({ item }) => {
                                         <h5 className='title-dashed'>Errores detectados: </h5>
                                         <section style={{ display: 'flex'}}>
                                             <div style={{ width: '48%'}}>
-                                                <p>Sombreados</p>
-                                                <p>Bloques</p>
-                                                <p>Puntos</p>
+                                                <p style={{
+                                                    display: 'flex',
+                                                }}>
+                                                    <span style={{
+                                                        marginRight: '30px',
+                                                        minWidth: '170px'
+                                                    }}>Sombreados</span>
+                                                    <Icon name="check" />
+                                                </p>
+                                                <p style={{
+                                                    display: 'flex',
+                                                }}>
+                                                    <span style={{
+                                                        marginRight: '30px',
+                                                        minWidth: '170px'
+                                                    }}>Bloques</span>
+                                                    <Icon name="x" />
+                                                </p>
+                                                <p style={{
+                                                    display: 'flex',
+                                                }}>
+                                                    <span style={{
+                                                        marginRight: '30px',
+                                                        minWidth: '170px'
+                                                    }}>Puntos</span>
+                                                    <Icon name="x" />
+                                                </p>
                                             </div>
                                             <div style={{ width: '48%'}}>
-                                                <p>Texto</p>
-                                                <p>Grabado relleno cerrado</p>
-                                                <p>Objetos fuera de capas</p>
+                                                <p style={{
+                                                    display: 'flex',
+                                                }}>
+                                                    <span style={{
+                                                        marginRight: '30px',
+                                                        minWidth: '170px'
+                                                    }}>Texto</span>
+                                                    <Icon name="check" />
+                                                </p>
+                                                <p style={{
+                                                    display: 'flex',
+                                                }}>
+                                                    <span style={{
+                                                        marginRight: '30px',
+                                                        minWidth: '170px'
+                                                    }}>Grabado relleno cerrado</span>
+                                                    <Icon name="x" />
+                                                </p>
+                                                <p style={{
+                                                    display: 'flex',
+                                                }}>
+                                                    <span style={{
+                                                        marginRight: '30px',
+                                                        minWidth: '170px'
+                                                    }}>Objetos fuera de capas</span>
+                                                    <Icon name="check" />
+                                                </p>
                                             </div>
                                         </section>
                                     </Grid.Column>
