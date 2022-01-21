@@ -38,6 +38,7 @@ const ProjectItem = ({ item }) => {
     const [categories,setCategories] = useState([]);
     const [materiales,setMateriales] = useState([]);
     const [anchos,setAnchos] = useState([]);
+    const [copias,setCopias] = useState(item.copias);
 
     const dispatch = useDispatch();
     const [products,setProducts] = useState([]);
@@ -148,7 +149,7 @@ const ProjectItem = ({ item }) => {
     
     const getNameMaterial = () => {
         const material = materiales.find((obj) => obj.id === item.material);
-        return material.text
+        return material?.text
     };
 
     return(
@@ -169,10 +170,15 @@ const ProjectItem = ({ item }) => {
                             <Grid.Column computer={8}>
                                 <Header as='h3'>{item.file.originalName}</Header>
                             </Grid.Column>
-                            <Grid.Column computer={8} verticalAlign='middle' textAlign='right' className='flex-end'>
-                                <span><b>Copias:</b> {item?.copias}</span>
+                            <Grid.Column computer={8} verticalAlign='middle' textAlign='right' className='flex-end center'>
+                                <span style={{ marginLeft: '10px'}}><b>Copias:</b></span>
+                                <Input
+                                    value={copias} 
+                                    style={{ marginLeft: '10px' ,width: '5rem'}}
+                                    onChange={(ev) => setCopias(ev.target.value)} type='number' />
                                 <div>
-                                    <Icon className='trash alternate outline delete-icon' onClick={deleteItemFromCart} />
+                                    <Icon 
+                                        className='trash alternate outline delete-icon' onClick={deleteItemFromCart} />
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
@@ -186,7 +192,7 @@ const ProjectItem = ({ item }) => {
                                         <p><b>Extras seleccionados:</b></p>
                                     </Grid.Column>
                                     <Grid.Column computer={8}>
-                                        <p><b>Cantidad de planchas: </b><span>{file.planchas.length}</span></p>
+                                        <p><b>Cantidad de planchas: </b><span>{file?.planchas?.length}</span></p>
                                     </Grid.Column>
                                     <Grid.Column computer={8}>
                                         <p><b>Errores en archivo:</b> "Lista"</p>
@@ -361,10 +367,10 @@ const ProjectItem = ({ item }) => {
                                         return (
                                             <div style={{ display: 'flex' , alignItems: 'center', justifyContent: 'space-between'}}>
                                                 <p>
-                                                    - {extra.text}
+                                                    - {extra?.text}
                                                 </p>
                                                 <div className='flex center'>
-                                                    <p>{extra.price}/plancha</p>
+                                                    <p>{extra?.price}/plancha</p>
                                                     <Checkbox 
                                                         defaultChecked={existChecked}
                                                         onChange={(ev,data) => {

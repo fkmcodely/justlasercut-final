@@ -85,6 +85,21 @@ b {
         font-weight: 500 !important;
     }
 }
+
+.upload-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12rem;
+    border: 2px dashed #CC555F !important;
+    border-radius: 9px 9px 9px 9px !important;
+    padding: 40px 0px !important ;
+}
+
+.upload-box [type="file"]{
+    display: none !important;
+}
+
 .center {
     p {
         margin: 0px !important;
