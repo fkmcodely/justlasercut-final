@@ -93,7 +93,9 @@ const FormSignIn = ({ t }) => {
                                 if (err) {
                                     setError(true);
                                 } else {
-
+                                    localStorage.setItem('session',JSON.stringify({
+                                        email: email
+                                    }))
                                     router.push('/');
                                 }
                             }).finally((res) => {

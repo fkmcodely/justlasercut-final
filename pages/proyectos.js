@@ -1,5 +1,5 @@
 import React , { useState , useEffect, useRef } from 'react';
-import { Container, Grid, Header, Button, Icon, Form, Input } from "semantic-ui-react";
+import { Container, Grid, Header, Button, Icon, Form, Input, Divider } from "semantic-ui-react";
 import ProjectCart from '../components/ProjectCart/ProjectCart';
 import { useDispatch , useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -110,7 +110,6 @@ const UploadProject = ({ setUploadView }) => {
                                 </label>
                             </div>
                         </div>
-                       
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -131,7 +130,7 @@ const MainApp = ({setUploadView}) => {
     const [fileData,setFileData] = useState({});
     const [files, setFiles] = useState({});
     const dispatch = useDispatch();
-    
+    const cart = useSelector(state => state.cart);
     const createBodyItemProject = () => {
         return (
             {
@@ -187,6 +186,20 @@ const MainApp = ({setUploadView}) => {
         startProject();
     };
 
+    const handleCreatePedido = async () => {
+        const user =  JSON.parse(localStorage.getItem('session'))
+        const pedido = {
+            ...cart,
+            user: 'keivn'
+        };
+        try {
+            const res = await axios.post(`/api/pedidos`,pedido);
+            console.log(res);
+        } catch (e) {
+            console.error(e)
+        }
+    };
+
     return (
         <Grid columns={16}>
             <Grid.Row >
@@ -236,10 +249,13 @@ const MainApp = ({setUploadView}) => {
                     {/* <FileUploader handleChange={handleChange} name="file"  /> */}
                 </Grid.Column>
             </Grid.Row>
-
+            <Divider />
             <Grid.Row>
+                <Grid.Column computer={16} className='jf-right' style={{ marginBottom: '1rem !important'}}>
+                    <Header as='h3'>Precio total (con IVA):  -- €</Header>
+                </Grid.Column>
                 <Grid.Column computer={16} className='jf-right'>
-                    <Button positive onClick={() => setUploadView(true)}>
+                    <Button className='button-buy' positive onClick={handleCreatePedido}>
                         <Icon corner size='large' name='plus' />
                         CREAR
                     </Button>
