@@ -3,8 +3,8 @@ import React , { useEffect, useState } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
 import { addExtra } from '../../redux/reducers/cartSlice';
 import { extras } from '../../constants/extras';
-import { deleteItem , setMaterial, setGrosor, deleteExtra } from '../../redux/reducers/cartSlice';
-import { Button, Checkbox, Grid, Header, Icon, Input, Select, Image, Search } from "semantic-ui-react";
+import { deleteItem , checkMaterialClient, setMaterial, setGrosor, deleteExtra, modifyCopias } from '../../redux/reducers/cartSlice';
+import { Button, Popup, Checkbox, Grid, Modal, Header, Icon, Input, Select, Image, Search } from "semantic-ui-react";
 
 const ProjectCart = () => {
     //Obtener lista de proyectos subidos desde redux;
@@ -32,6 +32,27 @@ const ProjectCart = () => {
         </Grid>
     );
 };
+
+const ModalImageProject = ({ urlImage }) => {
+    const [open, setOpen] = useState(false)
+
+    return (
+        <Modal
+            open={open}
+            size='mini'
+            // style={{
+            //     maxHeight: '70vh'
+            // }}
+            trigger={<Image fluid src={urlImage} />}
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+        >
+            <Modal.Content>
+                <Image src={urlImage} fluid />
+            </Modal.Content>
+        </Modal>
+    )
+}
 
 const ProjectItem = ({ item }) => {
     const [show,setShow] = useState(true);
@@ -142,6 +163,25 @@ const ProjectItem = ({ item }) => {
         dispatch(deleteItem(item.idProjectItem))
     };
     
+    const getColor = (capa = '') => {
+        console.log(capa)
+        let color = '';
+        if (capa.includes('exterior')) {
+            color = '#FF0000'
+        }
+        if (capa.includes('interior')) {
+            color = '#0000FF'
+        }
+        if (capa.includes('superficie')) {
+            color = '#FF00FF'
+        }
+        if (capa.includes('Comentarios')) {
+            color = '#999999'
+        }
+        console.log(color)
+        return color;
+    }
+
     useEffect(() => {
         getCategories();
         getMateriales();
@@ -152,6 +192,32 @@ const ProjectItem = ({ item }) => {
         return material?.text
     };
 
+    const exportListadoExtraSeleccionado = () => {
+        const element = (
+            <div>
+                <h4>Extras seleccionados</h4>
+                {item.extras.map((extra) => (<p>- {extra.text}: <b>{extra.price}</b></p>))}
+            </div>
+        )
+        return element;
+    };
+    
+    const exportListadoErroresSeleccionado = () => {
+        const element = (
+            <div>
+                <h4>Errores detectados</h4>
+                <p style={{display: 'flex',}}>
+                    <span style={{
+                        marginRight: '30px',
+                        minWidth: '170px'
+                    }}>Grabado relleno cerrado</span>
+                    <Icon name="x" color="red"/>
+                 </p>
+            </div>
+        )
+        return element;
+    };
+
     return(
         <Grid columns={16} className='project-view'>
             <Grid.Row>
@@ -159,7 +225,7 @@ const ProjectItem = ({ item }) => {
                     <div className='project-view__svg'>
                         {
                             file && (
-                                <Image fluid src={file.previsualization} />
+                                <ModalImageProject urlImage={file.previsualization} />
                             )
                         }
                     </div>
@@ -175,7 +241,15 @@ const ProjectItem = ({ item }) => {
                                 <Input
                                     value={copias} 
                                     style={{ marginLeft: '10px' ,width: '5rem'}}
-                                    onChange={(ev) => setCopias(ev.target.value)} type='number' />
+                                    onChange={(ev) => {
+                                        setCopias(ev.target.value);
+                                        dispatch(modifyCopias({
+                                            itemId: item.idProjectItem,
+                                            copias: ev.target.value
+                                        }))
+                                    }} type='number' 
+                                    />
+                                    
                                 <div>
                                     <Icon 
                                         className='trash alternate outline delete-icon' onClick={deleteItemFromCart} />
@@ -189,13 +263,23 @@ const ProjectItem = ({ item }) => {
                                         <p><b>Material:</b> {getNameMaterial()}</p>
                                     </Grid.Column>
                                     <Grid.Column computer={8}>
-                                        <p><b>Extras seleccionados:</b></p>
+                                        <p>
+                                            <b>Extras seleccionados:</b>
+                                            <Popup content={
+                                                exportListadoExtraSeleccionado()
+                                            } trigger={<Icon color='blue' name='info circle' />} />
+                                        </p>
                                     </Grid.Column>
                                     <Grid.Column computer={8}>
                                         <p><b>Cantidad de planchas: </b><span>{file?.planchas?.length}</span></p>
                                     </Grid.Column>
                                     <Grid.Column computer={8}>
-                                        <p><b>Errores en archivo:</b> "Lista"</p>
+                                        <p>
+                                            <b>Errores en archivo:</b> 
+                                            <Popup content={
+                                                exportListadoErroresSeleccionado()
+                                            } trigger={<Icon color='blue' name='info circle' />} />
+                                        </p>
                                     </Grid.Column>
                                     <Grid.Column computer={8}>
                                         <p><b>Calidad de grabado relleno:</b> 0.1/1.5/0.2</p>
@@ -299,7 +383,7 @@ const ProjectItem = ({ item }) => {
                                 <ul>
                                     {
                                         file?.planchas?.map((plancha,index) => (
-                                            <li>{`- Plancha (${index}) - ${plancha.board.width}X${plancha.board.height}mm`}</li>
+                                            <li>{`- Plancha ${index+1}  -  ${plancha.board.width} X ${plancha.board.height}mm`}</li>
                                         ))
                                     }
                                 </ul>
@@ -308,12 +392,16 @@ const ProjectItem = ({ item }) => {
                             <div>
                                 <ul>
                                     {
-                                        getDetectedCapas().map((capa) => (<li>{`- ${capa}`}</li>))
+                                        getDetectedCapas().map((capa) => (
+                                            <li>
+                                                <Icon name='circle outline' style={{
+                                                    color: getColor(capa)
+                                                }} />
+                                                {`- ${capa}`}
+                                            </li>
+                                        ))
                                     }
-                                    {/* <li> Corte exterior </li>
-                                    <li> Corte interior </li>
-                                    <li> Grabado de superficie </li>
-                                    <li> Comentarios </li> */}
+                                    
                                 </ul>
                             </div>
                         </Grid.Column>
@@ -356,7 +444,18 @@ const ProjectItem = ({ item }) => {
                                 resultRenderer={resRender}
                             />
                                 <div>
-                                    <p>Llevo mi propio material(contacta con justlasercut antes) <Checkbox /></p>
+                                    <p>
+                                        Llevo mi propio material(contacta con justlasercut antes) 
+                                        <Checkbox 
+                                            defaultChecked={item.materialClient}
+                                            onChange={(ev,{ checked }) => {
+                                                dispatch(checkMaterialClient({
+                                                    itemId: item.idProjectItem,
+                                                    check: checked
+                                                }))
+                                            }}
+                                        />
+                                    </p>
                                 </div>
                             </div>
                             <h5 className='title-dashed'>Extras:</h5>

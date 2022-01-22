@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const initialState = {
     id: uuidv4(),
+    name: '',
     items: []
 }
 
@@ -49,16 +50,39 @@ export const cartSlice = createSlice({
                 return item
             })
         },
+        modifyCopias: (state,action) => {
+            state.items = state.items.map( item => {
+                if(item.idProjectItem === action.payload.itemId) {
+                    item.copias = action.payload.copias;
+                };
+                return item
+            })
+        },
+        checkMaterialClient: (state,action) => {
+            state.items = state.items.map( item => {
+                if(item.idProjectItem === action.payload.itemId) {
+                    item.materialClient = action.payload.check;
+                };
+                return item
+            })
+        },
+        setNameProject: (state,action) => {
+            console.log(action.payload.name)
+            state.name = action.payload.name
+        }
     }
 });
 
 export const { 
+    setNameProject: setNameProject,
+    checkMaterialClient: checkMaterialClient,
     addItem: addItem, 
     deleteItem: deleteItem, 
     setMaterial: setMaterial,
     setGrosor: setGrosor,
     addExtra: addExtra ,
-    deleteExtra: deleteExtra
+    deleteExtra: deleteExtra,
+    modifyCopias: modifyCopias
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

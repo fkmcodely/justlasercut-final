@@ -3,8 +3,10 @@ import { Container, Grid, Header, Button, Icon, Form, Input } from "semantic-ui-
 import ProjectCart from '../components/ProjectCart/ProjectCart';
 import { useDispatch , useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { addItem } from '../redux/reducers/cartSlice';
+import { FileUploader } from "react-drag-drop-files";
+import { addItem, modifyCopias, setNameProject } from '../redux/reducers/cartSlice';
 import axios from 'axios';
+import DragDrop from '../components/DragDrop';
 const { v4: uuidv4 } = require('uuid');
 
 const languages = {
@@ -43,7 +45,8 @@ const UploadProject = ({ setUploadView }) => {
                 extras: [],
                 previsualizacion: '',
                 weight: '',
-                copias: 1
+                copias: 1,
+                materialClient: false,
             }
         )
     }
@@ -95,18 +98,19 @@ const UploadProject = ({ setUploadView }) => {
            
             <Grid.Row>
                 <Grid.Column computer={16}>
-                    <div className="upload-box">
-                        <div className="inputfile-box">
-                            <input onChange={(ev) => { updateItemProject(ev) }} type="file" id="file" ref={fileInputField} />
-                            <label htmlFor="file">
-                                <span id="file-name" className="file-box"></span>
-                                <span className="file-button">
-                                    <i className="fa fa-upload" aria-hidden="true"></i>
-                                    <p>{t.subirdxf}</p>
-                                </span>
-                            </label>
+                        <div className="upload-box">
+                            <div className="inputfile-box">
+                                <input onChange={(ev) => { updateItemProject(ev) }} type="file" id="file" ref={fileInputField} />
+                                <label htmlFor="file">
+                                    <span id="file-name" className="file-box"></span>
+                                    <span className="file-button">
+                                        <i className="fa fa-upload" aria-hidden="true"></i>
+                                        <p>{t.subirdxf}</p>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
+                       
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -119,7 +123,8 @@ const UploadProject = ({ setUploadView }) => {
 }
 
 const MainApp = ({setUploadView}) => {
-    const [name,setName] = useState('');
+    const nameSaved = useSelector(state => state.cart.name);
+    const [name,setName] = useState(nameSaved);
     const { locale } = useRouter();
     const fileInputField = useRef(null);
     const t = languages[locale];
@@ -137,17 +142,21 @@ const MainApp = ({setUploadView}) => {
                 extras: [],
                 previsualizacion: '',
                 weight: '',
-                copias: 1
+                copias: 1,
+                materialClient: false,
             }
         )
     }
 
+    const [file, setFile] = useState(null);
+    const handleChange = (file) => {
+        setFiles(file);
+    };
+
     const handlerCreateProject = () => {
-        console.log('kevin')
         let defaultProjectStructure = createBodyItemProject();
         defaultProjectStructure.file = fileData;
         defaultProjectStructure.name = name;
-        console.log('cere')
         dispatch(addItem(defaultProjectStructure));
         setUploadView(false);
     };
@@ -194,8 +203,10 @@ const MainApp = ({setUploadView}) => {
                         <b>Nombre de tu proyecto: </b>
                         <Input 
                             value={name} 
-                            onChange={(ev) => setName(ev.target.value)} 
-                            onBlur={ev => console.log(ev)}
+                            onChange={(ev) => {
+                                setName(ev.target.value)
+                                dispatch(setNameProject({name: ev.target.value}))
+                            }} 
                             className='mg-2 input-project' 
                             type='text' 
                         />
@@ -222,6 +233,7 @@ const MainApp = ({setUploadView}) => {
                             </label>
                         </div>
                     </div>
+                    {/* <FileUploader handleChange={handleChange} name="file"  /> */}
                 </Grid.Column>
             </Grid.Row>
 

@@ -37,7 +37,9 @@ const Banner = ({ info }) => {
                 material: null,
                 extras: [],
                 previsualizacion: '',
-                weight: ''
+                weight: '',
+                materialClient: false,
+                copias: 1,
             }
         )
     }
