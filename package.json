@@ -44,7 +44,6 @@
     "react-i18next": "^11.14.2",
     "react-intl": "^5.20.12",
     "react-redux": "^7.2.5",
-    "sass": "^1.42.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.4",
     "uppy": "^2.2.3",
