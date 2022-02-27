@@ -3,7 +3,7 @@ import React , { useEffect, useState } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
 import { addExtra } from '../../redux/reducers/cartSlice';
 import { extras } from '../../constants/extras';
-import { deleteItem , checkMaterialClient, setMaterial, setGrosor, deleteExtra, modifyCopias } from '../../redux/reducers/cartSlice';
+import { deleteItem , checkMaterialClient, setMaterial, setGrosor, deleteExtra, modifyCopias,setPrice } from '../../redux/reducers/cartSlice';
 import { Button, Popup, Checkbox, Grid, Modal, Header, Icon, Input, Select, Image, Search } from "semantic-ui-react";
 
 const ProjectCart = () => {
@@ -59,7 +59,7 @@ const ProjectItem = ({ item }) => {
     const [categories,setCategories] = useState([]);
     const [materiales,setMateriales] = useState([]);
     const [anchos,setAnchos] = useState([]);
-    const [copias,setCopias] = useState(item.copias);
+    const [copias,setCopias] = useState(item.copias || 0);
 
     const dispatch = useDispatch();
     const [products,setProducts] = useState([]);
@@ -69,6 +69,12 @@ const ProjectItem = ({ item }) => {
     const [productSelected,setProductSelected] = useState(false);
     const [weightSelected,setWeightSelected] = useState(false);
 
+    const [priceTotal,setPriceTotal] = useState();
+    
+    useEffect(() => {
+        handlerPrice();
+    },[productSelected,copias,item.extras])
+    
     const getDetectedCapas = () => {
         let auxCapas = [] 
         file?.planchas?.forEach((plancha,aux) => {
@@ -164,7 +170,6 @@ const ProjectItem = ({ item }) => {
     };
     
     const getColor = (capa = '') => {
-        console.log(capa)
         let color = '';
         if (capa.includes('exterior')) {
             color = '#FF0000'
@@ -178,7 +183,7 @@ const ProjectItem = ({ item }) => {
         if (capa.includes('Comentarios')) {
             color = '#999999'
         }
-        console.log(color)
+
         return color;
     }
 
@@ -218,6 +223,51 @@ const ProjectItem = ({ item }) => {
         return element;
     };
 
+    const getMaterial = () => materiales.find(el => el.id === productSelected); 
+    
+    const getMaterialCutData = (cutType = '') => {
+        const material = materiales.find(el => el.id === productSelected)
+        //Provisional... se tendra que escoger el valor en base al type.
+        return material?.cuttingReport?.outsideCut;
+    }
+    
+    const calculateTimeCutting = (longitud, velocity) => {
+        const TIME_MINUTE = 60;
+        const cuttingTime = parseInt(longitud) / parseInt(velocity);
+
+        return cuttingTime / TIME_MINUTE; 
+    } 
+    
+    const handlerPrice = () => {
+        const { file : { planchas = [] }} = item;
+        let auxTotallyProject = 0;
+        planchas.map(({ capas }) => {
+            capas.map(({ longitud = '', type = '' }) => {
+                const data = getMaterialCutData();
+                if(data?.velocity) {
+                    const minutesTotally = calculateTimeCutting(longitud, data?.velocity);
+
+                    const { prices } = getMaterial();
+                    auxTotallyProject += minutesTotally * parseInt(prices.priceMinuteSmallMachine); 
+                }
+            })
+        });
+
+        dispatch(setPrice({
+            itemId: item.idProjectItem,
+            total: (auxTotallyProject * parseInt(item.copias)) + calculateExtras()
+        }))
+    }
+
+    const calculateExtras = () => {
+        let total = 0;
+        item.extras.map(extra => {
+            total += parseInt(extra.price);
+        })
+
+        return total;
+    };
+    
     return(
         <Grid columns={16} className='project-view'>
             <Grid.Row>
@@ -243,6 +293,7 @@ const ProjectItem = ({ item }) => {
                                     style={{ marginLeft: '10px' ,width: '5rem'}}
                                     onChange={(ev) => {
                                         setCopias(ev.target.value);
+                                        console.log(ev.target.value)
                                         dispatch(modifyCopias({
                                             itemId: item.idProjectItem,
                                             copias: ev.target.value
@@ -361,13 +412,13 @@ const ProjectItem = ({ item }) => {
                         }
                     </Grid>          
                 </Grid.Column>
-                <Grid.Column verticalAlign='center' computer={1} className='boton-plus-local'>
+                <Grid.Column verticalAlign='center' computer={2} className='boton-plus-local'>
                     <div>
                         <Icon onClick={() => setShow(!show)} size="large" className="boton-plus" name='plus' />
-                        <p className='price-span tx-gray'>Precio:</p>
+                        <p className='price-span tx-gray'>Precio: {item.total &&  (`${parseInt(item.total)} €`) }</p>
                     </div>
                 </Grid.Column>
-            </Grid.Row>
+            </Grid.Row> 
             {
                 show && (
                     <>

@@ -44,7 +44,6 @@ export const cartSlice = createSlice({
         deleteExtra: (state,action) => {
             state.items = state.items.map( item => {
                 if(item.idProjectItem === action.payload.itemId) {
-                    console.log(action.payload.id)
                     item.extras = item.extras.filter((item) => item.id === action.payload.id)
                 };
                 return item
@@ -52,8 +51,9 @@ export const cartSlice = createSlice({
         },
         modifyCopias: (state,action) => {
             state.items = state.items.map( item => {
+                console.log(action.payload.copias)
                 if(item.idProjectItem === action.payload.itemId) {
-                    item.copias = action.payload.copias;
+                    item.copias = parseInt(action.payload.copias);
                 };
                 return item
             })
@@ -67,8 +67,15 @@ export const cartSlice = createSlice({
             })
         },
         setNameProject: (state,action) => {
-            console.log(action.payload.name)
             state.name = action.payload.name
+        },
+        setPrice: (state,action) => {
+            state.items = state.items.map( item => {
+                if(item.idProjectItem === action.payload.itemId) {
+                    item.total = action.payload.total
+                };
+                return item
+            })
         }
     }
 });
@@ -82,7 +89,8 @@ export const {
     setGrosor: setGrosor,
     addExtra: addExtra ,
     deleteExtra: deleteExtra,
-    modifyCopias: modifyCopias
+    modifyCopias: modifyCopias,
+    setPrice: setPrice
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

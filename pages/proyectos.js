@@ -185,6 +185,7 @@ const MainApp = ({setUploadView}) => {
         };
         startProject();
     };
+    const history = useRouter()
 
     const handleCreatePedido = async () => {
         const user =  JSON.parse(localStorage.getItem('session'))
@@ -194,6 +195,8 @@ const MainApp = ({setUploadView}) => {
         };
         try {
             const res = await axios.post(`/api/pedidos`,pedido);
+            localStorage.setItem('cart',JSON.stringify(pedido));
+            history.push('/carrito');
             console.log(res);
         } catch (e) {
             console.error(e)
