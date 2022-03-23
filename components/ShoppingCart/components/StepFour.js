@@ -66,7 +66,7 @@ const getTotalPedido = () => {
                 <Grid.Column computer={1}></Grid.Column>
                 <Grid.Column computer={6} className="combobox">
                     <Header >Envío</Header>
-                    <p>Dirección de entrega: <span>{deliveryInfo.address}/{deliveryInfo.addressComplement}</span></p>
+                    <p>Dirección de entrega: <span>{deliveryInfo?.address}/{deliveryInfo?.addressComplement}</span></p>
                     <p>Entrega estimada: <span><b>{delivery.delivery.delivery.first_estimated_delivery_date}</b></span></p>
                     <p>Empresa de transporte: <span>{delivery.delivery.delivery.carrier_name}</span></p>
                 </Grid.Column>
