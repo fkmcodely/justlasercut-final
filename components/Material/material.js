@@ -5,7 +5,7 @@ import ModalMaterial from '../ModalMaterial';
 const Material = (props) => {
     const { title, image, id } = props.material
     return (
-        <Grid.Column width="3" className="material">
+        <Grid.Column computer={3} tablet={5} mobile={16} className="material">
             <Grid columns="16">
                 <Grid.Row className="material__title">
                     <Grid.Column width="16" style={{ display: 'flex', justifyContent: 'space-between' }}>

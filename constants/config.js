@@ -1,2 +1,2 @@
 export const BASE_URL = 'http://localhost:3000/' || 'https://justlasercut-prod.vercel.app/';
-export const BASE_URL_MONGO = 'mongodb+srv://administrador:administrador@cluster0.fwkm6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+export const BASE_URL_MONGO = 'mongodb+srv://kevinriveradev:23324123Ff*@cluster0.f5ita.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';

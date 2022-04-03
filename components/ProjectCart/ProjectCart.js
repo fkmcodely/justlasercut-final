@@ -241,8 +241,8 @@ const ProjectItem = ({ item }) => {
     const handlerPrice = () => {
         const { file : { planchas = [] }} = item;
         let auxTotallyProject = 0;
-        planchas.map(({ capas }) => {
-            capas.map(({ longitud = '', type = '' }) => {
+        planchas?.map(({ capas }) => {
+            capas?.map(({ longitud = '', type = '' }) => {
                 const data = getMaterialCutData();
                 if(data?.velocity) {
                     const minutesTotally = calculateTimeCutting(longitud, data?.velocity);
@@ -271,42 +271,29 @@ const ProjectItem = ({ item }) => {
     return(
         <Grid columns={16} className='project-view'>
             <Grid.Row>
-                <Grid.Column width={4}>
+                <Grid.Column 
+                    verticalAlign='center' 
+                    computer={16} 
+                    mobile={16} 
+                    className='boton-plus-local project-view__actions'>
+                    <div className="content">
+                        <p className='price-span'>
+                            Precio: <b>{item.total &&  (`${parseInt(item.total)} €`) }</b>
+                        </p>
+                        <Icon onClick={() => setShow(!show)} size="large" className="boton-plus" name='plus' />
+                    </div>
+                </Grid.Column>
+                <Grid.Column computer={4} tablet={6} mobile={16}>
                     <div className='project-view__svg'>
                         {
                             file && (
-                                <ModalImageProject urlImage={file.previsualization} />
+                                <ModalImageProject urlImage={file.previsualization || file.file.previsualization} />
                             )
                         }
                     </div>
                 </Grid.Column>
-                <Grid.Column width={10}>
+                <Grid.Column computer={10} tablet={10} mobile={16}>
                     <Grid columns={16}>
-                        <Grid.Row>
-                            <Grid.Column computer={8}>
-                                <Header as='h3'>{item.file.originalName}</Header>
-                            </Grid.Column>
-                            <Grid.Column computer={8} verticalAlign='middle' textAlign='right' className='flex-end center'>
-                                <span style={{ marginLeft: '10px'}}><b>Copias:</b></span>
-                                <Input
-                                    value={copias} 
-                                    style={{ marginLeft: '10px' ,width: '5rem'}}
-                                    onChange={(ev) => {
-                                        setCopias(ev.target.value);
-                                        console.log(ev.target.value)
-                                        dispatch(modifyCopias({
-                                            itemId: item.idProjectItem,
-                                            copias: ev.target.value
-                                        }))
-                                    }} type='number' 
-                                    />
-                                    
-                                <div>
-                                    <Icon 
-                                        className='trash alternate outline delete-icon' onClick={deleteItemFromCart} />
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
                         {
                             !show && (
                                 <Grid.Row>
@@ -341,94 +328,55 @@ const ProjectItem = ({ item }) => {
                         {
                             show && (
                                 <Grid.Row>
-                                    <Grid.Column width={14}>
+                                    <Grid.Column computer={16} mobile={16}>
                                         <h5 className='title-dashed'>Errores detectados: </h5>
-                                        <section style={{ display: 'flex'}}>
-                                            <div style={{ width: '48%'}}>
-                                                <p style={{
-                                                    display: 'flex',
-                                                }}>
-                                                    <span style={{
-                                                        marginRight: '30px',
-                                                        minWidth: '170px'
-                                                    }}>Sombreados</span>
+                                        <section style={{ display: 'flex'}} className="errors-box">
+                                            <div className="error-item">
+                                                <p>
+                                                    <span>Sombreados</span>
                                                     <Icon name="check" />
                                                 </p>
-                                                <p style={{
-                                                    display: 'flex',
-                                                }}>
-                                                    <span style={{
-                                                        marginRight: '30px',
-                                                        minWidth: '170px'
-                                                    }}>Bloques</span>
-                                                    <Icon name="x" />
-                                                </p>
-                                                <p style={{
-                                                    display: 'flex',
-                                                }}>
-                                                    <span style={{
-                                                        marginRight: '30px',
-                                                        minWidth: '170px'
-                                                    }}>Puntos</span>
-                                                    <Icon name="x" />
-                                                </p>
-                                            </div>
-                                            <div style={{ width: '48%'}}>
-                                                <p style={{
-                                                    display: 'flex',
-                                                }}>
-                                                    <span style={{
-                                                        marginRight: '30px',
-                                                        minWidth: '170px'
-                                                    }}>Texto</span>
+                                                <p>
+                                                    <span>Sombreados</span>
                                                     <Icon name="check" />
                                                 </p>
-                                                <p style={{
-                                                    display: 'flex',
-                                                }}>
-                                                    <span style={{
-                                                        marginRight: '30px',
-                                                        minWidth: '170px'
-                                                    }}>Grabado relleno cerrado</span>
-                                                    <Icon name="x" />
-                                                </p>
-                                                <p style={{
-                                                    display: 'flex',
-                                                }}>
-                                                    <span style={{
-                                                        marginRight: '30px',
-                                                        minWidth: '170px'
-                                                    }}>Objetos fuera de capas</span>
+                                                <p>
+                                                    <span>Sombreados</span>
                                                     <Icon name="check" />
                                                 </p>
                                             </div>
                                         </section>
-                                    </Grid.Column>
-                                    <Grid.Column width={2} className='mini-drop'>
-                                        <p>Sube tu archivo</p>
                                     </Grid.Column>
                                 </Grid.Row>
                             )
                         }
                     </Grid>          
                 </Grid.Column>
-                <Grid.Column verticalAlign='center' computer={2} className='boton-plus-local'>
-                    <div>
-                        <Icon onClick={() => setShow(!show)} size="large" className="boton-plus" name='plus' />
-                        <p className='price-span tx-gray'>Precio: {item.total &&  (`${parseInt(item.total)} €`) }</p>
-                    </div>
-                </Grid.Column>
             </Grid.Row> 
             {
                 show && (
                     <>
                     <Grid.Row className='even-pad'>
-                        <Grid.Column width={16}>
+                        <Grid.Column computer={16} mobile={16} >
                             <Header >Datos de archivo</Header>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column computer={4}>
+                        <Grid.Column computer={4} tablet={16} mobile={16}>
+                                <span><b>Copias:</b></span>
+                                <Input
+                                    value={copias} 
+                                    style={{ marginLeft: '10px' ,width: '50%'}}
+                                    onChange={(ev) => {
+                                        setCopias(ev.target.value);
+                                        dispatch(modifyCopias({
+                                            itemId: item.idProjectItem,
+                                            copias: ev.target.value
+                                        }))
+                                    }} type='number' 
+                                />
+                                <Icon 
+                                    className='trash alternate outline delete-icon' onClick={deleteItemFromCart} />
                             <h5 className='title-dashed'>Número y Tamaño de planchas</h5>
                             <div>
                                 <ul>
@@ -456,7 +404,7 @@ const ProjectItem = ({ item }) => {
                                 </ul>
                             </div>
                         </Grid.Column>
-                        <Grid.Column computer={12}>
+                        <Grid.Column computer={12} mobile={16}>
                             <h5 className='title-dashed'>Selección de material</h5>
                             <div className='select-material-options'>
                                 <Select 
@@ -494,7 +442,7 @@ const ProjectItem = ({ item }) => {
                                 }}
                                 resultRenderer={resRender}
                             />
-                                <div>
+                                <div className="search-material-autocomplete">
                                     <p>
                                         Llevo mi propio material(contacta con justlasercut antes) 
                                         <Checkbox 

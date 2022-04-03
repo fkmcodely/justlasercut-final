@@ -77,7 +77,7 @@ const ConfigSiteProps = ({ body }, res) => {
 const updateConfigSite = ({ body }, res) => {
     const updateInfo = async () => {
         try {
-            const { sitename, email, maintance, phone } = body;
+            const { sitename = '', email, maintance, phone } = body;
             const site = await MongoClient.connect(url);
             const db = site.db();
             const collection = db.collection('ConfigurationSite');

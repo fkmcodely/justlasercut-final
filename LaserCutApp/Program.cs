@@ -28,7 +28,7 @@ namespace LaserCutApp
             } catch (Exception e) {
                 Console.WriteLine("Exception: " + e.Message);
             }
-            string path = @"C:/Users/Usuario/Documents/justlasercut-final/LaserCutApp/test/" + name;
+            string path = @"C:/desarrollo/justlasercut-final/LaserCutApp/test/" + name;
             
             IEnumerable<EntityType> ValidEntities = new List<EntityType>()
             {
@@ -64,12 +64,12 @@ namespace LaserCutApp
             var additionalLayers = groupByLayer.Except(layers);
             if (additionalLayers.Any())
             {
-                Console.WriteLine("Se han encontrado elementos en capas no reconocidas");
+                Console.WriteLine("[ERR] Se han encontrado elementos en capas no reconocidas");
                 foreach (var layer in additionalLayers)
                 {
                     Console.WriteLine(" - {0}", layer);
                 }
-                Console.WriteLine("Comprueba tu archivo para evitar errores.");
+                Console.WriteLine("[ERR] Comprueba tu archivo para evitar errores.");
                 Console.WriteLine();
             }
 
@@ -88,7 +88,7 @@ namespace LaserCutApp
                     .Where(e => ValidEntities.Contains(e.Type))
                     .Select(e => e);
 
-                Console.WriteLine("[001] Hemos encontrado elementos que el programa no reconoce, comprueba la lista de elemntos válidos");
+                Console.WriteLine("[ERR] Hemos encontrado elementos que el programa no reconoce, comprueba la lista de elemntos válidos");
                 foreach (var e in invalidEntities)
                 {
                     Console.WriteLine("   - {0}", e);

@@ -1,4 +1,4 @@
-import React , { useState , useEffect, useRef } from 'react';
+import React , { useState , useEffect, useRef, useCallback } from 'react';
 import { Container, Grid, Header, Button, Icon, Form, Input, Divider } from "semantic-ui-react";
 import ProjectCart from '../components/ProjectCart/ProjectCart';
 import { useDispatch , useSelector } from 'react-redux';
@@ -6,7 +6,8 @@ import { useRouter } from 'next/router';
 import { FileUploader } from "react-drag-drop-files";
 import { addItem, modifyCopias, setNameProject } from '../redux/reducers/cartSlice';
 import axios from 'axios';
-import DragDrop from '../components/DragDrop';
+import {useDropzone} from 'react-dropzone'
+
 const { v4: uuidv4 } = require('uuid');
 
 const languages = {
@@ -110,6 +111,7 @@ const UploadProject = ({ setUploadView }) => {
                                 </label>
                             </div>
                         </div>
+                        
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -126,6 +128,7 @@ const MainApp = ({setUploadView}) => {
     const [name,setName] = useState(nameSaved);
     const { locale } = useRouter();
     const fileInputField = useRef(null);
+    
     const t = languages[locale];
     const [fileData,setFileData] = useState({});
     const [files, setFiles] = useState({});
@@ -203,6 +206,38 @@ const MainApp = ({setUploadView}) => {
         }
     };
 
+    const onDrop = useCallback(acceptedFiles => {
+        // Do something with the files
+        const fileDropped = acceptedFiles[0];
+
+        const startProject = async () => {
+            try {
+                if (files) {
+                    const data = new FormData();
+                    data.append('file', fileDropped);
+                    const uploadMedia = await axios.post(`/api/dfx`, data, {
+                        params: {
+                            id: uuidv4(),
+                        }
+                    });
+                    const fileName = uploadMedia.data.message;
+                    const res = await axios.post('/api/project', {
+                        fileName: fileName
+                    });
+                    let defaultProjectStructure = createBodyItemProject();
+                    defaultProjectStructure.file = res.data;
+                    dispatch(addItem(defaultProjectStructure));
+                    router.push('/proyectos');
+                }
+            } catch (error) {
+                console.error(`Error al subir fichero al servidor`, error);
+            }
+        };
+        startProject();
+    }, []);
+
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
+
     return (
         <Grid columns={16}>
             <Grid.Row >
@@ -237,17 +272,12 @@ const MainApp = ({setUploadView}) => {
            
             <Grid.Row>
                 <Grid.Column computer={16}>
-                    <div className="upload-box">
-                        <div className="inputfile-box">
-                            <input onChange={(ev) => { updateItemProject(ev) }} type="file" id="file" ref={fileInputField} />
-                            <label htmlFor="file">
-                                <span id="file-name" className="file-box"></span>
-                                <span className="file-button">
-                                    <i className="fa fa-upload" aria-hidden="true"></i>
-                                    <p>{t.subirdxf}</p>
-                                </span>
-                            </label>
-                        </div>
+                    <div {...getRootProps()} className="upload-box">
+                            <input {...getInputProps()} />
+                            {
+                                isDragActive ? <p>{t.subirdxf}</p> :
+                                <p>{t.subirdxf}</p>
+                            }
                     </div>
                     {/* <FileUploader handleChange={handleChange} name="file"  /> */}
                 </Grid.Column>

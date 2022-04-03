@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 const { v4: uuidv4 } = require('uuid');
-import { BASE_URL_MONGO } from "../../constants/config";
+import { BASE_URL_MONGO } from '../constants/config';
 import moment from "moment";
 
 export default function contactIndexForm(req, res) {

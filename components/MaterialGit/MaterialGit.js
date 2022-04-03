@@ -50,7 +50,7 @@ const MaterialGit = ({ list: { result } }) => {
         <Container fluid className="material-git">
             <Grid columns="16" padded>
                 <Grid.Row>
-                    <Grid.Column width="3">
+                    <Grid.Column computer={3} mobile={16}>
                         <Filters
                             plateSize={plateSize}
                             setPlateSize={setPlateSize}
@@ -62,9 +62,8 @@ const MaterialGit = ({ list: { result } }) => {
                             setRangeval={setRangeval}
                         />
                     </Grid.Column>
-                    <Grid.Column width="13">
+                    <Grid.Column computer={13} mobile={16}>
                         <Grid columns="16" className="material-git__list" padded relaxed>
-                            <HelpCard />
                             {
                                 listFiltered?.map(material => (
                                     <Material material={material} name={material.title.es} image={material.image} />

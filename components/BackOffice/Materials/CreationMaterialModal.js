@@ -123,6 +123,7 @@ const CreationMaterialModal = () => {
                                     {errors?.title?.en && <span>El campo es obligatorio</span>}
                                 </div>
                             </div>
+                            <span>Seleccione la imagen del material:</span>
                             <input
                                 name="mediaManual"
                                 style={{ marginBottom: '1rem' }}
@@ -133,6 +134,7 @@ const CreationMaterialModal = () => {
                                 }
                                 type="file"
                             />
+                            <span>Seleccione la categoria:</span>
                             <select style={{ marginBottom: '1rem' }} {...register("materialCategory", {
                                 onChange: (ev) => handlerSelectCategory(ev.target.value)
                             })}>
@@ -142,6 +144,7 @@ const CreationMaterialModal = () => {
                                     ))
                                 }
                             </select>
+                            <span>Seleccione la subcategoria:</span>
                             <select style={{ marginBottom: '1rem' }} {...register("materialSubCategory", { required: true })}>
                                 {
                                     subcategoryList.map(({ subcategory, id }) => (
@@ -149,11 +152,13 @@ const CreationMaterialModal = () => {
                                     ))
                                 }
                             </select>
+                            <span>Seleccione las caras del material:</span>
                             <select style={{ marginBottom: '1rem' }} {...register("surfacePainting", { required: true })}>
                                 <option value="value2" selected>1</option>
                                 <option value="value2" selected>2</option>
                                 <option value="value2" selected>Ninguno</option>
                             </select>
+                            <span>Configure los tamaños de las planchas:</span>
                             <div style={{ border: '1px solid gray', padding: '.5rem' }}>
                                 <div style={{ display: 'flex' }}>
                                     <input type="number" placeholder="Ancho" value={width} onChange={(ev) => setWidth(ev.target.value)} />
@@ -179,8 +184,9 @@ const CreationMaterialModal = () => {
                                     }
                                 </div>
                             </div>
-
+                            
                             <div style={{ border: '1px solid gray', padding: '.5rem', marginTop: '1rem' }}>
+                                <span>Configure los grosores de las planchas:</span>
                                 <div style={{ display: 'flex' }}>
                                     <input type="number" placeholder="Ancho" value={weight} onChange={(ev) => setWeight(ev.target.value)} />
                                     <Button content='+' primary onClick={(ev) => {

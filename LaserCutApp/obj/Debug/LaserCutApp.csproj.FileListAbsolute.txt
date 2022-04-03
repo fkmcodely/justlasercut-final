@@ -62,3 +62,5 @@ C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.
 C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.SuggestedBindingRedirects.cache
 C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.CoreCompileInputs.cache
 C:\Users\Usuario\Documents\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.csproj.CopyComplete
+C:\desarrollo\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.exe
+C:\desarrollo\justlasercut-final\LaserCutApp\obj\Debug\LaserCutApp.pdb

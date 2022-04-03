@@ -96,7 +96,7 @@ const ItemDelivery = ({ item , materials }) => {
                     </p>
                     <p className='nomg text-resume'><b>Capas detectadas:</b></p>
                     {
-                        item.file.planchas.map((plancha,index) => {
+                        item.file.planchas?.map((plancha,index) => {
 
                             return (
                                 <div className='nomg ml-2'>

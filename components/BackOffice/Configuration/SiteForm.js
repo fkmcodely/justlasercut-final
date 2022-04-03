@@ -19,10 +19,10 @@ const SiteForm = ({ option }) => {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
         defaultValues: {
-            sitename: site.sitename,
-            email: site.email,
-            maintance: site.maintance,
-            phone: site.phone,
+            sitename: site?.sitename,
+            email: site?.email,
+            maintance: site?.maintance,
+            phone: site?.phone,
         },
     });
 
@@ -44,7 +44,7 @@ const SiteForm = ({ option }) => {
         const save = async () => {
             try {
                 const updatedInfo = await axios.put('/api/site', {
-                    _id: site._id,
+                    _id: site?._id,
                     ...data
                 });
                 setLoading(false);
@@ -74,11 +74,11 @@ const SiteForm = ({ option }) => {
         try {
             let idToEdit;
             if (language === 'es') {
-                idToEdit = titlepage.idBanner;
+                idToEdit = titlepage?.idBanner;
             } else {
-                idToEdit = titlepageEn.idBanner;
+                idToEdit = titlepageEn?.idBanner;
             }
-            const newTitle = await axios.put('/api/banner', {
+            const newTitle = await axios.post('/api/banner', {
                 title: language === 'es' ? text : textEn
             }, {
                 params: {
@@ -109,15 +109,15 @@ const SiteForm = ({ option }) => {
                     <Form onSubmit={handleSubmit(saveSiteInfo)}>
                         <Form.Field>
                             <span>Nombre:</span>
-                            <input defaultValue={site.sitename} {...register('sitename')} placeholder="Nombre de la web" />
+                            <input defaultValue={site?.sitename} {...register('sitename')} placeholder="Nombre de la web" />
                         </Form.Field>
                         <Form.Field>
                             <span>Email:</span>
-                            <input defaultValue={site.email} {...register('email')} placeholder="Email de contacto" />
+                            <input defaultValue={site?.email} {...register('email')} placeholder="Email de contacto" />
                         </Form.Field>
                         <Form.Field>
                             <span>Activar o desactivar mantenimiento del sitio:</span>
-                            <input defaultValue={site.maintance} {...register('maintance')} type="checkbox" placeholder="Email de contacto" />
+                            <input defaultValue={site?.maintance} {...register('maintance')} type="checkbox" placeholder="Email de contacto" />
                         </Form.Field>
                         <Form.Field>
                             <span>Telefono de contacto:</span>
@@ -153,7 +153,7 @@ const SiteForm = ({ option }) => {
                                 <Form>
                                     <p>Descripción principal de la página:</p>
                                     {
-                                        (text && language === 'es') && (
+                                        (language === 'es') && (
                                             <CKEditor
                                                 initData={text}
                                                 data={text}
@@ -161,8 +161,9 @@ const SiteForm = ({ option }) => {
                                             />
                                         )
                                     }
+                                   
                                     {
-                                        (textEn && language === 'en') && (
+                                        (language === 'en') && (
                                             <CKEditor
                                                 initData={textEn}
                                                 data={textEn}

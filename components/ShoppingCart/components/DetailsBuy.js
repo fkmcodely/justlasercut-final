@@ -81,7 +81,7 @@ const Item = (pedido) => {
                 </Grid.Column>
                 <Grid.Column width={12}>
                     <p>Nombre: <span>{mipedido?.name || '(VACIO)'}</span></p>
-                    <p>Núm Planchas: <span>{mipedido.file?.planchas?.length || '(VACIO)'}</span></p>
+                    <p>Núm Planchas: <span>{mipedido?.file?.planchas?.length || '(VACIO)'}</span></p>
                 </Grid.Column>
             </Grid.Row>
         </Grid>

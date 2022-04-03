@@ -16,6 +16,7 @@ const languages = {
 }
 
 function Home(props) {
+  console.log(props)
   const { banner, steps = [], reviews = [], services = [] } = props;
   const [user, setUser] = useState();
   const { locale } = useRouter();
@@ -53,7 +54,7 @@ export async function getServerSideProps() {
   const listReviews = await axios(`${BASE_URL}/api/reviews`);
   const listServices = await axios(`${BASE_URL}/api/resources`);
   const banner = await axios(`${BASE_URL}/api/banner`);
-
+  
   const { data: { list } } = listReviews;
   reviews = list;
   steps = data.data.steps
