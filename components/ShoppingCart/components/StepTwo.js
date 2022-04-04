@@ -29,7 +29,7 @@ export default function StepTwo({ active , setActive }) {
     <Container className='mt-4'>
         <Grid columns={16}>
             <Grid.Row>
-                <Grid.Column computer={10}>
+                <Grid.Column computer={10} tablet={16} mobile={16}>
                        <Header as="h1">Opciones de envío</Header>
                        <p>Elige una de las opciones de envío.</p>
                        
@@ -38,7 +38,10 @@ export default function StepTwo({ active , setActive }) {
                                 <BoxSelection 
                                     size={7}
                                     route='truck'
-                                    onClick={() => setOptionShipping(0)}
+                                    onClick={() => {
+                                        setOptionShipping(0);
+                                        localStorage.setItem('takeAway',false);
+                                    }}
                                     title="Envío a domicilio"
                                     active={optionShipping === 0}
                                 />
@@ -47,26 +50,34 @@ export default function StepTwo({ active , setActive }) {
                                     size={7}
                                     route='home'
                                     title="Recoger en tienda"
-                                    onClick={() => setOptionShipping(1)}
+                                    onClick={() => {
+                                        setOptionShipping(1);
+                                        setManager();
+                                        localStorage.setItem('takeAway',true);
+                                    }}
                                     active={optionShipping === 1}
                                 />
                             </Grid.Row>
-                            <Grid.Row className="pl-1">
-                                {
-                                    deliveryList.map((option,index) => (
-                                        index < 4 &&  (
-                                        <DeliveryOption 
-                                            manager={manager}
-                                            setManager={setManager}
-                                            data={option}/>)
-                                    ))
-                                }
-                            </Grid.Row>
+                            {
+                                optionShipping === 0 && (
+                                <Grid.Row className="pl-1">
+                                    {
+                                        deliveryList.map((option,index) => (
+                                            index < 4 &&  (
+                                            <DeliveryOption 
+                                                manager={manager}
+                                                setManager={setManager}
+                                                data={option}/>)
+                                        ))
+                                    }
+                                </Grid.Row>
+                                )
+                            }
                        </Grid>
-                       <DetailsDelivery  setActive={setActive}/>
+                       <DetailsDelivery shipping={optionShipping === 0}  setActive={setActive}/>
                 </Grid.Column>
                 <Divider vertical></Divider>
-                <Grid.Column  computer={6}>
+                <Grid.Column  computer={6} tablet={16} mobile={16}>
                        <DetailsBuy delivery={manager}/>
                 </Grid.Column>
             </Grid.Row>

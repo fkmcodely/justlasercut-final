@@ -126,6 +126,11 @@
     .no-padding {
         padding: 0px !important;
     }
+    .step-content {
+        .steps {
+            display: flex !important;
+        }
+    }
     .login-container {
         padding-top: 70px !important;
     }
@@ -228,6 +233,12 @@
 
 .details-buy {
     padding-left: 10px;
+
+    &__container {
+        @include downBreakpoint($breakpoint-up-md) {
+            width: 100%;
+        }
+    }
 } 
 
 .text-resume {
@@ -237,7 +248,7 @@
 
 .payment-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 
     div {
         display: flex;
@@ -246,6 +257,7 @@
         border: 1px solid #D8D8D8;
         width: 150px;
         height: 70px;
+        margin-right: 1rem ;
     }
 
     .active {
@@ -293,3 +305,34 @@
     }
 }
 
+.adm-pedidos {
+    background-color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    border: 1px solid #f1f2f3;
+    cursor: pointer;
+
+    &:hover { 
+        background-color: #9d9d9d !important;
+    }
+}
+
+.modal-delivery {
+	&__header {
+		display: flex !important;
+        justify-content: space-between !important;
+	}
+
+    &__infopedido {
+        p {
+            display: flex !important;
+        flex-direction: column !important;
+        }
+    }
+
+    &__items {
+        p {
+            margin-bottom: 0px !important;
+        }
+    }
+}

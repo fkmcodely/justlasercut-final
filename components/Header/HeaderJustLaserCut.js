@@ -36,6 +36,10 @@ const HeaderJustLaserCut = (props) => {
         getSiteInfo();
     }, []);
 
+    useEffect(() => {
+        localStorage.setItem('user',JSON.stringify(session));
+    },[session]);
+    
     const friendOptions = [
         {
             key: 'Spanish',
@@ -70,6 +74,7 @@ const HeaderJustLaserCut = (props) => {
                             <Grid.Column mobile={9} tablet={6} computer={7} className="header-just__logo" onClick={() => router.push('/')}>
                                 <img src='./JustLaseLogo.png' />
                             </Grid.Column>
+                            
                             <Grid.Column computer={5} tablet={10} className="header-just__user-experience-container">
                                 <nav className="header-just__user-experience">
                                     <div className="header-identification-button margin-right-1" onClick={() => {

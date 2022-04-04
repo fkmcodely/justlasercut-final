@@ -1,15 +1,26 @@
 
-import React from "react";
-import { Grid , Form, Header, GridColumn, Checkbox, Input, Button } from 'semantic-ui-react'
+import React , { useState , useMemo } from "react";
+import { Grid , Form, Header, GridColumn, Divider, Input, Button } from 'semantic-ui-react'
 import { useForm } from "react-hook-form";
+import countryList from 'react-select-country-list'
+import Select from 'react-select'
 
-export default function DetailsDelivery({ setActive }) {
+export default function DetailsDelivery({ setActive , shipping  }) {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [value, setValue] = useState('')
+    const options = useMemo(() => countryList().getData(), [])
+  
+    const changeHandler = value => {
+      setValue(value)
+    }
 
     const onSubmit = data => {
         localStorage.setItem('delivery_x',JSON.stringify({
             ...data,
-            delivery: JSON.parse(localStorage.getItem('envio'))
+            delivery: JSON.parse(localStorage.getItem('envio')),
+            countrySelected: value,
+            user: JSON.parse(localStorage.getItem('session')),
+            shipping
         }));
 
         setActive('Pago')
@@ -19,18 +30,26 @@ export default function DetailsDelivery({ setActive }) {
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
             <Grid columns={16}>
-                <Grid.Row>
-                    <Grid.Column width={8}>
-                        <Header>Detalles de envío</Header>
-                    </Grid.Column>
-                </Grid.Row>
-        
-                    <Grid.Row>
+                    {shipping && (<>
+                        <Grid.Row>
+                            <Grid.Column width={8}>
+                                <Header>Detalles de envío</Header>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
                         <Grid.Column width={8}>
-                            <input placeholder='Pais' fluid />
+                            <Select 
+                                options={options} 
+                                value={value} 
+                                onChange={changeHandler} 
+                            />
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <input placeholder='Teléfono' fluid/>
+                            <input
+                                type="number" 
+                                placeholder='Teléfono' 
+                                {...register("phone", { required: true })}
+                                fluid/>
                         </Grid.Column>
                     </Grid.Row>
                     
@@ -65,12 +84,13 @@ export default function DetailsDelivery({ setActive }) {
                         <Grid.Column width={8}>
                             <Input placeholder='Localidad' fluid/>
                         </Grid.Column>
-                    </Grid.Row>
+                    </Grid.Row></>)}
                     
                     <Grid.Row>
                         <Grid.Column width={16}>
                             <Button type="submit" floated="right" primary>Continuar</Button>
                         </Grid.Column>
+                        <Divider />
                     </Grid.Row>
             </Grid>
         </Form>

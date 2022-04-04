@@ -24,7 +24,7 @@ const handlerUploadFile = async ({ body }, res) => {
                 const messagesExceptions = ["Insert\r", "\r", "Point\r"];
                 const canPass = ["BOARD", "TYPE", "PLANCHA", "PLANCHA"];
                 const filterMessages = data.split('\n').filter((str) => !messagesExceptions.includes(str))
-                const filter = filterMessages.filter((str) => str.includes('BOARD') || str.includes('TYPE') || str.includes('PLANCHA'))
+                const filter = filterMessages.filter((str) => str.includes('BOARD') || str.includes('TYPE') || str.includes('ERR') || str.includes('PLANCHA'))
 
                 let planchas = []
                 let object = {
@@ -32,10 +32,14 @@ const handlerUploadFile = async ({ body }, res) => {
                     capas: [],
                     errorList: []
                 }
+                const errorList = [];
+
                 filter.map((message, index) => {
+                    console.log('mensaje:',message)
                     if(message.includes('ERR')) {
-                        object.errorList.push(message);
-                    }
+                        errorList.push(message);
+                    };
+
                     if (message.includes('BOARD')) {
                         const messageConvertToArray = message.split('-');
                         object.board = {
@@ -43,7 +47,8 @@ const handlerUploadFile = async ({ body }, res) => {
                             height: parseFloat(messageConvertToArray[2]),
                             numberBoards: parseFloat(messageConvertToArray[3]),
                         };
-                    }
+                    };
+
                     if (message.includes('TYPE')) {
                         if (message.includes('Corte exterior')) {
                             const messageConvertToArray = message.split('-');
@@ -99,6 +104,15 @@ const handlerUploadFile = async ({ body }, res) => {
                             };
                             object.capas.push(layer);
                         };
+                        if (message.includes('Grabado superficie')) {
+                            const messageConvertToArray = message.split('-');
+                            const layer = {
+                                type: messageConvertToArray[1],
+                                longitud: messageConvertToArray[2],
+                                nodes: messageConvertToArray[3]
+                            };
+                            object.capas.push(layer);
+                        };
 
                     }
                     if (message.includes('PLANCHA')) {
@@ -109,6 +123,7 @@ const handlerUploadFile = async ({ body }, res) => {
                         }
                     }
                 });
+                console.log(object)
                 let projectItem561 = {
                     planchas: planchas
                 };
@@ -120,7 +135,8 @@ const handlerUploadFile = async ({ body }, res) => {
                     const ProjectItem = await collection.insertOne({
                         fileName: fileName,
                         id: idItem,
-                        planchas: planchas
+                        planchas: planchas,
+                        errorList: errorList
                     });
 
                     session.close();
@@ -133,7 +149,8 @@ const handlerUploadFile = async ({ body }, res) => {
                         id: idItem,
                         planchas: planchas,
                         previsualization: `${fileName.replace('.dxf','.svg')}`,
-                        originalName: originalName
+                        originalName: originalName,
+                        errorList: errorList
                     });
                 } catch (error) {
                     console.log('Error en sesion', error)

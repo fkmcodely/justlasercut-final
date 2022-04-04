@@ -37,32 +37,37 @@ export default function DetailsBuy({ delivery }) {
     return (
         <Grid className='details-buy'>
             <Grid.Row>
-                <Grid.Column>
-                    <Header as="h1">Resumen del pedido</Header>
+                <Grid.Column className="details-buy__container">
+                    <section>
+                            <Header as="h1">Resumen del pedido</Header>
+                            <p className='text-resume'>Subtotal: <span>{subtotal} €</span></p>
+                            {delivery?.price.total_price && (
+                                <p className='text-resume'>Envío: <span>{delivery?.price.total_price} €</span></p>
+                            )}
+                            <p className='text-resume'>IVA (20%): <span>{priceIva || subtotal} €</span></p>
+                            <p></p>
+                            <p className='text-resume'><b>Total del pedido: </b><span>{parseInt(total) || 0} €</span></p>
 
-                    <p className='text-resume'>Subtotal: <span>{subtotal} €</span></p>
-                    <p className='text-resume'>Envío: <span>{delivery?.price.total_price || 0} €</span></p>
-                    <p className='text-resume'>IVA (20%): <span>{priceIva || subtotal} €</span></p>
-                    <p></p>
-                    <p className='text-resume'><b>Total del pedido: </b><span>{total || 0} €</span></p>
+                            <Divider />
+                    </section>
+                    {delivery && (
+                        <section>
+                            <Header as="h1">Datos de envío</Header>
+                            <p className='text-resume'>Entrega estimada: 
+                                <span>{delivery?.first_estimated_delivery_date} </span></p>
+                            <p className='text-resume'>Empresa de envio: <span>{delivery?.carrier_name}</span></p>
 
-                    <Divider />
+                            <Divider />
 
-                    <Header as="h1">Datos de envío</Header>
+                            <Header as="h1">Tu cesta ({pedido?.items?.length === 1 ? pedido?.items?.length + ' artículo': pedido?.items?.length +' artículos'})</Header>
 
-                    <p className='text-resume'>Entrega estimada: 
-                        <span>{delivery?.first_estimated_delivery_date} </span></p>
-                    <p className='text-resume'>Empresa de envio: <span>{delivery?.carrier_name}</span></p>
-
-                    <Divider />
-
-                    <Header as="h1">Tu cesta ({pedido?.items?.length === 1 ? pedido?.items?.length + ' artículo': pedido?.items?.length +' artículos'})</Header>
-                
-                    {
-                        pedido?.items?.map((pedido) => (
-                            <Item pedido={pedido}/>
-                        ))
-                    }
+                            {
+                                pedido?.items?.map((pedido) => (
+                                    <Item pedido={pedido}/>
+                                ))
+                            }
+                        </section>
+                    )}
                 </Grid.Column>
             </Grid.Row>
         </Grid>

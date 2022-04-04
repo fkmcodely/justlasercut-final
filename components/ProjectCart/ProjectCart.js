@@ -40,9 +40,9 @@ const ModalImageProject = ({ urlImage }) => {
         <Modal
             open={open}
             size='mini'
-            // style={{
-            //     maxHeight: '70vh'
-            // }}
+            style={{
+                maxHeight: '70vh'
+            }}
             trigger={<Image fluid src={urlImage} />}
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
@@ -70,6 +70,8 @@ const ProjectItem = ({ item }) => {
     const [weightSelected,setWeightSelected] = useState(false);
 
     const [priceTotal,setPriceTotal] = useState();
+    
+    console.log('item:',item)
     
     useEffect(() => {
         handlerPrice();
@@ -332,18 +334,21 @@ const ProjectItem = ({ item }) => {
                                         <h5 className='title-dashed'>Errores detectados: </h5>
                                         <section style={{ display: 'flex'}} className="errors-box">
                                             <div className="error-item">
-                                                <p>
-                                                    <span>Sombreados</span>
-                                                    <Icon name="check" />
-                                                </p>
-                                                <p>
-                                                    <span>Sombreados</span>
-                                                    <Icon name="check" />
-                                                </p>
-                                                <p>
-                                                    <span>Sombreados</span>
-                                                    <Icon name="check" />
-                                                </p>
+                                                {
+                                                    file.errorList.map(error => (
+                                                        <p>
+                                                            <span>
+                                                                - {
+                                                                    error.split('] -')[1]
+                                                                }
+                                                            </span>
+                                                            <Icon
+                                                                color="red" 
+                                                                name="x" 
+                                                                className="error-item__icon"/>
+                                                        </p>
+                                                    ))
+                                                }
                                             </div>
                                         </section>
                                     </Grid.Column>

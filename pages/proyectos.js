@@ -1,4 +1,4 @@
-import React , { useState , useEffect, useRef, useCallback } from 'react';
+import React , { useState , useEffect, useRef, useCallback, useMemo } from 'react';
 import { Container, Grid, Header, Button, Icon, Form, Input, Divider } from "semantic-ui-react";
 import ProjectCart from '../components/ProjectCart/ProjectCart';
 import { useDispatch , useSelector } from 'react-redux';
@@ -26,6 +26,36 @@ const proyectos = () => {
     );
 };
 
+
+const baseStyle = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '6rem',
+    paddingBottom: '6rem',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#eeeeee',
+    borderStyle: 'dashed',
+    backgroundColor: '#FFFFFF',
+    color: '#000000',
+    outline: 'none',
+    transition: 'border .12s ease-in-out'
+  };
+  
+  const focusedStyle = {
+    borderColor: 'rgb(162 67 67)',
+    backgroundColor: '#F1F2F3',
+  };
+  
+  const acceptStyle = {
+    borderColor: 'rgb(162 67 67)'
+  };
+  
+  const rejectStyle = {
+    borderColor: '#ff1744'
+  };
 
 const UploadProject = ({ setUploadView }) => {
     const fileInputField = useRef(null)
@@ -197,7 +227,6 @@ const MainApp = ({setUploadView}) => {
             user: 'keivn'
         };
         try {
-            const res = await axios.post(`/api/pedidos`,pedido);
             localStorage.setItem('cart',JSON.stringify(pedido));
             history.push('/carrito');
             console.log(res);
@@ -236,7 +265,18 @@ const MainApp = ({setUploadView}) => {
         startProject();
     }, []);
 
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
+    const {getRootProps, getInputProps, isDragAccept , isDragActive, isDragReject, isFocused } = useDropzone({onDrop})
+
+    const style = useMemo(() => ({
+        ...baseStyle,
+        ...(isFocused ? focusedStyle : {}),
+        ...(isDragAccept ? acceptStyle : {}),
+        ...(isDragReject ? rejectStyle : {})
+      }), [
+        isFocused,
+        isDragAccept,
+        isDragReject
+    ]);
 
     return (
         <Grid columns={16}>
@@ -272,10 +312,10 @@ const MainApp = ({setUploadView}) => {
            
             <Grid.Row>
                 <Grid.Column computer={16}>
-                    <div {...getRootProps()} className="upload-box">
+                    <div {...getRootProps({ style })} className="upload-box">
                             <input {...getInputProps()} />
                             {
-                                isDragActive ? <p>{t.subirdxf}</p> :
+                                isDragActive ? <p>Suelta tu archivo</p> :
                                 <p>{t.subirdxf}</p>
                             }
                     </div>

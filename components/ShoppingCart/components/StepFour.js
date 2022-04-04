@@ -1,14 +1,16 @@
 import axios from 'axios'
 import React , { useEffect, useState } from 'react'
 import { Button, Container, Divider, Grid, Header, Image } from 'semantic-ui-react'
+import { useRouter } from 'next/router';
 
 export default function StepFour() {
-     
+    const history = useRouter()
     const [cart,setCart] = useState(JSON.parse(localStorage.getItem('cart')))
     const [prices,setPrices] = useState(JSON.parse(localStorage.getItem('calculate_prices')))
     const [delivery,setDelivery] = useState(JSON.parse(localStorage.getItem('delivery_x')))
     const [deliveryInfo,setDeliveryInfo] = useState(JSON.parse(localStorage.getItem('delivery_info')))
-
+    const takeAway = localStorage.getItem('takeAway');
+    const [idDelivery,setIdDelivery] = useState(localStorage.getItem('idPedido'));
     const [materials,setMaterials] = useState([]);
 
     useEffect(() => {
@@ -17,21 +19,23 @@ export default function StepFour() {
             setMaterials(result);
         }
         get();
+        setTimeout(() => {
+            history.push('/');
+        },[30000])
     },[])
-console.log(prices,delivery.delivery.delivery.price.total_price)
 
 const getTotalPedido = () => {
-    return parseInt(delivery.delivery.delivery.price.total_price) 
-        + parseInt(prices.subtotal) 
+    return !takeAway ? parseInt(delivery?.delivery?.delivery?.price.total_price) 
+        + parseInt(prices.subtotal) : parseInt(prices.subtotal); 
 }
   return (
     <Container>
         <Grid columns={16}>
             <Grid.Row className='stepfour'>
-                <Grid.Column computer={10} textAlign='center'>
+                <Grid.Column computer={10} tablet={16} mobile={16} textAlign='center'>
                     <Header as="h1">¡Gracias por tu orden!</Header>
                 </Grid.Column>
-                <Grid.Column computer={12} textAlign="center" className='advise'>
+                <Grid.Column computer={12} tablet={16} mobile={16} textAlign="center" className='advise'>
                     <Header as="h4">Confirmación de compra</Header>
                     <p>
                         Tu orden se ha realizado con exito, nuestro equipo revisara la orden. Con 
@@ -40,9 +44,12 @@ const getTotalPedido = () => {
                             conflictos en tus ficheros.
                         </b>
                     </p>
+                    <p>El identificador de tu pedido es ( {idDelivery} ). Anotalo en caso 
+                        de solicitar información con nuestro servicio al cliente.
+                    </p>
                 </Grid.Column>
                 <Divider />
-                <Grid.Column computer={12}>
+                <Grid.Column computer={12} tablet={16} mobile={16}>
                     <Header className='mb-5'>Resumen del pedido</Header>
                     {
                         cart.items.map((item) => (
@@ -52,24 +59,32 @@ const getTotalPedido = () => {
                 </Grid.Column>
             </Grid.Row>
             <Divider />
-            <Grid.Row >
-                <Grid.Column computer={2}>
-                    
-                </Grid.Column>
-                <Grid.Column computer={6} className="combobox">
+            <Grid.Row className='stepfour'>
+                <Grid.Column computer={8} tablet={16} mobile={16} className="combobox">
                     <Header >Total pedido</Header>
                     <p>Subtotal: <span>{prices.subtotal} €</span></p>
-                    <p>Envio: <span>{delivery.delivery.delivery.price.total_price} €</span></p>
-                    <p></p>
+                    {  
+                        !takeAway && (
+                            <p>Envio: <span>{delivery?.delivery?.delivery?.price.total_price} €</span></p>
+                        )
+                    }
                     <p>Total del pedido: <span>{getTotalPedido()} €</span></p>
+                    {
+                        takeAway && (
+                            <p><b>Recogida en tienda.</b></p>
+                        )
+                    }
                 </Grid.Column>
-                <Grid.Column computer={1}></Grid.Column>
-                <Grid.Column computer={6} className="combobox">
-                    <Header >Envío</Header>
-                    <p>Dirección de entrega: <span>{deliveryInfo?.address}/{deliveryInfo?.addressComplement}</span></p>
-                    <p>Entrega estimada: <span><b>{delivery.delivery.delivery.first_estimated_delivery_date}</b></span></p>
-                    <p>Empresa de transporte: <span>{delivery.delivery.delivery.carrier_name}</span></p>
-                </Grid.Column>
+                    {
+                        !takeAway && (
+                            <Grid.Column computer={takeAway ? 16 : 8} tablet={16} mobile={16} className="combobox">
+                                <Header >Envío</Header>
+                                <p>Dirección de entrega: <span>{deliveryInfo?.address}/{deliveryInfo?.addressComplement}</span></p>
+                                <p>Entrega estimada: <span><b>{delivery.delivery?.delivery?.first_estimated_delivery_date}</b></span></p>
+                                <p>Empresa de transporte: <span>{delivery.delivery?.delivery?.carrier_name}</span></p>
+                            </Grid.Column>
+                        )
+                    }
             </Grid.Row>
         </Grid>
     </Container>
@@ -83,10 +98,10 @@ const ItemDelivery = ({ item , materials }) => {
     return (
         <Grid columns={16}>
             <Grid.Row>
-                <Grid.Column computer={5}>
+                <Grid.Column computer={5} tablet={16} mobile={16}>
                     <Image src={item.file.previsualization} />
                 </Grid.Column>
-                <Grid.Column computer={11}>
+                <Grid.Column computer={11} tablet={16} mobile={16}>
                     <h3 >{item.name || 'Sin Nombre'}</h3>
                     <p className='nomg text-resume'><b>Material Seleccionado:</b> 
                         <span> {getMaterialSelected?.title?.es}</span>

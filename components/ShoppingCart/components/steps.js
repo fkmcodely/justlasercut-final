@@ -11,8 +11,8 @@ export default function Steps({ active , setActive }) {
     <Container >
         <Grid columns={16}>
             <Grid.Row>
-                <Grid.Column width={16} className="no-padding">
-                    <Step.Group>
+                <Grid.Column computer={16} tablet={16} mobile={16} className="no-padding step-content">
+                    <Step.Group stackable='tablet'>
                         <Step
                             active={active === 'Registro'}
                             icon='user plus'

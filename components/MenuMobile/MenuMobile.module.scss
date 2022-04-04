@@ -1,7 +1,6 @@
 #__next {
   @include downBreakpoint($breakpoint-up-md) {
     position: relative;
-    overflow-x: hidden;
   }
 }
 .menu-mobile-hide {
