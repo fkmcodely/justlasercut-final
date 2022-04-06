@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Icon } from 'semantic-ui-react';
+import { Container, Grid, Icon, Image } from 'semantic-ui-react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { BASE_URL } from "../../constants/config";
 
 const languages = {
     en: require('../../locale/en/commons.json'),
@@ -30,22 +31,19 @@ const FooterJust = () => {
             <Container>
                 <Grid columns="16">
                     <Grid.Row>
-                        <Grid.Column computer="6">
-                            <p>{site?.sitename}</p>
+                        <Grid.Column computer="6" tablet={8} mobile={16}>
+                            <Image src={`${BASE_URL}/JustLaseLogo.png`} alt="flag_spain" />
                             <p style={{ marginBottom: '2px' }}>{t?.direccion}</p>
                             <p style={{ marginBottom: '2px' }}>{t?.ciudad}</p>
                             <p style={{ marginBottom: '2px' }}>{t?.codigopostal}</p>
                             <p style={{ marginBottom: '2px' }}>{t?.españa}</p>
                             <p style={{ marginBottom: '2px' }}>{t?.derechos}</p>
                         </Grid.Column>
-                        <Grid.Column width="6">
+                        <Grid.Column computer="6" tablet={8} mobile={16}>
                             <p style={{ textDecoration: 'underline' }}>(+34) {site?.phone}</p>
                             <p style={{ marginBottom: '2rem', textDecoration: 'underline' }}>{site?.email}</p>
-                            <p>{t.newsletter}</p>
-                            <p>Tu email:__________________</p>
-                            <p>{t.privacidad}</p>
                         </Grid.Column>
-                        <Grid.Column width="4">
+                        <Grid.Column computer={4} mobile={16} tablet={16}>
                             <Icon name="instagram" size="big" />
                             <Icon name="facebook" size="big" />
                             <Icon name="twitter" size="big" />

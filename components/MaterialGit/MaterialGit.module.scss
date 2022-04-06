@@ -1,6 +1,10 @@
 .material-git {
     min-height: 100vh;
 
+    @include downBreakpoint($breakpoint-up-sm) {
+        justify-content: space-between;
+    }
+
     &__list {
         padding-top: 20px !important;
         display: flex !important;

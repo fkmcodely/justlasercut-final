@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { CKEditor } from 'ckeditor4-react';
 import { BASE_URL } from '../../../constants/config';
+import { useFormik } from "formik";
 
 const SiteForm = ({ option }) => {
     const [site, setSite] = useState(false);
@@ -17,12 +18,32 @@ const SiteForm = ({ option }) => {
     const [titlepage, setTitlepage] = useState();
     const [titlepageEn, setTitlepageEn] = useState();
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({
-        defaultValues: {
+   
+    console.log(site)
+    // const { register, handleSubmit, watch, formState: { errors } } = useForm({
+    //     defaultValues: {
+    //         sitename: site?.sitename,
+    //         email: site?.email,
+    //         maintance: site?.maintance,
+    //         phone: site?.phone,
+    //         minimumThickness: site?.minimumThickness,
+    //         maximumThickness: site?.maximumThickness,
+    //     },
+    // });
+
+    const { values , handleSubmit, setFieldValue, resetForm } = useFormik({
+        initialValues: {
             sitename: site?.sitename,
             email: site?.email,
             maintance: site?.maintance,
             phone: site?.phone,
+            minimumThickness: site?.minimumThickness,
+            maximumThickness: site?.maximumThickness,
+        },
+        onSubmit: values => {
+            saveSiteInfo(values)
+            setOpen(false);
+            resetForm();
         },
     });
 
@@ -43,7 +64,7 @@ const SiteForm = ({ option }) => {
         setLoading(true);
         const save = async () => {
             try {
-                const updatedInfo = await axios.put('/api/site', {
+                const updatedInfo = await axios.post('/api/site', {
                     _id: site?._id,
                     ...data
                 });
@@ -91,13 +112,11 @@ const SiteForm = ({ option }) => {
         }
     };
 
-    useEffect(() => {
-        getBannerInfo();
-        fetchDataSite();
-    }, []);
+    
 
     useEffect(() => {
         getBannerInfo();
+        fetchDataSite();
     }, [language]);
 
     return (
@@ -106,24 +125,68 @@ const SiteForm = ({ option }) => {
                 <Grid.Column width="16" className="backoffice-group">
                     <Header as="h3">Configuración General</Header>
                     <Divider />
-                    <Form onSubmit={handleSubmit(saveSiteInfo)}>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Field>
                             <span>Nombre:</span>
-                            <input defaultValue={site?.sitename} {...register('sitename')} placeholder="Nombre de la web" />
+                            <input
+                                onChange={(ev) => {
+                                    setFieldValue('sitename',ev.target.value);
+                                }} 
+                                value={values.sitename}  
+                                placeholder="Nombre de la web" />
                         </Form.Field>
                         <Form.Field>
                             <span>Email:</span>
-                            <input defaultValue={site?.email} {...register('email')} placeholder="Email de contacto" />
+                            <input 
+                             onChange={(ev) => {
+                                setFieldValue('email',ev.target.value);
+                            }} 
+                            value={values.email}  
+                            placeholder="Telefono de contacto" />
                         </Form.Field>
                         <Form.Field>
                             <span>Activar o desactivar mantenimiento del sitio:</span>
-                            <input defaultValue={site?.maintance} {...register('maintance')} type="checkbox" placeholder="Email de contacto" />
+                            <input  
+                                onChange={(ev) => {
+                                    setFieldValue('maintance',ev.target.value);
+                                }} 
+                                value={values.maintance}  
+                                type="checkbox" 
+                                placeholder="Email de contacto" 
+                            />
                         </Form.Field>
                         <Form.Field>
                             <span>Telefono de contacto:</span>
-                            <input defaultValue={site?.phone?.replace(' ', '')} {...register('phone')} type="number" placeholder="Telefono de contacto" />
+                            <input 
+                             onChange={(ev) => {
+                                setFieldValue('phone',ev.target.value);
+                            }} 
+                            value={values.phone}  
+                            type="number" 
+                            placeholder="Telefono de contacto" />
                         </Form.Field>
-
+                        <Form.Field>
+                            <span>Establece el grosor minimo de las planchas</span>
+                            <input 
+                                onChange={(ev) => {
+                                    setFieldValue('minimumThickness',ev.target.value);
+                                }} 
+                                value={values.minimumThickness} 
+                                type="number" 
+                                placeholder="Grosor minimo" 
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <span>Establece el grosor maximo de las planchas</span>
+                            <input 
+                                onChange={(ev) => {
+                                    setFieldValue('maximumThickness',ev.target.value);
+                                }} 
+                                value={values.maximumThickness} 
+                                type="number" 
+                                placeholder="Grosor maximo" 
+                            />
+                        </Form.Field>
                         <Button loading={loading} content="Guardar" secondary floated="right" />
                     </Form>
                 </Grid.Column>

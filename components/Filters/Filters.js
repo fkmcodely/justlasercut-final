@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Header, Input, Divider } from 'semantic-ui-react';
+import { Grid, Header, Input, Divider, Icon } from 'semantic-ui-react';
 import { getCategoryMaterials, getSubCategoryMaterials } from "../../services/material";
+import useScreen from '../../hooks/useScreen';
 import { useForm } from "react-hook-form";
+import InputRange from 'react-input-range';
+import axios from "axios";
 
 const Filters = ({ list, setList, categorieFilterList, setCategoryFilterList, plateSize, setPlateSize, rangeval, setRangeval }) => {
+    const { width , height } = useScreen();
     const [auxListMaterials, setAuxMaterialList] = useState(list);
-
+    const [showFilters,setShowFilters] = useState(true);
 
     useEffect(() => {
         setList(auxListMaterials);
@@ -14,30 +18,52 @@ const Filters = ({ list, setList, categorieFilterList, setCategoryFilterList, pl
     return (
         <Grid columns="16">
             <Grid.Row>
-                <Grid.Column width="16">
-                    <MaterialCategory
-                        categorieFilterList={categorieFilterList}
-                        setCategoryFilterList={setCategoryFilterList}
-                    />
+                <Grid.Column mobile={16} className="filter-display-mobile">
+                    <Divider />
+                    <div className="filter-display-mobile__container" onClick={() => setShowFilters(!showFilters)}>
+                        <h3>Filtros</h3>
+                        {
+                            !showFilters ? (
+                                <Icon name="arrow circle down" size="large"/>
+                            ) : (
+                                <Icon name="arrow circle up" size="large"/>
+                            )
+                        }
+                        
+                    </div>
+                    <Divider />
                 </Grid.Column>
-                <Grid.Column width="16">
-                    <PlateSize
-                        plateSize={plateSize}
-                        setPlateSize={setPlateSize}
-                    />
-                </Grid.Column>
-                <Grid.Column width="16">
-                    <PlateWeight
-                        rangeval={rangeval}
-                        setRangeval={setRangeval}
-                    />
-                </Grid.Column>
-                <Grid.Column width="16">
-                    <Finishing />
-                </Grid.Column>
-                <Grid.Column width="16">
+                {
+                    showFilters && (
+                        <>
+                            <Grid.Column width="16">
+                                <MaterialCategory
+                                    categorieFilterList={categorieFilterList}
+                                    setCategoryFilterList={setCategoryFilterList}
+                                />
+                            </Grid.Column>
+                            <Grid.Column width="16">
+                                <PlateSize
+                                    plateSize={plateSize}
+                                    setPlateSize={setPlateSize}
+                                />
+                            </Grid.Column>
+                            <Grid.Column width="16">
+                                <PlateWeight
+                                    rangeval={rangeval}
+                                    setRangeval={setRangeval}
+                                />
+                            </Grid.Column>
+                            <Grid.Column width="16">
+                                <Finishing />
+                            </Grid.Column>
+                            <Grid.Column width="16">
 
-                </Grid.Column>
+                            </Grid.Column>
+                        </>
+                    )
+                }
+                
             </Grid.Row>
         </Grid>
     );
@@ -125,7 +151,7 @@ const PlateSize = ({ plateSize, setPlateSize }) => {
                 </Grid.Column>
                 <Grid.Column width="16" style={{ paddingTop: '10px', paddingBottom: '30px' }}>
                     <form>
-                        <select style={{ padding: '10px 0px' }} onChange={(e) => {
+                        <select style={{ padding: '10px 0px' , width: '100%' }} onChange={(e) => {
                             setPlateSize(e.target.value)
                         }}>
                             <option value="0">Pequeño (Hasta 600x600mm)</option>
@@ -140,6 +166,33 @@ const PlateSize = ({ plateSize, setPlateSize }) => {
 }
 
 const PlateWeight = ({ rangeval, setRangeval }) => {
+    const [site,setSite] = useState();
+    console.log(site)
+    const fetchDataSite = () => {
+        const fetchData = async () => {
+            try {
+                const request = await axios('/api/site');
+                const configuration = request?.data?.configurationSite[0];
+                console.log(configuration)
+                setSite(configuration);
+            } catch (error) {
+                console.error('Error, al obtener propiedades de la web:',error);
+            }
+        };
+        fetchData();
+    };
+    
+    const getTotalOptions = () => {
+        for (var i = site?.minimumThickness; i < site?.maximumThickness; i++) {
+            return (
+                <option value={i} label={i}></option>
+            )
+         }
+    };
+    
+    useEffect(() => {
+        fetchDataSite();
+    },[])
     return (
         <Grid columns="16" style={{ paddingTop: '20px', paddingBottom: '0px' }}>
             <Grid.Row>
@@ -147,21 +200,17 @@ const PlateWeight = ({ rangeval, setRangeval }) => {
                     <Header as='h4' style={{ borderBottom: '1px dashed #131313' }}>Grosor de plancha:</Header>
                 </Grid.Column>
                 <Grid.Column width="16">
-                    <input type="range" style={{ width: '100%', margin: '15px 0px' }} list="mydata" className="custom-range" min="0" max="20"
+                    <input type="range" style={{ width: '100%', margin: '15px 0px' }} list="mydata" className="custom-range" min={site?.minimumThickness} max={site?.maximumThickness}
                         onChange={(event) => setRangeval(event.target.value)} />
                     <datalist id="mydata">
-                        <option value="0"></option>
-                        <option value="2"></option>
-                        <option value="4"></option>
-                        <option value="6"></option>
-                        <option value="8"></option>
-                        <option value="10"></option>
-                        <option value="12"></option>
-                        <option value="14"></option>
-                        <option value="16"></option>
-                        <option value="18"></option>
-                        <option value="20"></option>
+                        {getTotalOptions()}
                     </datalist>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>Min: <b>{site?.minimumThickness}</b></span>
+                        <span><b>{rangeval}</b></span>
+                        <span>Max: <b>{site?.maximumThickness}</b></span>
+                    </div>
                 </Grid.Column>
             </Grid.Row>
         </Grid>

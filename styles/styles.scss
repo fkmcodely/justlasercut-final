@@ -25,6 +25,8 @@
 @import '../components/BackOffice/Configuration/configuration.module.scss';
 @import './components/backoffice.module.scss';
 @import '../components/BackOffice/Materials/Material.module.scss';
+@import '../components/BackOffice/Machines/machines.module.scss';
+@import '../components/BackOffice/Dashboard/index.module.scss';
 //Modals
 @import '../components/ModalSession/ModalSession.module.scss';
 
@@ -109,7 +111,7 @@
         height: 12rem;
         border: 2px dashed #CC555F !important;
         border-radius: 9px 9px 9px 9px !important;
-        padding: 40px 0px !important ;
+        padding: 40px 2rem !important ;
     }
 }
 
@@ -333,6 +335,25 @@
     &__items {
         p {
             margin-bottom: 0px !important;
+        }
+    }
+}
+
+.login-interno {
+    height: 70vh;
+
+    .grid {
+        display: flex;
+        justify-content: center;
+        height: 100%;
+    }
+    &__fields {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        padding: 2rem;
+        div {
+            margin-bottom: 10px;
         }
     }
 }

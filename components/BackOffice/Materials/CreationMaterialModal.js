@@ -1,14 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Header, Divider, Image, Modal, Form } from 'semantic-ui-react'
+import React, { useState, useEffect , useRef } from 'react';
+import { Button, Header, Divider, Image, Modal, Form, Table, Input, Checkbox, Icon} from 'semantic-ui-react'
 import { useForm } from "react-hook-form";
+import { useMachine } from "../../../hooks/useMachine";
 import { createMaterial } from "../../../services/material";
+import { useTag } from "../../../hooks/useTags";
+import { useTermination } from "../../../hooks/useTermination";
+
 import axios from "axios";
 const { v4: uuidv4 } = require('uuid');
 
 const CreationMaterialModal = () => {
     const [open, setOpen] = React.useState(false)
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
+    const {
+        list : listTags,
+		createTag,
+		getTags,
+		deleteTag
+    } = useTag();
+    
+    const [machines,setMachines] = useState([]);
+    const [listFinishes,setListFinishes] = useState([]);
+    const [recommendUses,setRecommendUses] = useState([]);
     const [plateSizes, setPlateSizes] = useState([]);
     const [weightList, setWeightList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
@@ -22,7 +35,13 @@ const CreationMaterialModal = () => {
     const [filename, setFilename] = useState();
     const [media, setMedia] = useState();
 
+    const { list } = useMachine();
+    const { list : listTerminations, getTermination } = useTermination();
+
     useEffect(async () => {
+        getTags();
+        getTermination();
+
         try {
             const { data: { steps } } = await axios(`/api/material-category`);
             const subcategory = await axios(`/api/material-subcategory`);
@@ -45,12 +64,15 @@ const CreationMaterialModal = () => {
         try {
             const handler = async () => {
                 const id = uuidv4();
-                const extension = filename.split('.').pop();
+                const extension = filename?.split('.').pop();
                 const post = await createMaterial({
                     ...data,
                     plateSizes,
                     weightList,
+                    machines,
                     id: id,
+                    recommendUses: recommendUses,
+                    terminations: listFinishes,
                     image: `${id}.${extension}`
                 });
                 if (media) {
@@ -62,12 +84,10 @@ const CreationMaterialModal = () => {
                         }
                     });
                 }
-                console.log(post);
             };
             handler();
             setOpen(false)
         } catch (err) {
-            console.log('Error.', err);
             setOpen(false)
         }
     };
@@ -158,6 +178,192 @@ const CreationMaterialModal = () => {
                                 <option value="value2" selected>2</option>
                                 <option value="value2" selected>Ninguno</option>
                             </select>
+                            <section className="material-machines">
+                                <div style={{ border: '1px solid gray', padding: '.5rem' }}>
+                                    <Header> Seleccione las maquinas en las que esta disponible:</Header>
+                                    <Table>
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell>Titulo</Table.HeaderCell>
+												<Table.HeaderCell>Acciones</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+                                        {
+                                            list?.map((item) => {
+                                                let isAdd = machines.find((machine) => machine.idMachine === item.idMachine);
+                                                return  (
+                                                    <Table.Body>
+                                                        <Table.Cell>{item.name}</Table.Cell>
+                                                        <Table.Cell>
+                                                            <Input type="currency" 
+                                                                id={`machine-${item.idMachine}`} 
+                                                                placeholder='Precio por min.'
+                                                            />
+                                                            <Button onClick={(ev) => {
+                                                                ev.preventDefault();
+                                                                setMachines([...machines , {
+                                                                    ...item,
+                                                                    priceMinute: document.getElementById(`machine-${item.idMachine}`).value
+                                                                }])
+                                                            }}
+                                                                primary
+                                                            >
+                                                                <Icon name="plus" />
+                                                            </Button>
+                                                        </Table.Cell>
+                                                    </Table.Body>
+                                                )
+                                            })
+                                        }
+                                    </Table>
+
+                                    <Table>
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell>Titulo</Table.HeaderCell>
+												<Table.HeaderCell>Precio por minuto</Table.HeaderCell>
+												<Table.HeaderCell>Acciones</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+                                        {
+                                            machines?.map((item) => {
+                                                return  (
+                                                    <Table.Body>
+                                                        <Table.Cell>{item.name}</Table.Cell>
+                                                        <Table.Cell>
+                                                            {item?.priceMinute} €
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            <Button
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault();
+                                                                    setMachines(
+                                                                        machines.filter(({ idMachine }) => idMachine !== item.idMachine)
+                                                                    )
+                                                                }} 
+                                                                color="red">
+                                                                <Icon name="trash" />
+                                                            </Button>
+                                                        </Table.Cell>
+                                                    </Table.Body>
+                                                )
+                                            })
+                                        }
+                                    </Table>
+                                </div>
+                            </section>
+                            <section>
+                                <div style={{ border: '1px solid gray', padding: '.5rem', marginTop: '1rem' }}>
+                                    <Header>Seleccione los acabados</Header>
+                                    <Table>
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell>Titulo</Table.HeaderCell>
+												<Table.HeaderCell>Acciones</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+                                        <Table.Body>
+                                            {
+                                                listTerminations?.map(termination => (
+                                                    <Table.Row>
+                                                        <Table.Cell>{termination.titleEs}</Table.Cell>
+                                                        <Table.Cell>
+                                                            <Button
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault();
+                                                                    setListFinishes([ ...listFinishes, termination ])
+                                                                }} 
+                                                                color="blue">
+                                                                <Icon name="plus" />
+                                                            </Button>
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                ))
+                                            }
+                                        </Table.Body>
+                                    </Table>
+                                    
+                                    <Table>
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell>Titulo</Table.HeaderCell>
+												<Table.HeaderCell>Acciones</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+
+                                        <Table.Body>
+                                            {
+                                                listFinishes?.map(termination => (
+                                                    <Table.Row>
+                                                        <Table.Cell>{termination.titleEs}</Table.Cell>
+                                                        <Table.Cell>
+                                                            <Button
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault();
+                                                                    setListFinishes(
+                                                                        listFinishes.filter(({ idTerminations }) => idTerminations !== termination.idTerminations)
+                                                                    )
+                                                                }} 
+                                                                color="red">
+                                                                <Icon name="trash" />
+                                                            </Button>
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                ))
+                                            }
+                                        </Table.Body>
+                                    </Table>
+                                </div>
+                            </section>
+                            <section>
+                                <div style={{ border: '1px solid gray', padding: '.5rem', marginTop: '1rem' }}>
+                                    <div>
+                                        <p>Seleccione los usos recomendados:</p>
+
+                                        <div>
+                                            {
+                                                listTags?.map((tag) => (
+                                                    <Button color="blue" onClick={(ev) => {
+                                                        ev.preventDefault();
+                                                        setRecommendUses([...recommendUses, {
+                                                            ...tag
+                                                        }])
+                                                    }}>
+                                                        {tag.titleEs}
+                                                    </Button>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                    <Table>
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell>Titulo</Table.HeaderCell>
+												<Table.HeaderCell></Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+                                        <Table.Body>
+                                            {
+                                                recommendUses.map((item) => (
+                                                    <Table.Row>
+                                                        <Table.Cell>{item.titleEs}</Table.Cell>
+                                                        <Table.Cell>
+                                                            <Button
+                                                                onClick={(ev) => {
+                                                                    ev.preventDefault();
+                                                                    setRecommendUses(recommendUses.filter((itemTag) => itemTag.idTag !== item.idTag))
+                                                                }}  
+                                                                color="red" >
+                                                                <Icon name="trash"/>
+                                                            </Button>
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                ))
+                                            }
+                                        </Table.Body>
+                                    </Table>
+                                </div>
+                            </section>
                             <span>Configure los tamaños de las planchas:</span>
                             <div style={{ border: '1px solid gray', padding: '.5rem' }}>
                                 <div style={{ display: 'flex' }}>
@@ -226,21 +432,21 @@ const CreationMaterialModal = () => {
                                 </div>
                                 <Divider />
                                 <div>
-                                    Grabado (Bajo):
+                                    Grabado linea(Bajo):
                                     <div>
                                         <input type="number" placeholder="Velocidad" {...register("cuttingReport.lowEngraving.velocity")} />
                                         <input type="number" placeholder="Potencia" {...register("cuttingReport.lowEngraving.power")} />
                                     </div>
                                 </div>
                                 <div>
-                                    Grabado (Medio):
+                                    Grabado linea(Medio):
                                     <div>
                                         <input type="number" placeholder="Velocidad" {...register("cuttingReport.mediumEngraving.velocity")} />
                                         <input type="number" placeholder="Potencia" {...register("cuttingReport.mediumEngraving.power")} />
                                     </div>
                                 </div>
                                 <div>
-                                    Grabado (Alto):
+                                    Grabado linea(Alto):
                                     <div>
                                         <input type="number" placeholder="Velocidad" {...register("cuttingReport.hightEngraving.velocity")} />
                                         <input type="number" placeholder="Potencia" {...register("cuttingReport.hightEngraving.power")} />

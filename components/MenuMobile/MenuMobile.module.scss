@@ -12,12 +12,12 @@ body {
   overflow-x: hidden;
 }
 .menu-mobile {
-  position: absolute;
+  position: fixed;
   top: 0px;
   background-color: white;
   width: 80%;
-  height: 100vh;
-  z-index: 99;
+  height: 102vh;
+  z-index: 120;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 40px;
@@ -28,9 +28,14 @@ body {
   box-shadow: -2px 0px 5px 0px rgba(0, 0, 0, 0.75);
   &__actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
   }
   .menu {
     width: 100% !important;
   }
+}
+
+.mobile-logo {
+  width: 70%;
 }

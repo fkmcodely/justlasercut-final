@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form"
 import router, { useRouter } from 'next/router';
@@ -15,6 +15,38 @@ const languages = {
     'en': require('../../locale/en/commons.json'),
 };
 
+
+const baseStyle = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '6rem',
+    paddingBottom: '6rem',
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#eeeeee',
+    borderStyle: 'dashed',
+    backgroundColor: '#FFFFFF',
+    color: '#000000',
+    outline: 'none',
+    transition: 'border .12s ease-in-out'
+  };
+  
+  const focusedStyle = {
+    borderColor: 'rgb(162 67 67)',
+    backgroundColor: '#F1F2F3',
+  };
+  
+  const acceptStyle = {
+    borderColor: 'rgb(162 67 67)'
+  };
+  
+  const rejectStyle = {
+    borderColor: '#ff1744'
+  };
 
 const ModalMaterial = ({ material }) => {
     const { weightList, plateSizes } = material;
@@ -72,7 +104,18 @@ const ModalMaterial = ({ material }) => {
         startProject();
     }, []);
 
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
+    const {getRootProps, getInputProps, isDragAccept , isDragActive, isDragReject, isFocused } = useDropzone({onDrop})
+
+    const style = useMemo(() => ({
+        ...baseStyle,
+        ...(isFocused ? focusedStyle : {}),
+        ...(isDragAccept ? acceptStyle : {}),
+        ...(isDragReject ? rejectStyle : {})
+      }), [
+        isFocused,
+        isDragAccept,
+        isDragReject
+    ]);
 
     const createBodyItemProject = () => {
         return (
@@ -160,10 +203,10 @@ const ModalMaterial = ({ material }) => {
                     </div>
                     <h5><b>4. Sube tu archivo aquí para calcular tu presupuesto.</b></h5>
                     <Divider />
-                    <div {...getRootProps()} className="upload-box">
+                    <div {...getRootProps({ style })} className="upload-box">
                             <input {...getInputProps()} />
                             {
-                                isDragActive ? <p>{t.subirdxf}</p> :
+                                isDragActive ? <p>Suelta tu archivo</p> :
                                 <p>{t.subirdxf}</p>
                             }
                     </div>

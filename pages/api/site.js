@@ -24,7 +24,7 @@ const getSiteProps = ({ body }, res) => {
         try {
             const session = await MongoClient.connect(url);
             const db = session.db();
-            const collection = db.collection("ConfigurationSite");
+            const collection = db.collection("site");
             const createConfig = await collection.find().toArray();
 
             session.close();
@@ -44,20 +44,13 @@ const getSiteProps = ({ body }, res) => {
 const ConfigSiteProps = ({ body }, res) => {
     const fetchConfiguration = async () => {
         try {
-            const {
-                id = '0001',
-                sitename = '',
-                email = '',
-                maintance = '',
-                phone = '',
-                GoogleApiDeveloper = '',
-                FacebookApiDeveloper = ''
-            } = body;
             const client = await MongoClient.connect(url);
             const db = client.db();
-            const collection = db.collection("ConfigurationSite");
-            const createConfiguration = await collection.insertOne({
-                sitename, email, maintance, phone
+            const collection = db.collection("site");
+            await collection.drop();
+            await collection.insertOne({
+                ...body,
+                id :'0001',
             });
 
             client.close();
@@ -80,7 +73,7 @@ const updateConfigSite = ({ body }, res) => {
             const { sitename = '', email, maintance, phone } = body;
             const site = await MongoClient.connect(url);
             const db = site.db();
-            const collection = db.collection('ConfigurationSite');
+            const collection = db.collection('site');
             await collection.deleteMany();
             const updateInformation = await collection.updateMany(
                 { id: '0001' },

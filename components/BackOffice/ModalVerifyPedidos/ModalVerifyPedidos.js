@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import router, { useRouter } from 'next/router';
 import { Button, Header, Image, Modal, Divider, Grid, Input } from 'semantic-ui-react'
 import { usePedidos } from "../../../hooks/usePedidos";
+import ModalPedidoTecnicalInfo from "./PedidoTecnicalInfo";
 
 const ModalVerifyPedidos = ({ item , verified }) => {
 	const [open,setOpen] = useState(false);
@@ -75,7 +76,9 @@ const ModalVerifyPedidos = ({ item , verified }) => {
 						<h3>Información del pedido: </h3>
 						<Grid columns="16">
 							{
-								informacionPedido?.items?.map(item => <DeliveryItem item={item} />)
+								informacionPedido?.items?.map(item => 
+									<DeliveryItem item={item} />
+								)
 							}
 						</Grid>
 					</div>
@@ -140,8 +143,8 @@ const DeliveryItem = ({ item }) => {
 				<p><b>Planchas:</b> {file.planchas.length}</p>
 				<p><b>Grosor:</b> {weight}mm</p>
 				<p>
-					<b>Material:</b>{materialDelivery.title?.es} - {` `}
-					<Button size="mini" secondary>Ver Información</Button>
+					<b>Material:</b>{materialDelivery?.title?.es} - {` `}
+					<ModalPedidoTecnicalInfo pedido={item} />
 				</p>
 				<p><b>Material propio:</b> {file.materialClient ? 'Si' : 'No'}</p>
 			</Grid.Column>

@@ -1,38 +1,43 @@
 export const BACKOFFICE_OPTIONS = [
     {
         name: "Inicio",
-        index: 0
-    },
-    {
-        name: "Manual de usuario",
-        index: 1
-    },
-    {
-        name: "Servicios",
-        index: 2
-    },
-    {
-        name: "Materiales",
-        index: 3
-    },
-    {
-        name: "Presupuestos",
-        index: 4
-    },
-    {
-        name: "Usuarios",
-        index: 5
-    },
-    {
-        name: "Mensajes",
-        index: 6
+        index: 0,
+        icon: "home"
     },
     {
         name: "Configuración General",
-        index: 7
+        index: 7,
+        icon: "cogs"
     },
     {
         name: "Configuración Blog",
-        index: 8
+        index: 8,
+        icon: "blogger"
     },
+    {
+        name: "Materiales",
+        index: 3,
+        icon: "sitemap"
+    },
+    {
+        name: "Maquinas",
+        index: 9,
+        icon: "hdd outline"
+    },
+    {
+        name: "Mensajes",
+        index: 6,
+        icon: "comment"
+    },
+    {
+        name: "Pedidos",
+        index: 4,
+        icon: "edit"
+    },
+    {
+        name: "Usuarios",
+        index: 5,
+        icon: "user"
+    },
+    
 ]
