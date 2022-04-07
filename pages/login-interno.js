@@ -2,8 +2,10 @@ import React from 'react';
 import { Button, Container, Grid, Form, Input } from 'semantic-ui-react';
 import { useFormik } from "formik";
 import axios from "axios";
+import { useRouter } from 'next/router';
 
 const loginInterno = () => {
+	const history = useRouter()
 
 	const { values, handleSubmit, reset, setFieldValue } = useFormik({
 		initialValues: {
@@ -13,10 +15,9 @@ const loginInterno = () => {
 		onSubmit: async (values) => {
 			const { data : { token } } = await axios.post('/api/administrators',values);
 			if (token) {
-				console.log('Inicio de sesión valido')
-			} else {
-				console.log('Inicio de sesión invalido')
-			}
+				localStorage.setItem('admin',token);
+				history.push('/backoffice');
+			} 
 		}
 	})
 	return (

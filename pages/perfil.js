@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Container, Header, Icon, Form, Divider, Button } from "semantic-ui-react";
-import { useSession, signIn, singOut, getSession, signOut } from "next-auth/react";
+import { Grid, Container, Header, Icon, Form, Divider, Button, Image } from "semantic-ui-react";
+import { useSession, signIn, singOut, getSession, signOut,  Item  } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 const { v4: uuidv4 } = require('uuid');
 import { useRouter } from 'next/router'
+import { usePedidos } from "../hooks/usePedidos"
+import { useMaterial } from "../hooks/useMaterial"
+import { BASE_URL } from "../constants/config";
 
 const perfil = () => {
     const [user, setUser] = useState();
@@ -174,6 +177,28 @@ const DataPersonal = ({ user }) => {
 const Orders = () => {
     const [open, setOpen] = useState(false);
     const [orders, setOrders] = useState([]);
+    const { data: session  } = useSession();
+  
+    const { list = [], getListPedidos} = usePedidos();
+
+    useEffect(() => {
+        getListPedidos();
+    },[])
+
+   
+    
+    useEffect(() => {
+        if(!list || !session) return
+        const { user : { email : emailSession} } = session;
+        const { list : listaPedidos } = list;
+
+        const myPedidos = listaPedidos?.filter(pedido => pedido?.session?.user?.email === emailSession);
+        console.log(myPedidos,emailSession,session);
+        setOrders(myPedidos)
+
+    },[list,session]);
+
+
     return (
         <Grid columns="16">
             <Grid.Row style={{
@@ -188,15 +213,79 @@ const Orders = () => {
                 {
                     open && (
                         <Grid.Column width="16" style={{ border: '1px solid #eee', backgroundColor: 'white', padding: '2rem' }}>
-                            <p>
                                 {
-                                    orders.length ? 'Listado de pedidos' : 'Actualmente no tiene ningun pedido.'
+                                    orders?.length ? 'Listado de pedidos' : 'Actualmente no tiene ningun pedido.'
                                 }
-                            </p>
+                                {
+                                    orders?.map((order) => <MyPedido item={order}/>)
+                                }
                         </Grid.Column>
                     )
                 }
             </Grid.Row>
+        </Grid>
+    )
+}
+
+const MyPedido = ({ item }) => {
+    const { informacionEnvio , informacionPedido, creationDate, calculoPrecios, paymentSelected, verified } = item;
+    const { list : listMaterials ,  getMaterialList} = useMaterial(); 
+
+    useEffect(() => {
+        getMaterialList();
+    },[])
+
+    const getMaterialName = (id) => {
+        const find = listMaterials?.find(material => material?.id === id);
+        return find?.title?.es
+    }
+
+    return (
+        <Grid columns={16} className="my-pedido">
+            {
+                informacionPedido.items.map(({ copias , file , ...props}) => (
+                    <Grid.Row>
+                        {console.log(props)}
+                        <Grid.Column computer={3}>
+                            <Image src={`${BASE_URL}/${file.previsualization}`} size="large" />
+                        </Grid.Column>
+                        <Grid.Column computer={5}>
+                            <h5>Información del proyecto</h5>
+                            <p>
+                                <b>Precio de corte:</b> {parseInt(props.total)}€
+                            </p>
+                            <p>
+                                <b>Material seleccionado:</b> {getMaterialName(props.material)}
+                            </p>
+                            <p>
+                                <b>Grosor del material:</b> {props.weight}mm
+                            </p>
+                        </Grid.Column>
+                        <Grid.Column computer={5}>
+                            <h5>Información del pedido</h5>
+                            <p>
+                                <b>Estado del pedido:</b> {verified ? (
+                                    <>
+                                        <Icon name="check" color="green" /> Verificado
+                                    </>
+                                ) : (
+                                    (
+                                        <>
+                                            <Icon name="x" color="red" /> En revisión
+                                        </>
+                                    )
+                                )}
+                            </p>
+                            <p>
+                                <b>Fecha de creación:</b> {item.creationDate}
+                            </p>
+                            <p>
+                                <b>Metodo de pago:</b>  {paymentSelected === 0 ? 'Targeta' : 'Bizum'}
+                            </p>
+                        </Grid.Column>
+                    </Grid.Row>
+                ))
+            }
         </Grid>
     )
 }

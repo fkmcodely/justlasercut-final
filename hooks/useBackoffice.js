@@ -1,8 +1,9 @@
 import { useState , useEffect , useCallback } from "react";
 import axios from "axios";
+import { useRouter } from 'next/router';
 
 export const useBackoffice = () => {
-
+	const history = useRouter()
 	const [totalGanancias,setTotalEntries] = useState();;
 	const [totalPedidos,setTotalSells] = useState();
 	const [visitsToday,setVisitsToday] = useState();
@@ -20,6 +21,16 @@ export const useBackoffice = () => {
 		setTotalEntries(subtotal)
 	};
 
+	const validateSession = async () => {
+		const { data : { valid }} = await axios.post(`/api/token`,{
+			token: localStorage.getItem('admin')
+		});
+		
+		if(!valid){
+			history.push('/');
+		}
+	};
+	
 	const getTotalMaterials = async () => {
 		const { data : { result }} = await axios('api/materials');
 		setTotalMaterials(result?.length)
@@ -28,6 +39,7 @@ export const useBackoffice = () => {
 	return {
 		getTotalPedidos,
 		getTotalMaterials,
+		validateSession,
 		totalGanancias,
 		totalPedidos,
 		totalMaterials

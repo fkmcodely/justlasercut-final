@@ -40,12 +40,26 @@
     }
     &__content {
         height: 99vh;
+        padding-top: 2rem;
         overflow-y: scroll;
     }
     &__menu {
         background-color: #0a0a0a;
         height: 103vh !important;
-        padding-top: 4.5rem !important;
+        padding-top: 5.5rem !important;
+    }
+    &__header {
+        background-color: white !important;
+
+        .content {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between;
+            
+            h4 {
+                margin: 0px !important;
+            }
+        }
     }
 }
 

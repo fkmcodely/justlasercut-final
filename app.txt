@@ -17,3 +17,10 @@ secret:
 
 token github:
 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
+
+ENV: 
+
+STAGGING: 
+
+USUARIO: 76868982
+PASSWORD: 23324123Ff*Kevin
