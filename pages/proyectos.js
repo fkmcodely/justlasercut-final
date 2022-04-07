@@ -160,10 +160,12 @@ const MainApp = ({setUploadView}) => {
     const fileInputField = useRef(null);
     
     const t = languages[locale];
+    const [totalPrice,setTotalPrice] = useState(0);
     const [fileData,setFileData] = useState({});
     const [files, setFiles] = useState({});
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
+
     const createBodyItemProject = () => {
         return (
             {
@@ -180,6 +182,19 @@ const MainApp = ({setUploadView}) => {
         )
     }
 
+    useEffect(() => {
+        console.log(cart.items)
+        let calculateTotalCart = 0;
+
+        cart.items.map((item) => {
+            if(item.total) {
+                calculateTotalCart += item.total;
+            }
+        });
+
+        setTotalPrice(parseInt(calculateTotalCart));
+    },[cart])
+    
     const [file, setFile] = useState(null);
     const handleChange = (file) => {
         setFiles(file);
@@ -325,7 +340,7 @@ const MainApp = ({setUploadView}) => {
             <Divider />
             <Grid.Row>
                 <Grid.Column computer={16} className='jf-right' style={{ marginBottom: '1rem !important'}}>
-                    <Header as='h3'>Precio total (con IVA):  -- €</Header>
+                    <Header as='h3'>Total:  {totalPrice} €</Header>
                 </Grid.Column>
                 <Grid.Column computer={16} className='jf-right'>
                     <Button className='button-buy' positive onClick={handleCreatePedido}>

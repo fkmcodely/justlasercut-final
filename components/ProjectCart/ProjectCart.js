@@ -5,6 +5,7 @@ import { addExtra } from '../../redux/reducers/cartSlice';
 import { extras } from '../../constants/extras';
 import { deleteItem , checkMaterialClient, setMaterial, setGrosor, deleteExtra, modifyCopias,setPrice } from '../../redux/reducers/cartSlice';
 import { Button, Popup, Checkbox, Grid, Modal, Header, Icon, Input, Select, Image, Search } from "semantic-ui-react";
+import { useMaterial } from "../../hooks/useMaterial";
 
 const ProjectCart = () => {
     //Obtener lista de proyectos subidos desde redux;
@@ -39,10 +40,7 @@ const ModalImageProject = ({ urlImage }) => {
     return (
         <Modal
             open={open}
-            size='mini'
-            style={{
-                maxHeight: '70vh'
-            }}
+            size='fullscreen'
             trigger={<Image fluid src={urlImage} />}
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
@@ -70,8 +68,7 @@ const ProjectItem = ({ item }) => {
     const [weightSelected,setWeightSelected] = useState(false);
 
     const [priceTotal,setPriceTotal] = useState();
-    
-    console.log('item:',item)
+    const { list : materialList } = useMaterial();
     
     useEffect(() => {
         handlerPrice();
@@ -262,13 +259,20 @@ const ProjectItem = ({ item }) => {
     }
 
     const calculateExtras = () => {
+        const { file : { planchas = [] }} = item;
         let total = 0;
+
         item.extras.map(extra => {
             total += parseInt(extra.price);
         })
 
-        return total;
+        return (total * planchas.length) * item?.copias;
     };
+    
+    const getMaterialName = (id) => {
+        const find = materialList?.find(material => material?.id === id);
+        return find?.title?.es
+    }
     
     return(
         <Grid columns={16} className='project-view'>
@@ -422,7 +426,9 @@ const ProjectItem = ({ item }) => {
                                     className='select-material-options__material' 
                                     options={materiales} 
                                     defaultValue={item.material}
+                                    value={productSelected}
                                     onChange={(e,{ value }) => {
+                                        console.log(value)
                                         setProductSelected(value);
                                     }}
                                 />
@@ -442,8 +448,8 @@ const ProjectItem = ({ item }) => {
                                 placeholder="Buscar material..."
                                 results={products}
                                 onResultSelect={(ev,x) => {
-                                    console.log(x.result.value)
                                     setProductSelected(x.result.value);
+                                    console.log(x)
                                 }}
                                 resultRenderer={resRender}
                             />
