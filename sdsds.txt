@@ -1,0 +1,22 @@
+- Login
+
+- Home
+
+Recibos:
+- maquetar los bloques.
+- Incluirlos con la data
+
+Mi dia a dia:
+- Gastos ahorra facilmente
+- imagin planet
+
+
+---------------
+LOGIN 
+- CAMBIAR ICONO DEL MENU
+- CREAR MENU BASICO
+--BUZON.MI PERFIL.AJUSTES.FIRMAS DE OPERACIONS.
+-- OTRAS OPCIONES --> INVITAR AMIGOS,SINCRONIZAR CUENTAS,CERRAR SESION
+---------------
+
+Mi analisis a las 7: va a caer mechas largas

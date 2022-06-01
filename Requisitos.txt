@@ -1,0 +1,34 @@
+Categorias y Subcategorias.
+1.Necesito al menos 2 categorias con su respectiva categoria de material.
+2.Necesito 3 tipos de acabados recomendades.
+2.Necesito 3 tipos de usos recomendados.
+
+Materiales:
+
+Rellenar formulario con 4 diferentes tipo de material que correspondan con las categorias
+anteriormente creados:
+
+Nombre:
+Imagen/es: Esto me lo puedes enviar como un adjunto identificando cada imagen con el
+material
+Numero de caras:
+Lista de tamaño de planchas:
+Precio m2 pintura:
+
+-------- Datos de corte ---------
+Corte Interior:
+Corte Exterior:
+Grabado linea bajo:
+Grabado linea medio:
+Grabado linea alto:
+Grabado Relleno (Bajo):
+Grabado Relleno (Medio):
+Grabado Relleno (Alto):
+-----------------------------------
+Maquinas: Voy a configurar varias maquinas una mediana, grande y pequeña. Pero necesito
+Que para cada una me pases tu los tamaños de plancha que puede cortar cada una
+y cual es su precio de corte por minuto.(Los tamaños de las planchas pasamelos en cm)
+
+---------------------------------
+
+starto: KPIZ92*@sQ

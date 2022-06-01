@@ -245,7 +245,6 @@ const MyPedido = ({ item }) => {
             {
                 informacionPedido.items.map(({ copias , file , ...props}) => (
                     <Grid.Row>
-                        {console.log(props)}
                         <Grid.Column computer={3}>
                             <Image src={`${BASE_URL}/${file.previsualization}`} size="large" />
                         </Grid.Column>

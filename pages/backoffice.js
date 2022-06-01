@@ -42,7 +42,7 @@ const backoffice = () => {
                             <Grid columns={16} className="backoffice__header">
                                 <Grid.Row>
                                     <Grid.Column computer={16} className="content">
-                                        <Header as="">PANEL DE ADMINISTRACIÓN</Header>
+                                        <Header as="h4">PANEL DE ADMINISTRACIÓN</Header>
                                         <Button secondary onClick={closeSession}>
                                             Cerrar sesión
                                         </Button>
