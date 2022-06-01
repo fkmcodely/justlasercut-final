@@ -28,7 +28,7 @@ namespace LaserCutApp
             } catch (Exception e) {
                 Console.WriteLine("Exception: " + e.Message);
             }
-            string path = @"C:/desarrollo/justlasercut-final/LaserCutApp/test/" + name;
+            string path = @"C:/Users/Administrator/justlasercut-final/LaserCutApp/test/" + name;
             
             IEnumerable<EntityType> ValidEntities = new List<EntityType>()
             {
