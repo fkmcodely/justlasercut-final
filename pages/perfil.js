@@ -3,7 +3,7 @@ import { Grid, Container, Header, Icon, Form, Divider, Button, Image } from "sem
 import { useSession, signIn, singOut, getSession, signOut,  Item  } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/router'
 import { usePedidos } from "../hooks/usePedidos"
 import { useMaterial } from "../hooks/useMaterial"

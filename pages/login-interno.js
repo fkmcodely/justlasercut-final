@@ -14,6 +14,7 @@ const loginInterno = () => {
 		},
 		onSubmit: async (values) => {
 			const { data : { token } } = await axios.post('/api/administrators',values);
+			console.log(token)
 			if (token) {
 				localStorage.setItem('admin',token);
 				history.push('/backoffice');

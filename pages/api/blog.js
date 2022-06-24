@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
-const { v4: uuidv4 } = require('uuid');
 import { BASE_URL_MONGO } from "../../constants/config";
 const url = BASE_URL_MONGO;
+import { v4 as uuidv4 } from 'uuid';
 
 export default (req, res) => {
     if (req.method === 'POST') {

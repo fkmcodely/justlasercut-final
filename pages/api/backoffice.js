@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
-const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
+import { v4 as uuidv4 } from 'uuid';
+import bcrypt from "bcrypt";
 import { BASE_URL_MONGO } from "../../constants/config";
 const url = BASE_URL_MONGO;
 

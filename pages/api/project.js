@@ -1,7 +1,7 @@
 import fs from "fs";
 import { MongoClient } from "mongodb";
 import { BASE_URL_MONGO } from "../../constants/config";
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 const child = require('child_process').execFile;
 const dxf = require('dxf');
 export default (req, res) => {
