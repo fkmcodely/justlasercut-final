@@ -50,7 +50,7 @@ const HeaderJustLaserCut = (props) => {
         if (site?.mantenimiento && !loginInterno && adminLogged === null) {
             window.onscroll = function () { window.scrollTo(0, 0); };
         } 
-    },[site?.mantenimiento]);
+    },[adminLogged, loginInterno, site?.mantenimiento]);
     
     const friendOptions = [
         {
