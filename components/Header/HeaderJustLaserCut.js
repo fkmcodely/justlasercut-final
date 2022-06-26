@@ -75,6 +75,7 @@ const HeaderJustLaserCut = (props) => {
                         <div className="mantenimiento__box">
                             <img src="./JustLaseLogo.png" />
                             <h2>Próximanente</h2>
+                            <p>Calcula tu presupuesto de corte láser online y al instante</p>
                         </div>
                     </div>
                 )
