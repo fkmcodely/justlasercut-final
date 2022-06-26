@@ -377,3 +377,34 @@
         align-items: center;
     }
 }
+
+.mantenimiento {
+    position: relative;
+    &__on {
+        position: absolute;
+        width: 100vw;
+        z-index: 9;
+        height: 100vh;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url('/bgindex.png');
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-size: cover;
+        
+        .mantenimiento__box {
+            box-shadow: 0 1px 1px 2px rgb(0 0 0 / 1%);
+            background-color: #F1F2F3;
+            padding: 2rem 10rem 10rem 10rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+    }
+}

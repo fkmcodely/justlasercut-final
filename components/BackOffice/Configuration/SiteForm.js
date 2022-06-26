@@ -32,7 +32,7 @@ const SiteForm = ({ option }) => {
     // });
 
     const { values , handleSubmit, setFieldValue, resetForm } = useFormik({
-        initialValues: {
+        initialValues:{
             sitename: site?.sitename,
             email: site?.email,
             maintance: site?.maintance,
@@ -53,8 +53,8 @@ const SiteForm = ({ option }) => {
             const filterArrayResult = getResult.data.response
             setTitlepage(filterArrayResult.filter(entry => entry.language === 'es')[0]);
             setTitlepageEn(filterArrayResult.filter(entry => entry.language === 'en')[0]);
-            setText(filterArrayResult.filter(entry => entry.language === 'es')[0].title);
-            setTextEn(filterArrayResult.filter(entry => entry.language === 'en')[0].title);
+            setText(filterArrayResult.filter(entry => entry.language === 'es')[0]?.title);
+            setTextEn(filterArrayResult.filter(entry => entry.language === 'en')[0]?.title);
         } catch (error) {
             console.log(error);
         }
@@ -112,13 +112,11 @@ const SiteForm = ({ option }) => {
         }
     };
 
-    
-
     useEffect(() => {
-        getBannerInfo();
         fetchDataSite();
+        getBannerInfo();
     }, [language]);
-
+    console.log(typeof values ? 'si': 'no')
     return (
         <Grid columns="16" className="site-data">
             <Grid.Row>

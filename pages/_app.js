@@ -12,9 +12,9 @@ function VisualApp({ Component, pageProps }) {
   return (
     <SessionProvider {...pageProps}>
       <Provider store={store}>
-        <HeaderJustLaserCut />
-        <Component {...pageProps} />
-        <FooterJust />
+          <HeaderJustLaserCut />
+          <Component {...pageProps} />
+          <FooterJust />
       </Provider>
     </SessionProvider>
   )

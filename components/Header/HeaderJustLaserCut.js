@@ -23,12 +23,17 @@ const HeaderJustLaserCut = (props) => {
     const [show, setShow] = useState(false);
     const { pathname, asPath, query, locale } = router
     const t = languages[locale];
+    const [loginInterno,setLoginInterno] = useState(false);
+
+    const [adminLogged,setAdminLogged] = useState(false);
 
     useEffect(() => {
         const getSiteInfo = async () => {
             try {
                 const request = await axios('/api/site');
                 setSite(request.data.configurationSite[0]);
+                setLoginInterno(window.location.href.includes('login-interno'));
+                setAdminLogged(localStorage.getItem('admin'))
             } catch (err) {
                 console.error(err)
             }
@@ -40,6 +45,13 @@ const HeaderJustLaserCut = (props) => {
         localStorage.setItem('user',JSON.stringify(session));
     },[session]);
     
+    
+    useEffect(() => {
+        if (site?.mantenimiento && !loginInterno && adminLogged === null) {
+            window.onscroll = function () { window.scrollTo(0, 0); };
+        } 
+    },[site?.mantenimiento]);
+    
     const friendOptions = [
         {
             key: 'Spanish',
@@ -47,7 +59,7 @@ const HeaderJustLaserCut = (props) => {
             value: 'es',
             image: { avatar: true, src: `${BASE_URL}flag_es.jpg` },
         },
-        {
+        { 
             key: 'English',
             text: 'English',
             value: 'en',
@@ -56,7 +68,18 @@ const HeaderJustLaserCut = (props) => {
     ];
 
     return (
-        <>
+        <div className="mantenimiento">
+            {
+                site?.mantenimiento && !loginInterno && adminLogged === null && (
+                    <div className="mantenimiento__on">
+                        <div className="mantenimiento__box">
+                            <img src="./JustLaseLogo.png" />
+                            <h2>Próximanente</h2>
+                        </div>
+                    </div>
+                )
+            }
+            
             <Container fluid className="header-just" id="header-just">
                 <Container>
                     <Grid columns={16}>
@@ -119,7 +142,8 @@ const HeaderJustLaserCut = (props) => {
                 </Container>
             </Container>
             <MenuMobile show={show} setShow={setShow} />
-        </>
+           
+        </div>
     );
 };
 
