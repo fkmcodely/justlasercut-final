@@ -33,7 +33,7 @@ const FooterJust = () => {
                 <Grid columns="16">
                     <Grid.Row>
                         <Grid.Column computer="4" tablet={8} mobile={16} className="footer-business">
-                            <Image src={`${BASE_URL}/JustLaseLogo.png`} alt="flag_spain" />
+                            <Image src={`/JustLaserLogoSummerWhite.png`} alt="flag_spain" />
                             <Image src={`https://cosastudio.com/wp-content/uploads/2018/05/firma-archi.png.webp`} alt="flag_spain" />
                             <Image src={`/cosas-estudio.svg`} alt="flag_spain" />
                         </Grid.Column>
@@ -58,16 +58,14 @@ const FooterJust = () => {
                         <Grid.Column computer={4} mobile={16} tablet={16} className="footer-legal-doc">
                             <p>C/Utiel 6, Bajo Valencia 46020</p>
                             <p onClick={() => router.push('/contacto')}>· Contacta con nosotros</p>
-                            <p>· Términos y condiciones</p>
-                            <p>· Política de envío</p>
-                            <p>. Política de devolución</p>
-                            <p >· Política de privacidad</p>
-                            <p >· FAQ</p>
-                            <p >· Política de cookies</p>
+                            <p onClick={() => router.push('/terminos-condiciones#condiciones')}>· Términos y condiciones</p>
+                            <p onClick={() => router.push('/terminos-condiciones#envios')}>· Política de envío</p>
+                            <p onClick={() => router.push('/terminos-condiciones#devolucion')}>. Política de devolución</p>
+                            <p onClick={() => router.push('/terminos-condiciones#privacidad')}>· Política de privacidad</p>
                         </Grid.Column>
                         <Grid.Column computer={4} mobile={16} tablet={16} className="footer-legal-doc">
                             <h4>¿No encuentras lo que buscas? ¿Quieres hacer realidad un producto diferente?</h4>
-                            <p>En la tienda de Cosastudio hemos intentado estandarizar todos nuestros diseños con la posibilidad de personalizarlos. Pero, también puedes utilizar nuestro catálogo como inspiración 
+                            <p>En la tienda de Justlasercut hemos intentado estandarizar todos nuestros diseños con la posibilidad de personalizarlos. Pero, también puedes utilizar nuestro catálogo como inspiración 
                                 para diseñar cualquier producto a medida a través de nuestro estudio Archicercle.</p>
                             <p style={{
                                 marginBottom: '3rem !important'
@@ -77,7 +75,7 @@ const FooterJust = () => {
                     </Grid.Row>
                     <Grid.Row className="derechos-archicercle">
                         <Grid.Column computer={16} mobile={16} tablet={16} textAlign="center" verticalAlign='middle'>
-                            <p>© Copyright 2008 - 2022   |  Todos los derechos reservados |  Creado y diseñado por © Archicerle</p>
+                            <p>© Copyright 2008 - 2022   |  Todos los derechos reservados |  Creado y diseñado por © Justlasercut</p>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row className="derechos-archicercle">

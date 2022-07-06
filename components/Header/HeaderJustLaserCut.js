@@ -57,7 +57,7 @@ const HeaderJustLaserCut = (props) => {
             key: 'Spanish',
             text: 'Español',
             value: 'es',
-            image: { avatar: true, src: `${BASE_URL}flag_es.jpg` },
+            image: { avatar: true, src: `${BASE_URL}/flag_es.jpg` },
         },
         { 
             key: 'English',
@@ -96,7 +96,7 @@ const HeaderJustLaserCut = (props) => {
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={9} tablet={6} computer={7} className="header-just__logo" onClick={() => router.push('/')}>
-                                <img src='./JustLaseLogo.png' />
+                                <img src='/JustLaserLogoSummer.png' />
                             </Grid.Column>
                             
                             <Grid.Column computer={5} tablet={10} className="header-just__user-experience-container">

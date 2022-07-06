@@ -416,3 +416,11 @@
         }
     }
 }
+
+.black-paper {
+    padding: 5rem 5rem;
+
+    @include downBreakpoint($breakpoint-down-md) { 
+        padding: 1rem 1rem 5rem;
+    }
+}
