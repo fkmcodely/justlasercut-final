@@ -35,14 +35,14 @@ function Home(props) {
   }, [])
 
   return (
-    <>
+    <div className="">
       <Banner info={banner} />
       <Steps t={t} steps={steps.filter(step => step.language === locale)} />
       <Services t={t} list={services.filter(step => step.language === locale)} />
       <Reviews t={t} list={reviews.filter(review => review.language === locale)} />
       <ContactForm t={t} />
       <ButtonTop />
-    </>
+    </div>
   );
 }
 
