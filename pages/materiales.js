@@ -11,7 +11,7 @@ const languages = {
 }
 
 export async function getServerSideProps(context) {
-  const res = await axios(`${BASE_URL}api/materials`)
+  const res = await axios(`${BASE_URL}/api/materials`)
   if (!res) {
     return {
       notFound: true,

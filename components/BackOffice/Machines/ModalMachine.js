@@ -12,7 +12,9 @@ const ModalMachine = ({ edit = false , objectEdit }) => {
 			name: objectEdit?.name ||  '',
 			maxWidth: objectEdit?.maxWidth,
 			maxHeight:  objectEdit?.maxHeight,
-			description:  objectEdit?.description
+			description:  objectEdit?.description,
+			maxWeight:  objectEdit?.maxWeight,
+			minutePrice:  objectEdit?.minutePrice,
 		},
 		enableReinitialize: true,
 		onSubmit: values => {
@@ -72,6 +74,23 @@ const ModalMachine = ({ edit = false , objectEdit }) => {
 									type="number"
 									value={values.maxHeight}
 									onChange={ev => setFieldValue('maxHeight',ev.target.value)}
+								/>
+							</div>
+							<div className="field">
+								<label htmlFor="maxWeight">Grosor maximo</label>
+								<input
+									type="number"
+									value={values.maxWeight}
+									onChange={ev => setFieldValue('maxWeight',ev.target.value)}
+								/>
+							</div>
+							
+							<div className="field">
+								<label htmlFor="minutePrice">Precio por minuto</label>
+								<input
+									type="number"
+									value={values.minutePrice}
+									onChange={ev => setFieldValue('minutePrice',ev.target.value)}
 								/>
 							</div>
 						</div>

@@ -38,6 +38,8 @@ const CreationMaterialModal = () => {
     const { list } = useMachine();
     const { list : listTerminations, getTermination } = useTermination();
 
+    console.log(list)
+    
     useEffect(async () => {
         getTags();
         getTermination();
@@ -192,9 +194,16 @@ const CreationMaterialModal = () => {
                                             list?.map((item) => {
                                                 let isAdd = machines.find((machine) => machine.idMachine === item.idMachine);
                                                 return  (
-                                                    <Table.Body>
+                                                    <Table.Body key={item._id}>
                                                         <Table.Cell>{item.name}</Table.Cell>
                                                         <Table.Cell>
+                                                            <Input type="checkbox" onClick={(ev) => {
+                                                                ev.preventDefault();
+                                                                console.log(item.minutePrice)
+                                                                setMachines([...machines , {
+                                                                    ...item,
+                                                                    priceMinute: parseInt(item.minutePrice),                                                                }])
+                                                            }} />
                                                             <Input type="currency" 
                                                                 id={`machine-${item.idMachine}`} 
                                                                 placeholder='Precio por min.'

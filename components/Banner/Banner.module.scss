@@ -1,8 +1,8 @@
 .banner {
-    background-image: url('/bgindex.png');
+    background-image: url('https://archicercle.com/wp-content/uploads/2020/03/background-contacto-archicercle.png');
     height: 450px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-size: cover;
     padding: 50px 0px 20px 0px;
     @include downBreakpoint($breakpoint-up-md) {
         padding: 0px !important;
