@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Form, Input, Button, Header, Image, Divider } from 'semantic-ui-react';
+import { Grid, Form as form, Input, Button, Header, Image, Divider } from 'semantic-ui-react';
 import axios from "axios";
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
@@ -18,8 +18,6 @@ const SiteForm = ({ option }) => {
     const [titlepage, setTitlepage] = useState();
     const [titlepageEn, setTitlepageEn] = useState();
 
-   
-    console.log(site)
     // const { register, handleSubmit, watch, formState: { errors } } = useForm({
     //     defaultValues: {
     //         sitename: site?.sitename,
@@ -31,14 +29,16 @@ const SiteForm = ({ option }) => {
     //     },
     // });
 
-    const { values , handleSubmit, setFieldValue, resetForm } = useFormik({
-        initialValues:{
-            sitename: site?.sitename,
-            email: site?.email,
-            maintance: site?.maintance,
-            phone: site?.phone,
-            minimumThickness: site?.minimumThickness,
-            maximumThickness: site?.maximumThickness,
+    const formik = useFormik({
+        initialValues: (site) => {
+            return ({
+                sitename: site?.sitename ||'2',
+                email: site?.email,
+                maintance: site?.maintance,
+                phone: site?.phone,
+                minimumThickness: site?.minimumThickness,
+                maximumThickness: site?.maximumThickness,
+            })
         },
         onSubmit: values => {
             saveSiteInfo(values)
@@ -46,7 +46,8 @@ const SiteForm = ({ option }) => {
             resetForm();
         },
     });
-
+    const { values , handleSubmit, setFieldValue, resetForm, ...props } = formik;
+    
     const getBannerInfo = async () => {
         try {
             const getResult = await axios('/api/banner');
@@ -106,7 +107,8 @@ const SiteForm = ({ option }) => {
                     id: idToEdit
                 }
             });
-            console.log('Actualizado');
+
+
         } catch (error) {
             console.error('Error:', error);
         }
@@ -116,15 +118,15 @@ const SiteForm = ({ option }) => {
         fetchDataSite();
         getBannerInfo();
     }, [language]);
-    console.log(typeof values ? 'si': 'no')
+
     return (
         <Grid columns="16" className="site-data">
             <Grid.Row>
                 <Grid.Column width="16" className="backoffice-group">
                     <Header as="h3">Configuración General</Header>
                     <Divider />
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Field>
+                    <form onSubmit={handleSubmit}>
+                        <label>
                             <span>Nombre:</span>
                             <input
                                 onChange={(ev) => {
@@ -132,8 +134,8 @@ const SiteForm = ({ option }) => {
                                 }} 
                                 value={values.sitename}  
                                 placeholder="Nombre de la web" />
-                        </Form.Field>
-                        <Form.Field>
+                        </label>
+                        <label>
                             <span>Email:</span>
                             <input 
                              onChange={(ev) => {
@@ -141,8 +143,8 @@ const SiteForm = ({ option }) => {
                             }} 
                             value={values.email}  
                             placeholder="Telefono de contacto" />
-                        </Form.Field>
-                        <Form.Field>
+                        </label>
+                        <form.Field>
                             <span>Activar o desactivar mantenimiento del sitio:</span>
                             <input  
                                 onChange={(ev) => {
@@ -152,8 +154,8 @@ const SiteForm = ({ option }) => {
                                 type="checkbox" 
                                 placeholder="Email de contacto" 
                             />
-                        </Form.Field>
-                        <Form.Field>
+                        </form.Field>
+                        <form.Field>
                             <span>Telefono de contacto:</span>
                             <input 
                              onChange={(ev) => {
@@ -162,8 +164,8 @@ const SiteForm = ({ option }) => {
                             value={values.phone}  
                             type="number" 
                             placeholder="Telefono de contacto" />
-                        </Form.Field>
-                        <Form.Field>
+                        </form.Field>
+                        <form.Field>
                             <span>Establece el grosor minimo de las planchas</span>
                             <input 
                                 onChange={(ev) => {
@@ -173,8 +175,8 @@ const SiteForm = ({ option }) => {
                                 type="number" 
                                 placeholder="Grosor minimo" 
                             />
-                        </Form.Field>
-                        <Form.Field>
+                        </form.Field>
+                        <form.Field>
                             <span>Establece el grosor maximo de las planchas</span>
                             <input 
                                 onChange={(ev) => {
@@ -184,9 +186,9 @@ const SiteForm = ({ option }) => {
                                 type="number" 
                                 placeholder="Grosor maximo" 
                             />
-                        </Form.Field>
+                        </form.Field>
                         <Button loading={loading} content="Guardar" secondary floated="right" />
-                    </Form>
+                    </form>
                 </Grid.Column>
                 <Grid.Column width="1">
 
@@ -201,17 +203,17 @@ const SiteForm = ({ option }) => {
                             <Grid.Column width="4">
                                 <div className="languages">
                                     <div onClick={() => setLanguage('es')} className={`languages__container ${language === 'es' && ('languages__active')}`}>
-                                        <Image src={`${BASE_URL}flag_es.jpg`} alt="flag_spain" className="languages__flag" />
+                                        <Image src={`${BASE_URL}/flag_es.jpg`} alt="flag_spain" className="languages__flag" />
                                     </div>
                                     <div onClick={() => setLanguage('en')} className={`languages__container ${language === 'en' && ('languages__active')}`}>
-                                        <Image src={`${BASE_URL}flag_en.png`} alt="flag_english" className="languages__flag" />
+                                        <Image src={`${BASE_URL}/flag_en.png`} alt="flag_english" className="languages__flag" />
                                     </div>
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column width="16">
-                                <Form>
+                                <form>
                                     <p>Descripción principal de la página:</p>
                                     {
                                         (language === 'es') && (
@@ -234,7 +236,7 @@ const SiteForm = ({ option }) => {
                                     }
 
                                     <Button onClick={() => updatePageTitle()} primary content='Actualizar' content="Aceptar" />
-                                </Form>
+                                </form>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
