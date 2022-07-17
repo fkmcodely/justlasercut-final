@@ -143,7 +143,7 @@ const handlerUploadFile = async ({ body }, res) => {
                     const path = `C:/Users/Administrator/justlasercut-final/LaserCutApp/test/${fileName}`
                     const parsed = dxf.parseString(fs.readFileSync(path, 'utf-8'))
                     const svg = dxf.toSVG(parsed);
-                    fs.writeFile(`C:/desarrollo/justlasercut-final/public/${fileName.replace('.dxf','.svg')}`,svg,'utf-8');
+                    fs.writeFile(`C:/Users/Administrator/justlasercut-final/public/${fileName.replace('.dxf','.svg')}`,svg,'utf-8');
                     res.status(200).json({
                         fileName: fileName,
                         id: idItem,
